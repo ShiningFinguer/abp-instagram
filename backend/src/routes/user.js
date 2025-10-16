@@ -1,18 +1,18 @@
 const userRouter = require('express').Router()
 
 // 🔹 Obtener todos los usuarios
-userRouter.get('/users', getCars)
+userRouter.get('/api/users', getCars)
 
 // 🔹 Obtener un usuario por ID
-userRouter.get('/users/:id', getCarById)
+userRouter.get('/api/users/:id', getCarById)
 
 // 🔹 Crear un nuevo ususario
-userRouter.post('/users', createCar)
+userRouter.post('/api/users', createCar)
 
 // 🔹 Actualizar un usuario existente
-userRouter.put('/users/:id', updateCar)
+userRouter.put('/api/users/:id', updateCar)
 
 // 🔹 Eliminar un usuario
-userRouter.delete('/users/:id', deleteCar)
+userRouter.delete('/api/users/:id', deleteCar)
 
 module.exports = userRouter

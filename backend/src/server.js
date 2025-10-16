@@ -2,7 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 const User = require('./models/User')
-const fillCars = require('./fillCars')
+const fillUsers = require('./fillUsers')
 
 const app = express() // para parsear JSON en requests
 
@@ -15,9 +15,9 @@ mongoose
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err))
 
-// Agregar coches para pruebas
-fillCars()
-  .then(() => console.log('Coches creados'))
+// Agregar usuarios para pruebas
+fillUsers()
+  .then(() => console.log('Usuarios creados'))
   .catch(e => console.log(e.message))
 
 app.use(express.json())
@@ -26,11 +26,25 @@ app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')
 })
 
-app.get('/api/cars', async (req, res) => {
+app.get('/api/users', async (req, res) => {
   try {
-    const cars = await Car.find()
+    const users = await User.find()
 
-    res.json(cars)
+    res.json(users)
+  } catch (error) {
+    console.error(error.message)
+    res.status(500).json({ error: 'Error interno del servidor' })
+  }
+})
+
+app.post('/api/users', async (req, res) => {
+  const { username, password } = req.body
+
+  try {
+    const newUser = new User({ username, password })
+    const savedUser = await newUser.save()
+
+    res.json(savedUser)
   } catch (error) {
     console.error(error.message)
     res.status(500).json({ error: 'Error interno del servidor' })

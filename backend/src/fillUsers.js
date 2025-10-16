@@ -1,10 +1,9 @@
 const User = require('./models/User')
 
 const users = [
-  { name: 'Adrian', email: 'adrian@example.com', age: 25 },
-  { name: 'Laura', email: 'laura@example.com', age: 30 },
-  { name: 'Carlos', email: 'carlos@example.com', age: 28 },
-  { name: 'Marta', email: 'marta@example.com', age: 22 },
+  { username: 'adri', password: 'password' },
+  { username: 'rhian', password: 'password' },
+  { username: 'sebas', password: 'password' },
 ]
 
 async function fillUsers() {
