@@ -7,7 +7,8 @@ const fillUsers = require('./fillUsers')
 const app = express() // para parsear JSON en requests
 
 // URL de conexión a MongoDB
-const mongoURI = 'mongodb://admin:password@db:27017/cars?authSource=admin'
+const mongoURI =
+  'mongodb://admin:password@db:27017/abp-instagram?authSource=admin'
 
 // Conectar a MongoDB
 mongoose
