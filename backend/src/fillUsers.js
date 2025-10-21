@@ -1,4 +1,4 @@
-const User = require('./models/User')
+import User from './models/User.js'
 
 const users = [
   { username: 'adri', password: 'password' },
@@ -19,4 +19,4 @@ async function fillUsers() {
   }
 }
 
-module.exports = fillUsers
+export default fillUsers

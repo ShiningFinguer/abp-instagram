@@ -1,10 +1,22 @@
-const express = require('express')
-const mongoose = require('mongoose')
+import express from 'express'
+import https from 'https'
+import fs from 'fs'
+import path from 'path'
+import mongoose from 'mongoose'
+import User from './models/User.js'
+import fillUsers from './fillUsers.js'
 
-const User = require('./models/User')
-const fillUsers = require('./fillUsers')
+// Cargar certificados
+const __dirname = process.cwd()
+const options = {
+  key: fs.readFileSync(path.join(__dirname, 'tls/server.key')),
+  cert: fs.readFileSync(path.join(__dirname, 'tls/server.crt')),
+  ca: fs.readFileSync(path.join(__dirname, 'tls/ca.crt')), // confianza opcional
+  requestCert: false, // ponlo en true si usas mTLS
+  rejectUnauthorized: false, // solo en desarrollo
+}
 
-const app = express() // para parsear JSON en requests
+const app = express()
 
 // URL de conexión a MongoDB
 const mongoURI =
@@ -57,6 +69,8 @@ app.get('/*splat', async (req, res) => {
 })
 
 const PORT = 3000
-app.listen(PORT, () => {
-  console.log(`Servidor escuchando en puerto ${PORT}`)
+
+// Crear servidor HTTPS
+https.createServer(options, app).listen(PORT, () => {
+  console.log('Servidor HTTPS escuchando en https://localhost:3000')
 })

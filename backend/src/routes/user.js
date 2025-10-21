@@ -1,4 +1,6 @@
-const userRouter = require('express').Router()
+import { Router } from 'express'
+
+const userRouter = Router()
 
 // 🔹 Obtener todos los usuarios
 userRouter.get('/api/users', getCars)
@@ -15,4 +17,4 @@ userRouter.put('/api/users/:id', updateCar)
 // 🔹 Eliminar un usuario
 userRouter.delete('/api/users/:id', deleteCar)
 
-module.exports = userRouter
+export default userRouter
