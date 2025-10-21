@@ -1,22 +1,18 @@
-import User from './models/User.js'
+import User from './models/User.js';
 
 const users = [
-  { username: 'adri', password: 'password' },
-  { username: 'rhian', password: 'password' },
-  { username: 'sebas', password: 'password' },
-]
+  { username: 'Qihao', password: 'password' },
+  { username: 'Rhian', password: 'password' },
+  { username: 'Adrian', password: 'password' },
+  { username: 'Sebaas', password: 'password' },
+];
 
-async function fillUsers() {
+export async function fillUsers() {
   try {
-    // Borrar usuarios existentes (opcional)
-    await User.deleteMany({})
-
-    // Insertar nuevos usuarios
-    const createdUsers = await User.insertMany(users)
-    console.log('Usuarios creados:', createdUsers.length)
+    await User.deleteMany({});
+    const createdUsers = await User.insertMany(users);
+    console.log('Usuarios creados:', createdUsers.length);
   } catch (err) {
-    console.error('Error creando usuarios:', err)
+    console.error('Error creando usuarios:', err);
   }
 }
-
-export default fillUsers

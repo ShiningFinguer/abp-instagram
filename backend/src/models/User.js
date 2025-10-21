@@ -1,10 +1,13 @@
-import { Schema, model } from 'mongoose'
+import mongoose from 'mongoose';
 
-const userSchema = new Schema({
-  username: String,
-  password: String,
-})
+const UserSchema = new mongoose.Schema({
+  username: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true }, // 👈 nuevo campo
+  password: { type: String, required: true }, // bcrypt/Argon2
+  profilePic: { type: String, default: '' },
+  bio: { type: String, default: '' },
+  privacy: { type: String, enum: ['public', 'private'], default: 'public' },
+  createdAt: { type: Date, default: Date.now }
+});
 
-const User = model('User', userSchema)
-
-export default User
+export default mongoose.model('User', UserSchema);
