@@ -5,6 +5,7 @@ import path from 'path'
 import mongoose from 'mongoose'
 import User from './models/User.js'
 import { fillUsers } from './fillUsers.js'
+import userRouter from './routes/UserRouter.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
@@ -34,6 +35,7 @@ fillUsers()
   .catch(e => console.log(e.message));
 
 app.use(express.json());
+app.use('/api/users', userRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente 111');
@@ -61,6 +63,7 @@ app.post('/api/users', async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
 
 app.get('/*splat', async (req, res) => {
   res.send('Ruta no encontrada');

@@ -3,7 +3,9 @@ import { Router } from 'express'
 const userRouter = Router()
 
 // 🔹 Obtener todos los usuarios
-userRouter.get('/api/users', getCars)
+userRouter.get('/', (req, res) => {
+    
+})
 
 // 🔹 Obtener un usuario por ID
 userRouter.get('/api/users/:id', getCarById)
