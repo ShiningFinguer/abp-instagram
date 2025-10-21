@@ -50,10 +50,10 @@ app.get('/api/users', async (req, res) => {
 });
 
 app.post('/api/users', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    const newUser = new User({ username, password });
+    const newUser = new User({ username, email, password });
     const savedUser = await newUser.save();
     res.json(savedUser);
   } catch (error) {

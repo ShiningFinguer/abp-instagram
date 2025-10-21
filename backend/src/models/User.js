@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true }, // bcrypt/Argon2
   profilePic: { type: String, default: '' },
   bio: { type: String, default: '' },
-  privacy: { type: String, enum: ['public', 'private'], default: 'public' },
+  // privacy: { type: String, enum: ['public', 'private'], default: 'public' },
   createdAt: { type: Date, default: Date.now }
 });
 
