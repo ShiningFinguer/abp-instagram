@@ -1,10 +1,10 @@
 import User from './models/User.js';
 
 const users = [
-  { username: 'qihao', password: 'password' },
-  { username: 'qihao1', password: 'password' },
-  { username: 'qihao2', password: 'password' },
-  { username: 'qihao3', password: 'password' },
+  { username: 'Qihao', password: 'password' },
+  { username: 'Rhian', password: 'password' },
+  { username: 'Adrian', password: 'password' },
+  { username: 'Sebaas', password: 'password' },
 ];
 
 export async function fillUsers() {
