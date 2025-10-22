@@ -51,18 +51,18 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-app.post('/api/users', async (req, res) => {
-  const { username, email, password } = req.body;
+// app.post('/api/users', async (req, res) => {
+//   const { username, email, password } = req.body;
 
-  try {
-    const newUser = new User({ username, email, password });
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
+//   try {
+//     const newUser = new User({ username, email, password });
+//     const savedUser = await newUser.save();
+//     res.json(savedUser);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ error: 'Error interno del servidor' });
+//   }
+// });
 
 
 app.get('/*splat', async (req, res) => {

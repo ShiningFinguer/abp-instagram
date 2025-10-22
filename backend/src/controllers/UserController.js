@@ -1,6 +1,6 @@
-import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 // Registro
 export const register = async (req, res) => {
