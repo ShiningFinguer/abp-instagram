@@ -1,16 +1,26 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../../CSS/Login.css";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import '../../CSS/Login.css'
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Intentando iniciar sesión con:", username, password);
-    alert(`Login: ${username} / ${password}`);
-  };
+  const handleSubmit = e => {
+    e.preventDefault()
+
+    fetch('https://localhost:3001/api/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json)
+      })
+  }
 
   return (
     <div className="login-wrapper">
@@ -22,7 +32,7 @@ export default function Login() {
             placeholder="Usuario o correo"
             required
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
           />
 
           <input
@@ -30,7 +40,7 @@ export default function Login() {
             placeholder="Contraseña"
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
 
           <button type="submit">Entrar</button>
@@ -41,5 +51,5 @@ export default function Login() {
         </p>
       </main>
     </div>
-  );
+  )
 }

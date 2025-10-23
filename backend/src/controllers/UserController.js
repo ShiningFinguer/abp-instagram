@@ -1,40 +1,43 @@
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import User from '../models/User.js'
 
 // Registro
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ username, email, password: hashed });
-    res.status(201).json({ message: 'Usuario creado', user });
+    const { username, email, password } = req.body
+    const hashed = await bcrypt.hash(password, 10)
+    const user = await User.create({ username, email, password: hashed })
+    res.status(201).json({ message: 'Usuario creado', user })
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message })
   }
-};
+}
 
 // Login
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ error: 'Usuario o contraseña incorrecta' });
-    const match = await bcrypt.compare(password ,user.password);
-    if (!match) return res.status(400).json({ error: 'Usuario o contraseña incorrecta' });
-    const token = jwt.sign({ id: user._id }, 'SECRET_KEY', { expiresIn: '1d' });
-    res.json({ message: 'Login exitoso', token, user });
+    const { username, password } = req.body
+    const user = await User.findOne({ username })
+    if (!user)
+      return res.status(404).json({ error: 'Usuario o contraseña incorrecta' })
+    const match = await bcrypt.compare(password, user.password)
+    if (!match)
+      return res.status(400).json({ error: 'Usuario o contraseña incorrecta' })
+    const token = jwt.sign({ id: user._id }, 'SECRET_KEY', { expiresIn: '1d' })
+    res.json({ message: 'Login exitoso', token, user })
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
+}
 
 // Obtener todos los usuarios
 export const getUsers = async (req, res) => {
-  try{
-    const user = await User.find();
-    if (!user) return res.status(404).json({ error: 'Ningún usuario encontrado' });
-    res.json(user);
+  try {
+    const user = await User.find()
+    if (!user)
+      return res.status(404).json({ error: 'Ningún usuario encontrado' })
+    res.json(user)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -43,44 +46,50 @@ export const getUsers = async (req, res) => {
 // Obtener un usuario por ID
 export const getUserByID = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json(user);
+    const user = await User.findById(req.params.id)
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+    res.json(user)
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
+}
 
 //Actualizar perfil de usuario
 export const updateUserProfile = async (req, res) => {
   try {
-    const { username, email, profilePic, bio} = req.body;
-    const user = await User.updateOne({_id: req.params.id },{ username, email , profilePic, bio});
-    res.status(201).json({ message: 'Usuario actualizada', user });
+    const { username, email, profilePic, bio } = req.body
+    const user = await User.updateOne(
+      { _id: req.params.id },
+      { username, email, profilePic, bio }
+    )
+    res.status(201).json({ message: 'Usuario actualizada', user })
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message })
   }
-};
+}
 
 //Actualizar contraseña de usuario
 export const updateUserPassword = async (req, res) => {
   try {
-    const { password } = req.body;
-    const hashed = await bcrypt.hash(password, 10);
-    const user = await User.updateOne({_id: req.params.id },{ password: hashed });
-    res.status(201).json({ message: 'Contraseña actualizada', user });
+    const { password } = req.body
+    const hashed = await bcrypt.hash(password, 10)
+    const user = await User.updateOne(
+      { _id: req.params.id },
+      { password: hashed }
+    )
+    res.status(201).json({ message: 'Contraseña actualizada', user })
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message })
   }
-};
+}
 
 //Eliminar un usuario por ID
 export const deleteUserByID = async (req, res) => {
   try {
-    const user = await User.deleteOne({_id: req.params.id });
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.status(200).json({ message: 'Usuario eliminado' });
+    const user = await User.deleteOne({ _id: req.params.id })
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+    res.status(200).json({ message: 'Usuario eliminado' })
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err.message })
   }
-};
+}
