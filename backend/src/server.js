@@ -35,7 +35,7 @@ fillUsers()
   .catch(e => console.log(e.message));
 
 app.use(express.json());
-app.use('/api/users', userRouter)
+app.use(userRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente 111');
