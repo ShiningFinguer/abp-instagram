@@ -1,13 +1,35 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Login from './Components/Login/Login'
 import Signup from './Components/Signup/Signup'
+import Landing from './Components/Landing/Landing'
+import Home from './Components/Home/Home'
 
 function App() {
+  const [token, setToken] = useState(sessionStorage.token)
+  const [username, setUsername] = useState('')
+
+  useEffect(() => {
+    fetch('https://localhost:3001/api/users', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(({ username }) => setUsername(username))
+  }, [])
+
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route
+        path="/"
+        element={token ? <Navigate to="/home" /> : <Navigate to="/landing" />}
+      />
+      <Route path="/landing" element={<Landing />} />
+      <Route path="/home" element={<Home username={username} />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login />} />
     </Routes>
   )
 }

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../../CSS/Login.css'
 
 export default function Login() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -17,8 +18,9 @@ export default function Login() {
       body: JSON.stringify({ username, password }),
     })
       .then(res => res.json())
-      .then(json => {
-        console.log(json)
+      .then(({ token }) => {
+        sessionStorage.token = token
+        navigate('/')
       })
   }
 

@@ -4,7 +4,6 @@ import fs from 'fs'
 import path from 'path'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import User from './models/User.js'
 import { fillUsers } from './fillUsers.js'
 import userRouter from './routes/UserRouter.js'
 
@@ -36,11 +35,11 @@ fillUsers()
   .catch(e => console.log(e.message))
 
 app.use(express.json())
-// app.use(cors())
+app.use(cors())
 app.use(userRouter)
 
 app.get('/', (req, res) => {
-  res.send('Api funcionando correctamente 111')
+  res.send('Api funcionando correctamente')
 })
 
 app.get('/*splat', async (req, res) => {
