@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import User from './models/User.js'
 import { fillUsers } from './fillUsers.js'
 import userRouter from './routes/UserRouter.js'
+import { postRouter } from './routes/PostRouter.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
@@ -35,7 +36,8 @@ fillUsers()
   .catch(e => console.log(e.message));
 
 app.use(express.json());
-app.use(userRouter)
+app.use(userRouter);
+app.use(postRouter);
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente 111');

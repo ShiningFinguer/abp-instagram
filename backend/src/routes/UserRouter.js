@@ -8,25 +8,25 @@ import { updateUserProfile } from '../controllers/UserController.js'
 import { updateUserPassword } from '../controllers/UserController.js'
 const userRouter = Router()
 
-// 🔹 Obtener todos los usuarios
+// Obtener todos los usuarios
 userRouter.get('/api/users/', getUsers);
 
-// 🔹 Login
+// Login
 userRouter.post('/api/users/login', login);
 
-// 🔹 Obtener un usuario por ID
+// Obtener un usuario por ID
 userRouter.get('/api/users/:id', getUserByID);
 
-// 🔹 Crear un nuevo ususario
+// Crear un nuevo ususario
 userRouter.post('/api/users/', register);
 
-// 🔹 Actualizar perfil de un usuario
+// Actualizar perfil de un usuario
 userRouter.put('/api/users/:id/profile', updateUserProfile)
 
-// 🔹 Actualizar contraseña de un usuario
+// Actualizar contraseña de un usuario
 userRouter.put('/api/users/:id/password', updateUserPassword)
 
-// 🔹 Eliminar un usuario
+// Eliminar un usuario
 userRouter.delete('/api/users/:id', deleteUserByID)
 
 export default userRouter
