@@ -5,6 +5,8 @@ import path from 'path'
 import mongoose from 'mongoose'
 import User from './models/User.js'
 import { fillUsers } from './fillUsers.js'
+import userRouter from './routes/UserRouter.js'
+import { postRouter } from './routes/PostRouter.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
@@ -34,6 +36,8 @@ fillUsers()
   .catch(e => console.log(e.message));
 
 app.use(express.json());
+app.use(userRouter);
+app.use(postRouter);
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente 111');
@@ -49,18 +53,19 @@ app.get('/api/users', async (req, res) => {
   }
 });
 
-app.post('/api/users', async (req, res) => {
-  const { username, password } = req.body;
+// app.post('/api/users', async (req, res) => {
+//   const { username, email, password } = req.body;
 
-  try {
-    const newUser = new User({ username, password });
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
+//   try {
+//     const newUser = new User({ username, email, password });
+//     const savedUser = await newUser.save();
+//     res.json(savedUser);
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ error: 'Error interno del servidor' });
+//   }
+// });
+
 
 app.get('/*splat', async (req, res) => {
   res.send('Ruta no encontrada');
