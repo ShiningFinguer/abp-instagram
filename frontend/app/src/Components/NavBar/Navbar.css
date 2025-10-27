@@ -1,0 +1,28 @@
+/* Navbar.css */
+.navbar {
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 0.5rem 1rem;
+  z-index: 1000;
+}
+
+.container {
+  max-width: 975px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: black;
+}
+
+.icons a {
+  margin-left: 1rem;
+  color: black;
+}
