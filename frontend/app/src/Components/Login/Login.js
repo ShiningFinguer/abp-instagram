@@ -8,6 +8,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    window.location.href = "/home";
     console.log("Intentando iniciar sesión con:", username, password);
     alert(`Login: ${username} / ${password}`);
   };

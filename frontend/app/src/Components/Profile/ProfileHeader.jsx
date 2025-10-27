@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 const ProfileHeader = ({ userProfile }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
 
   const handleFollowUser = () => {

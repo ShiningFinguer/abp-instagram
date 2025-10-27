@@ -53,6 +53,7 @@ const ProfilePost = ({ post, userProfile }) => {
           alt="post"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
+{/*         /*
         <div style={{
           position: "absolute",
           top: 0,
@@ -75,7 +76,7 @@ const ProfilePost = ({ post, userProfile }) => {
           <div style={{ color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
           <img src={commentIcon} className="icon"/> <strong>{comments.length}</strong>
           </div>
-        </div>
+        </div>*/ }
       </div>
 
       {isOpen && (
