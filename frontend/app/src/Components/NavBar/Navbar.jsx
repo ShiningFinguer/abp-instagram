@@ -7,11 +7,11 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="container">
-        <a href="/" className="logo">
+        <a href="/home" className="logo">
           Instagram
         </a>
         <div className="icons">
-          <a href="/"><Home/></a>
+          <a href="/home"><Home/></a>
           <a href="/search"><Search/></a>
           <a href="/create"><PlusSquare/></a>
           <a href="/profile"><User/></a>

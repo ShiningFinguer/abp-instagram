@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Comment from "../Comments/Comment"; 
 import Caption from "../Comments/Caption";
+import "../../CSS/Profile.css"
+import commentIcon from "../../Assets/comment.png";
+import redlikeIcon from "../../Assets/heartRed.png";
+import whitelikeIcon from "../../Assets/heartWhite.png";
 
 const ProfilePost = ({ post, userProfile }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,10 +70,10 @@ const ProfilePost = ({ post, userProfile }) => {
         onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
         onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
           <div style={{ color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
-            ❤️ <strong>{likesCount}</strong>
+            <img src={redlikeIcon} className="icon"/> <strong>{likesCount}</strong>
           </div>
           <div style={{ color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
-            💬 <strong>{comments.length}</strong>
+          <img src={commentIcon} className="icon"/> <strong>{comments.length}</strong>
           </div>
         </div>
       </div>
@@ -169,7 +173,7 @@ const ProfilePost = ({ post, userProfile }) => {
                       transition: "color 0.2s"
                     }}
                   >
-                    {isLiked ? "❤️" : "🤍"}
+                    {isLiked ? <img src={redlikeIcon} className="icon"/> : <img src={whitelikeIcon} className="icon"/>}
                   </span>
                   <span 
                     onClick={(e) => {
@@ -178,9 +182,8 @@ const ProfilePost = ({ post, userProfile }) => {
                     }}
                     style={{ cursor: "pointer" }}
                   >
-                    💬
+                    <img src={commentIcon} className="icon"/>
                   </span>
-                  <span style={{ cursor: "pointer" }}>📤</span>
                 </div>
                 <div style={{ fontWeight: "bold", marginBottom: "5px" }}>
                   {likesCount} likes
@@ -192,7 +195,7 @@ const ProfilePost = ({ post, userProfile }) => {
                 {showCommentInput && (
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "10px" }}>
                     <input
-                      type="text"
+                      type="textArea"
                       placeholder="Add a comment..."
                       value={commentText}
                       onChange={(e) => setCommentText(e.target.value)}
@@ -203,22 +206,25 @@ const ProfilePost = ({ post, userProfile }) => {
                       }}
                       style={{
                         flex: 1,
-                        padding: "8px",
+                        padding: "12px",
                         border: "1px solid #dbdbdb",
                         borderRadius: "4px",
-                        outline: "none"
+                        outline: "none",
+                        height: "100px",   
+                        fontSize: "14px"
                       }}
                     />
                     <button
                       onClick={handleAddComment}
                       style={{
-                        padding: "8px 16px",
+                        padding: "6px 12px", 
                         backgroundColor: commentText.trim() ? "#0095f6" : "#b2dffc",
                         color: "white",
                         border: "none",
                         borderRadius: "4px",
                         cursor: commentText.trim() ? "pointer" : "not-allowed",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        fontSize: "12px"
                       }}
                       disabled={!commentText.trim()}
                     >

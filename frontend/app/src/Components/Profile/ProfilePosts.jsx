@@ -6,7 +6,7 @@ const ProfilePosts = ({ posts, userProfile }) => {
   if (posts.length === 0) {
     return (
       <div style={{ textAlign: "center", marginTop: "40px", fontSize: "24px" }}>
-        No Posts Found 🤔
+        No posts
       </div>
     );
   }

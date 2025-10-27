@@ -20,25 +20,17 @@ const ProfileHeader = ({ userProfile }) => {
         />
       </div>
 
-      {/* Username y Follow */}
+      {/* Username and Follow */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
         <h2>{userProfile.username}</h2>
         <button
           onClick={handleFollowUser}
-          style={{
-            padding: "0.5rem 1rem",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
         >
           {isFollowing ? "Unfollow" : "Follow"}
         </button>
       </div>
 
-      {/* DAtos */}
+      {/* Profile Info */}
       <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
         <div>
           <strong>{userProfile.posts.length}</strong> Posts
@@ -51,14 +43,11 @@ const ProfileHeader = ({ userProfile }) => {
         </div>
       </div>
 
-      {/* Nombre completo */}
+      {/* NAme */}
       <div style={{ textAlign: "center", fontWeight: "bold" }}>{userProfile.fullName}</div>
 
       {/* Bio */}
       <div style={{ textAlign: "center" }}>{userProfile.bio}</div>
-
-      {/* Modal de edición (opcional) */}
-      {isOpen && <EditProfile isOpen={isOpen} onClose={() => setIsOpen(false)} />}
     </div>
   );
 };

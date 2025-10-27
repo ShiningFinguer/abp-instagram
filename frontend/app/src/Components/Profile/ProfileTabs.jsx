@@ -16,7 +16,6 @@ const ProfileTabs = () => {
         gap: "5px",
         cursor: "pointer"
       }}>
-        <span style={{ fontSize: "20px" }}></span> {/* poner foto */}
         <span style={{ fontSize: "12px", display: "inline-block" }}>Posts</span>
       </div>
 
@@ -28,7 +27,6 @@ const ProfileTabs = () => {
         gap: "5px",
         cursor: "pointer"
       }}>
-        <span style={{ fontSize: "20px" }}></span> {/* poner foto */}
         <span style={{ fontSize: "12px", display: "inline-block" }}>Tags</span>
       </div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import userDefault from "../../Assets/userDefault.png";
 
 // Función simple para mostrar "hace X tiempo" (puedes mejorarla después)
 const simpleTimeAgo = (timestamp) => {
@@ -24,7 +25,7 @@ const Comment = ({ comment }) => {
         alignItems: "center",
         justifyContent: "center"
       }}>
-        👤
+        <img src={userDefault} className="icon"/>
       </div>
       <div>
         <div>
