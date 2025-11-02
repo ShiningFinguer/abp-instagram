@@ -26,8 +26,8 @@ export const getUserPost = async (req, res) => {
 // Update los Post de un User
 export const updatePost = async (req, res) => {
   try {
-    const {postID, images, tags } = req.body;
-    const post = await Post.updateOne({ _id: postID }, { images, tags });
+    const {postId, images, tags } = req.body;
+    const post = await Post.updateOne({ _id: postId }, { images, tags });
     res.status(200).json({ message: 'Post actualizada', post });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -37,8 +37,8 @@ export const updatePost = async (req, res) => {
 // Delete los Post de un User
 export const deletePost = async (req, res) => {
   try {
-    const { postID } = req.body;
-    const post = await Post.deleteOne({ _id: postID });
+    const { postId } = req.body;
+    const post = await Post.deleteOne({ _id: postId });
     if (post.deletedCount === 0) return res.status(404).json({ error: 'No se ha podido borrar el post' });    
     res.json(post);
   } catch (err) {
