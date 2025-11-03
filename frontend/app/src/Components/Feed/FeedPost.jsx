@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import FeedPostHeader from "./FeedPostHeader";
 import FeedPostFooter from "./FeedPostFooter";
 import ProfilePost from "../Profile/ProfilePost";
+import FeedPostFooter from "./FeedPostFooter";
+import FeedPostHeader from "./FeedPostHeader";
 
 const FeedPost = ({ post }) => {
   const [isLiked, setIsLiked] = useState(false);

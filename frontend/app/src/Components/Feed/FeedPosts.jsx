@@ -1,4 +1,3 @@
-import ProfilePost from "../Profile/ProfilePost";
 import FeedPost from "./FeedPost";
 
 const FeedPosts = ({ posts }) => {
