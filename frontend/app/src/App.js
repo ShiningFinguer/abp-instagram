@@ -4,6 +4,7 @@ import Login from './Components/Login/Login'
 import Signup from './Components/Signup/Signup'
 import Profile from './Components/Profile/Profile'
 import Feed from './Components/Feed/Feed'
+import Navbar from './Components/NavBar/Navbar'
 function App() {
   return (
     <Routes>

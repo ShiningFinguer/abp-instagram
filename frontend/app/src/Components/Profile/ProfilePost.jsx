@@ -53,30 +53,7 @@ const ProfilePost = ({ post, userProfile }) => {
           alt="post"
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
-{/*         /*
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0,0,0,0.3)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "40px",
-          opacity: 0,
-          transition: "opacity 0.3s"
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-        onMouseLeave={(e) => e.currentTarget.style.opacity = 0}>
-          <div style={{ color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
-            <img src={redlikeIcon} className="icon"/> <strong>{likesCount}</strong>
-          </div>
-          <div style={{ color: "white", display: "flex", alignItems: "center", gap: "8px" }}>
-          <img src={commentIcon} className="icon"/> <strong>{comments.length}</strong>
-          </div>
-        </div>*/ }
+
       </div>
 
       {isOpen && (

@@ -1,5 +1,4 @@
-
-import ProfilePost from "../Profile/ProfilePost";
+import FeedPost from "./FeedPost";
 
 const FeedPosts = ({ posts }) => {
     return (
@@ -15,7 +14,7 @@ const FeedPosts = ({ posts }) => {
           margin: "20px"
         }}>
         {posts.map((post) => (
-          <ProfilePost 
+          <FeedPost
             key={post.id} 
             post={post} 
             userProfile={post.createdBy}
