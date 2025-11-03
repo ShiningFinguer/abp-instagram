@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import FeedPostHeader from "./FeedPostHeader";
 import FeedPostFooter from "./FeedPostFooter";
 import ProfilePost from "../Profile/ProfilePost";
-
-
+import SendIcon from "../../Assets/send.png"
 const FeedPost = ({ post }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes.length);
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(post.comments);
-  const [showModal, setShowModal] = useState(false);
 
   const handleLike = () => {
     if (isLiked) {
@@ -47,7 +45,7 @@ const FeedPost = ({ post }) => {
       }}>
         <FeedPostHeader post={post} />
         
-        <div style={{ cursor: "pointer" }} onClick={() => setShowModal(true)}>
+        <div style={{ cursor: "pointer" }}>
           <img 
             src={post.imageURL}
             alt="post"
@@ -69,14 +67,6 @@ const FeedPost = ({ post }) => {
         />
       </div>
 
-      {showModal && (
-        <div onClick={() => setShowModal(false)}>
-          <ProfilePost 
-            post={{...post, comments: comments, likes: Array(likesCount).fill("user")}} 
-            userProfile={post.createdBy}
-          />
-        </div>
-      )}
     </>
   );
 };

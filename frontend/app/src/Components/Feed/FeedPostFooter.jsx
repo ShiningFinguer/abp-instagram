@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import commentIcon from "../../Assets/comment.png";
 import redlikeIcon from "../../Assets/heartRed.png";
 import whitelikeIcon from "../../Assets/heartWhite.png";
+import SendIcon from "../../Assets/send.png";
 
 const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInput, setShowCommentInput, commentText, setCommentText, handleAddComment, comments }) => {
   const [showShareModal, setShowShareModal] = useState(false);
@@ -45,7 +46,7 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
             onClick={() => setShowShareModal(true)}
             style={{ cursor: "pointer", fontSize: "20px" }}
           >
-            📤
+            <img src={SendIcon} className="icon"/>
           </span>
         </div>
 
