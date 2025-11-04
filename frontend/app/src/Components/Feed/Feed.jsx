@@ -30,7 +30,7 @@ const dummyPosts = [
       createdAt: "2 days ago",
       createdBy: {
         username: "explorer",
-        profilePicURL: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=150"
+        profilePicURL: grayimage
       }
     },
     {
@@ -42,7 +42,7 @@ const dummyPosts = [
       createdAt: "3 days ago",
       createdBy: {
         username: "sunsetlover",
-        profilePicURL: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150"
+        profilePicURL: grayimage
       }
     }
   ];
