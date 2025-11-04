@@ -15,7 +15,7 @@ export default function Settings() {
   return (
     <>
     <meta charSet="UTF-8" />
-    <title>Subir publicación - MiRed</title>
+    <title>Subir publicación - Instagram</title>
     <style
         dangerouslySetInnerHTML={{
         __html:

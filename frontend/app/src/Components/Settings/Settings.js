@@ -21,7 +21,7 @@ export default function Settings() {
         }}
     />
     <header>
-        <h1>Niggerland</h1>
+        <h1>Instagram - Settings</h1>
     </header>
     <main>
         <h2>Ajustes de cuenta</h2>
