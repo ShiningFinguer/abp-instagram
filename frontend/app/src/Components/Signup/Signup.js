@@ -20,7 +20,7 @@ export default function Signup() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) => { 
     e.preventDefault();
     console.log("Datos del registro:", formData);
     alert("Formulario enviado (sin backend)");
