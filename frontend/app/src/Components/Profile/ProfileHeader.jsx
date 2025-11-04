@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const ProfileHeader = ({ userProfile }) => {
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleFollowUser = () => {
     alert("Todavia no está conectado a la BBDD xd");
@@ -22,11 +23,22 @@ const ProfileHeader = ({ userProfile }) => {
       {/* Username and Follow */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
         <h2>{userProfile.username}</h2>
+
+        {userProfile.username !== "johndoe" ?         
+        
+          <button
+            onClick={handleFollowUser}
+          >
+            {isFollowing ? "Unfollow" : "Follow"}
+          </button>
+        :           
         <button
-          onClick={handleFollowUser}
-        >
-          {isFollowing ? "Unfollow" : "Follow"}
-        </button>
+        onClick={() => setIsOpen(true)}
+      >
+        Edit Profile
+      </button>
+      }
+
       </div>
 
       {/* Profile Info */}
