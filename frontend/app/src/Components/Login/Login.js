@@ -1,17 +1,36 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../../CSS/Login.css";
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import './Login.css'
 
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login({ setToken }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    window.location.href = "/home";
-    console.log("Intentando iniciar sesión con:", username, password);
-    alert(`Login: ${username} / ${password}`);
-  };
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    const res = await fetch('https://localhost:3001/api/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+
+    if (!res.ok) {
+      alert('Usuario o contraseñas incorrectos')
+
+      return
+    }
+
+    const { token } = await res.json()
+
+    sessionStorage.setItem('token', token)
+    setToken(token)
+
+    navigate('/')
+  }
 
   return (
     <div className="login-wrapper">
@@ -23,7 +42,7 @@ export default function Login() {
             placeholder="Usuario o correo"
             required
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
           />
 
           <input
@@ -31,7 +50,7 @@ export default function Login() {
             placeholder="Contraseña"
             required
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
 
           <button type="submit">Entrar</button>
@@ -42,5 +61,5 @@ export default function Login() {
         </p>
       </main>
     </div>
-  );
+  )
 }

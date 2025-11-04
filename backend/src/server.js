@@ -3,7 +3,7 @@ import https from 'https'
 import fs from 'fs'
 import path from 'path'
 import mongoose from 'mongoose'
-import User from './models/User.js'
+import cors from 'cors'
 import { fillUsers } from './fillUsers.js'
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
@@ -29,48 +29,24 @@ const mongoURI =
 mongoose
   .connect(mongoURI)
   .then(() => console.log('Conectado a MongoDB'))
-  .catch(err => console.error('Error al conectar a MongoDB:', err));
+  .catch(err => console.error('Error al conectar a MongoDB:', err))
 
 // Agregar usuarios para pruebas
 fillUsers()
   .then(() => console.log('Usuarios creados'))
-  .catch(e => console.log(e.message));
+  .catch(e => console.log(e.message))
 
-app.use(express.json());
-app.use(userRouter);
-app.use(postRouter);
-app.use(LikeRouter);
+app.use(express.json())
+app.use(cors())
+app.use(userRouter)
+
 app.get('/', (req, res) => {
-  res.send('Api funcionando correctamente 111');
-});
-
-app.get('/api/users', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
-
-// app.post('/api/users', async (req, res) => {
-//   const { username, email, password } = req.body;
-
-//   try {
-//     const newUser = new User({ username, email, password });
-//     const savedUser = await newUser.save();
-//     res.json(savedUser);
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ error: 'Error interno del servidor' });
-//   }
-// });
-
+  res.send('Api funcionando correctamente')
+})
 
 app.get('/*splat', async (req, res) => {
-  res.send('Ruta no encontrada');
-});
+  res.send('Ruta no encontrada')
+})
 
 const PORT = 3000
 
