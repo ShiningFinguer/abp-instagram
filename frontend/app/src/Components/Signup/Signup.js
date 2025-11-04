@@ -1,30 +1,48 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "../../CSS/Signup.css";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import './Signup.css'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    name: "",
-    username: "",
-    email: "",
-    password: "",
-    bio: "",  
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    bio: '',
     profilePic: null,
-  });
+  })
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
+  const handleChange = e => {
+    const { name, value, files } = e.target
     setFormData({
       ...formData,
       [name]: files ? files[0] : value,
-    });
-  };
+    })
+  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Datos del registro:", formData);
-    alert("Formulario enviado (sin backend)");
-  };
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    const res = await fetch('https://localhost:3001/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: formData.username,
+        password: formData.password,
+        email: formData.email,
+      }),
+    })
+
+    if (!res.ok) {
+      console.log('No se ha podido crear ususario')
+
+      return
+    }
+
+    alert('Usuario creado sastifactoriamente')
+  }
 
   return (
     <div className="signup-wrapper">
@@ -89,5 +107,5 @@ export default function Signup() {
         </p>
       </main>
     </div>
-  );
+  )
 }

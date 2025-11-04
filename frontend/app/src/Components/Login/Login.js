@@ -1,27 +1,35 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../../CSS/Login.css'
+import './Login.css'
 
-export default function Login() {
+export default function Login({ setToken }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
 
-    fetch('https://localhost:3001/api/users/login', {
+    const res = await fetch('https://localhost:3001/api/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ username, password }),
     })
-      .then(res => res.json())
-      .then(({ token }) => {
-        sessionStorage.token = token
-        navigate('/')
-      })
+
+    if (!res.ok) {
+      alert('Usuario o contraseñas incorrectos')
+
+      return
+    }
+
+    const { token } = await res.json()
+
+    sessionStorage.setItem('token', token)
+    setToken(token)
+
+    navigate('/')
   }
 
   return (

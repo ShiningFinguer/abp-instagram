@@ -18,18 +18,17 @@ function App() {
     })
       .then(res => res.json())
       .then(({ username }) => setUsername(username))
-  }, [])
+      .catch(e => console.log(e.message))
+  }, [token])
 
   return (
     <Routes>
       <Route
         path="/"
-        element={token ? <Navigate to="/home" /> : <Navigate to="/landing" />}
+        element={token ? <Home username={username} /> : <Landing />}
       />
-      <Route path="/landing" element={<Landing />} />
-      <Route path="/home" element={<Home username={username} />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login setToken={setToken} />} />
     </Routes>
   )
 }

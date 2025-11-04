@@ -2,6 +2,18 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
 
+// Obtener todos los usuarios
+export const getUsers = async (req, res) => {
+  try {
+    const user = await User.find()
+    if (!user)
+      return res.status(404).json({ error: 'Ningún usuario encontrado' })
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
 // Registro
 export const register = async (req, res) => {
   try {
@@ -33,10 +45,10 @@ export const login = async (req, res) => {
 
 // Obtener un usuario por ID
 export const getUserByID = async (req, res) => {
-  const { authorization } = req.headers
-  const [, token] = authorization.split(' ')
-
   try {
+    const { authorization } = req.headers
+    const [, token] = authorization.split(' ')
+
     const { id } = jwt.verify(token, 'SECRET_KEY')
     const user = await User.findById(id)
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
