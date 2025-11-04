@@ -10,15 +10,29 @@ function App() {
   const [username, setUsername] = useState('')
 
   useEffect(() => {
-    fetch('https://localhost:3001/api/users', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(({ username }) => setUsername(username))
-      .catch(e => console.log(e.message))
+    if (token) {
+      async function getUser() {
+        const res = await fetch('https://localhost:3001/api/users', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (!res.ok) {
+          alert('Error al ver el ususario')
+          sessionStorage.removeItem('token')
+
+          return
+        }
+
+        const { username: _username } = await res.json()
+
+        setUsername(_username)
+      }
+
+      getUser()
+    }
   }, [token])
 
   return (
