@@ -4,7 +4,6 @@ import fs from 'fs'
 import path from 'path'
 import mongoose from 'mongoose'
 import cors from 'cors'
-import { fillUsers } from './fillUsers.js'
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
 import { LikeRouter } from './routes/LikeRouter.js'
@@ -30,11 +29,6 @@ mongoose
   .connect(mongoURI)
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err))
-
-// Agregar usuarios para pruebas
-fillUsers()
-  .then(() => console.log('Usuarios creados'))
-  .catch(e => console.log(e.message))
 
 app.use(express.json())
 app.use(cors())
