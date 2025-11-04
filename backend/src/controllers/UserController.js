@@ -61,12 +61,9 @@ export const getUserByID = async (req, res) => {
 //Actualizar perfil de usuario
 export const updateUserProfile = async (req, res) => {
   try {
-    const { username, email, profilePic, bio } = req.body
-    const user = await User.updateOne(
-      { _id: req.params.id },
-      { username, email, profilePic, bio }
-    )
-    res.status(201).json({ message: 'Usuario actualizada', user })
+    const { username, email, profilePic, bio } = req.body;
+    const user = await User.updateOne({ _id: req.params.id }, { username, email, profilePic, bio });
+    res.status(201).json({ message: 'Usuario actualizada', user });
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
@@ -75,13 +72,10 @@ export const updateUserProfile = async (req, res) => {
 //Actualizar contraseña de usuario
 export const updateUserPassword = async (req, res) => {
   try {
-    const { password } = req.body
-    const hashed = await bcrypt.hash(password, 10)
-    const user = await User.updateOne(
-      { _id: req.params.id },
-      { password: hashed }
-    )
-    res.status(201).json({ message: 'Contraseña actualizada', user })
+    const { password } = req.body;
+    const hashed = await bcrypt.hash(password, 10);
+    const user = await User.updateOne({ _id: req.params.id }, { password: hashed });
+    res.status(201).json({ message: 'Contraseña actualizada', user });
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
@@ -90,9 +84,9 @@ export const updateUserPassword = async (req, res) => {
 //Eliminar un usuario por ID
 export const deleteUserByID = async (req, res) => {
   try {
-    const user = await User.deleteOne({ _id: req.params.id })
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
-    res.status(200).json({ message: 'Usuario eliminado' })
+    const user = await User.deleteOne({ _id: req.params.id });
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.status(200).json({ message: 'Usuario eliminado' });
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

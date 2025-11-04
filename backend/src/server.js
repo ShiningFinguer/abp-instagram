@@ -6,6 +6,8 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import { fillUsers } from './fillUsers.js'
 import userRouter from './routes/UserRouter.js'
+import { postRouter } from './routes/PostRouter.js'
+import { LikeRouter } from './routes/LikeRouter.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
