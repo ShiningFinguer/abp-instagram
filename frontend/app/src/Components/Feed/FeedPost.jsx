@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import FeedPostHeader from "./FeedPostHeader";
 import FeedPostFooter from "./FeedPostFooter";
+import PostModal from "../Posts/Modal/PostModal";
 import ProfilePost from "../Profile/ProfilePost";
 import SendIcon from "../../Assets/send.png"
-const FeedPost = ({ post }) => {
+const FeedPost = ({ post, userProfile }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes.length);
   const [showCommentInput, setShowCommentInput] = useState(false);
@@ -19,19 +22,6 @@ const FeedPost = ({ post }) => {
     setIsLiked(!isLiked);
   };
 
-  const handleAddComment = () => {
-    if (commentText.trim()) {
-      const newComment = {
-        id: comments.length + 1,
-        username: "you",
-        text: commentText,
-        createdAt: "Just now"
-      };
-      setComments([...comments, newComment]);
-      setCommentText("");
-      setShowCommentInput(false);
-    }
-  };
 
   return (
     <>
@@ -40,13 +30,12 @@ const FeedPost = ({ post }) => {
         width: "100%",
         margin: "0 auto 20px",
         backgroundColor: "white",
-        border: "1px solid #dbdbdb",
-        borderRadius: "8px"
       }}>
         <FeedPostHeader post={post} />
         
         <div style={{ cursor: "pointer" }}>
           <img 
+            onClick={() => setIsOpen(true)}
             src={post.imageURL}
             alt="post"
             style={{ width: "100%", display: "block" }}
@@ -62,11 +51,10 @@ const FeedPost = ({ post }) => {
           setShowCommentInput={setShowCommentInput}
           commentText={commentText}
           setCommentText={setCommentText}
-          handleAddComment={handleAddComment}
           comments={comments}
         />
       </div>
-
+      {isOpen && <PostModal isOpen={isOpen} post={post} userProfile={userProfile} onClose={() => setIsOpen(false)}/>}
     </>
   );
 };

@@ -4,17 +4,14 @@ import redlikeIcon from "../../Assets/heartRed.png";
 import whitelikeIcon from "../../Assets/heartWhite.png";
 import SendIcon from "../../Assets/send.png";
 
-const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInput, setShowCommentInput, commentText, setCommentText, handleAddComment, comments }) => {
+const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInput, setShowCommentInput, commentText, setCommentText, comments }) => {
   const [showShareModal, setShowShareModal] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const postLink = `https://instagram.com/p/${post.id}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(postLink);
-    setCopied(true);
     setTimeout(() => {
-      setCopied(false);
       setShowShareModal(false);
     }, 2000);
   };
@@ -70,45 +67,6 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
           </div>
         )}
 
-        {showCommentInput && (
-          <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "10px" }}>
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={commentText}
-              onChange={(e) => setCommentText(e.target.value)}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  handleAddComment();
-                }
-              }}
-              style={{
-                flex: 1,
-                padding: "8px",
-                border: "1px solid #dbdbdb",
-                borderRadius: "4px",
-                outline: "none",
-                fontSize: "14px"
-              }}
-            />
-            <button
-              onClick={handleAddComment}
-              style={{
-                padding: "8px 16px",
-                backgroundColor: commentText.trim() ? "#0095f6" : "#b2dffc",
-                color: "white",
-                border: "none",
-                borderRadius: "4px",
-                cursor: commentText.trim() ? "pointer" : "not-allowed",
-                fontWeight: "bold",
-                fontSize: "14px"
-              }}
-              disabled={!commentText.trim()}
-            >
-              Post
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Share Modal */}
@@ -155,7 +113,6 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
               onClick={handleCopyLink}
               style={{
                 padding: "10px 30px",
-                backgroundColor: copied ? "#00c853" : "#0095f6",
                 color: "white",
                 border: "none",
                 borderRadius: "8px",
@@ -166,7 +123,7 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
                 width: "100%"
               }}
             >
-              {copied ? "✓ Copied!" : "Copy Link"}
+              Copy Link
             </button>
 
             <button
