@@ -39,6 +39,8 @@ fillUsers()
 app.use(express.json())
 app.use(cors())
 app.use(userRouter)
+app.use(postRouter)
+app.use(LikeRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')

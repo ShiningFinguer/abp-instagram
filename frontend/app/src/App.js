@@ -4,6 +4,7 @@ import Login from './Components/Login/Login'
 import Signup from './Components/Signup/Signup'
 import Landing from './Components/Landing/Landing'
 import Home from './Components/Home/Home'
+import Feed from './Components/Feed/Feed'
 
 function App() {
   const [token, setToken] = useState(sessionStorage.token)
@@ -36,14 +37,7 @@ function App() {
   }, [token])
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={token ? <Home username={username} /> : <Landing />}
-      />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login setToken={setToken} />} />
-    </Routes>
+    < Feed/>
   )
 }
 

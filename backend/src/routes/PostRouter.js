@@ -3,10 +3,13 @@ import { postPost } from "../controllers/PostController.js";
 import { getUserPost } from "../controllers/PostController.js";
 import { updatePost } from "../controllers/PostController.js";
 import { deletePost } from "../controllers/PostController.js";
+import { getPost } from '../controllers/PostController.js';
 
 export const postRouter = Router()
 // Crear un nuevo post
 postRouter.post('/api/post/:id', postPost);
+
+postRouter.get('/api/post/', getPost)
 
 // Obtener todos los post del user
 postRouter.get('/api/post/:id', getUserPost);
