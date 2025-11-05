@@ -17,8 +17,8 @@ const simpleTimeAgo = (timestamp) => {
 const Caption = ({ post, userProfile }) => {
   return (
     <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
-      <img 
-        src={userProfile.profilePicURL} 
+      <img
+        src={userProfile.profilePicURL}
         alt="avatar"
         style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover" }}
       />
