@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Comment from "../Comments/Comment"; 
+import Comment from "../Comments/Comment";
 import Caption from "../Comments/Caption";
 import Like from "../Like/Like";
 
@@ -64,33 +64,33 @@ const PostModal = ({ isOpen, post, userProfile, onClose}) => {
               position: "relative"
             }}
           >
-            
+
             <div style={{ flex: "1.5", display: "flex", alignItems: "center", backgroundColor: "black" }}>
-              <img 
-                src={post.imageURL} 
+              <img
+                src={post.imageURL}
                 alt="post"
                 style={{ width: "100%", height: "auto", maxHeight: "90vh", objectFit: "contain" }}
               />
             </div>
-            
-            <div style={{ 
-              flex: "1", 
-              padding: "20px", 
-              display: "flex", 
+
+            <div style={{
+              flex: "1",
+              padding: "20px",
+              display: "flex",
               flexDirection: "column",
               minWidth: "300px"
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "20px" }}>
-                <img 
-                  src={userProfile.profilePicURL} 
+                <img
+                  src={userProfile.profilePicURL}
                   alt="avatar"
                   style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover" }}
                 />
                 <strong>{userProfile.username}</strong>
               </div>
-              
-              <div style={{ 
-                borderTop: "1px solid #dbdbdb", 
+
+              <div style={{
+                borderTop: "1px solid #dbdbdb",
                 paddingTop: "20px",
                 flex: 1,
                 overflowY: "auto",
@@ -101,11 +101,11 @@ const PostModal = ({ isOpen, post, userProfile, onClose}) => {
                   <Comment key={comment.id} comment={comment} />
                 ))}
               </div>
-              
+
               <div style={{ borderTop: "1px solid #dbdbdb", paddingTop: "10px", marginTop: "10px" }}>
                 <div style={{ display: "flex", gap: "15px", fontSize: "24px", marginBottom: "10px" }}>
                   <Like isLiked={isLiked} handleLike={handleLike}/>
-                  <span 
+                  <span
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowCommentInput(!showCommentInput);
@@ -121,7 +121,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose}) => {
                 <div style={{ fontSize: "12px", color: "#8e8e8e", marginBottom: "10px" }}>
                   {post.createdAt}
                 </div>
-                
+
                 {showCommentInput && (
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "10px" }}>
                     <input
@@ -140,14 +140,14 @@ const PostModal = ({ isOpen, post, userProfile, onClose}) => {
                         border: "1px solid #dbdbdb",
                         borderRadius: "4px",
                         outline: "none",
-                        height: "100px",   
+                        height: "100px",
                         fontSize: "14px"
                       }}
                     />
                     <button
                       onClick={handleAddComment}
                       style={{
-                        padding: "6px 12px", 
+                        padding: "6px 12px",
                         backgroundColor: commentText.trim() ? "#0095f6" : "#b2dffc",
                         color: "white",
                         border: "none",

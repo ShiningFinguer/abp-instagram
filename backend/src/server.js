@@ -33,6 +33,7 @@ mongoose
 app.use(express.json())
 app.use(cors())
 app.use(userRouter)
+app.use(postRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')
@@ -45,6 +46,10 @@ app.get('/*splat', async (req, res) => {
 const PORT = 3000
 
 // Crear servidor HTTPS
-https.createServer(options, app).listen(PORT, () => {
-  console.log('Servidor HTTPS escuchando en https://localhost:3000')
+// https.createServer(options, app).listen(PORT, () => {
+//   console.log('Servidor HTTPS escuchando en https://localhost:3000')
+// })
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`)
 })
