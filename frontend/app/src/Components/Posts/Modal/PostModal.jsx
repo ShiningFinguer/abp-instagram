@@ -6,6 +6,7 @@ import Like from "../Like/Like";
 import commentIcon from "../../../Assets/comment.png";
 
 
+
 const PostModal = ({ isOpen, post, userProfile, onClose}) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes.length);
