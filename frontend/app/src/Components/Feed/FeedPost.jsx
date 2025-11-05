@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import FeedPostHeader from "./FeedPostHeader";
 import FeedPostFooter from "./FeedPostFooter";
-import PostModal from "../Posts/Modal/PostModal";
-import ProfilePost from "../Profile/ProfilePost";
-import SendIcon from "../../Assets/send.png"
-const FeedPost = ({ post, userProfile }) => {
-  const [isOpen, setIsOpen] = useState(false);
+import icon from "../../Assets/defaultPicture.PNG";
 
+const FeedPost = ({ post }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(post.likes.length);
-  const [showCommentInput, setShowCommentInput] = useState(false);
-  const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(post.comments);
+  const [likesCount, setLikesCount] = useState(0);
+  // const [showCommentInput, setShowCommentInput] = useState(false);
+  // const [commentText, setCommentText] = useState("");
+  // const [comments, setComments] = useState(post.comments);
 
   const handleLike = () => {
     if (isLiked) {
@@ -21,7 +19,6 @@ const FeedPost = ({ post, userProfile }) => {
     }
     setIsLiked(!isLiked);
   };
-
 
   return (
     <>
@@ -36,7 +33,7 @@ const FeedPost = ({ post, userProfile }) => {
         <div style={{ cursor: "pointer" }}>
           <img 
             onClick={() => setIsOpen(true)}
-            src={post.imageURL}
+            src={icon}
             alt="post"
             style={{ width: "100%", display: "block" }}
           />
@@ -44,17 +41,18 @@ const FeedPost = ({ post, userProfile }) => {
 
         <FeedPostFooter 
           post={post}
+          images={post.images}
           isLiked={isLiked}
           likesCount={likesCount}
           handleLike={handleLike}
-          showCommentInput={showCommentInput}
-          setShowCommentInput={setShowCommentInput}
-          commentText={commentText}
-          setCommentText={setCommentText}
-          comments={comments}
+          // showCommentInput={showCommentInput}
+          // setShowCommentInput={setShowCommentInput}
+          // commentText={commentText}
+          // setCommentText={setCommentText}
+          // comments={comments}
         />
       </div>
-      {isOpen && <PostModal isOpen={isOpen} post={post} userProfile={userProfile} onClose={() => setIsOpen(false)}/>}
+      {/* {isOpen && <PostModal isOpen={isOpen} post={post} userProfile={userProfile} onClose={() => setIsOpen(false)}/>} */}
     </>
   );
 };

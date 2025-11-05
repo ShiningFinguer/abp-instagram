@@ -1,4 +1,5 @@
 import React from "react";
+import icon from "../../Assets/defaultPicture.PNG";
 
 const FeedPostHeader = ({ post }) => {
   return (
@@ -10,12 +11,12 @@ const FeedPostHeader = ({ post }) => {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <img 
-          src={post.createdBy.profilePicURL}
+          src={icon}
           alt="avatar"
           style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover" }}
         />
         <div>
-          <strong style={{ fontSize: "14px" }}>{post.createdBy.username}</strong>
+          <strong style={{ fontSize: "14px" }}>{post.user}</strong>
           <div style={{ fontSize: "12px", color: "#8e8e8e" }}>{post.createdAt}</div>
         </div>
       </div>
