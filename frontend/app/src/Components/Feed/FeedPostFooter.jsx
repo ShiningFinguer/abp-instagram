@@ -4,7 +4,7 @@ import redlikeIcon from "../../Assets/heartRed.png";
 import whitelikeIcon from "../../Assets/heartWhite.png";
 import SendIcon from "../../Assets/send.png";
 
-const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInput, setShowCommentInput, commentText, setCommentText, comments }) => {
+const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, images}) => {
   const [showShareModal, setShowShareModal] = useState(false);
 
   const postLink = `https://instagram.com/p/${post.id}`;
@@ -33,12 +33,12 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
               alt="like"
             />
           </span>
-          <span 
+          {/* <span 
             onClick={() => setShowCommentInput(!showCommentInput)}
             style={{ cursor: "pointer" }}
           >
             <img src={commentIcon} className="icon" alt="comment"/>
-          </span>
+          </span> */}
           <span 
             onClick={() => setShowShareModal(true)}
             style={{ cursor: "pointer", fontSize: "20px" }}
@@ -52,11 +52,11 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
         </div>
 
         <div style={{ marginBottom: "8px", fontSize: "14px" }}>
-          <strong>{post.createdBy.username}</strong>
-          <span style={{ marginLeft: "8px" }}>{post.caption}</span>
+          <strong>{post.user}</strong>
+          <span style={{ marginLeft: "8px" }}>{images?.[0]?.description || "Hola"}</span>
         </div>
 
-        {comments.length > 0 && (
+        {/* {comments.length > 0 && (
           <div style={{ 
             fontSize: "14px", 
             color: "#8e8e8e", 
@@ -65,7 +65,7 @@ const FeedPostFooter = ({ post, isLiked, likesCount, handleLike, showCommentInpu
           }}>
             View all {comments.length} comments
           </div>
-        )}
+        )} */}
 
       </div>
 
