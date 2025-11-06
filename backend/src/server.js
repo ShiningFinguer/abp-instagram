@@ -35,9 +35,12 @@ app.use(cors())
 app.use(userRouter)
 app.use(postRouter)
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.use(LikeRouter)
 =======
 >>>>>>> 6026232 (add many changes)
+=======
+>>>>>>> 4930c2c774e3e177e58afdc0ef75e25947752368
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')

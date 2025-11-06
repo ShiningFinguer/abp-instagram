@@ -9,6 +9,7 @@ export const postPost = async (req, res) => {
     res.status(200).json({ message: 'Post subido', post });
   } catch (err) {
     console.log(err)
+<<<<<<< HEAD
     res.status(500).json({ error: err.message })
   }
 }
@@ -19,6 +20,8 @@ export const getPost = async (req, res) => {
     if (post.length === 0) return res.status(404).json({ error: 'No hay ningún post' });
     res.json(post);
   } catch (err) {
+=======
+>>>>>>> 4930c2c774e3e177e58afdc0ef75e25947752368
     res.status(500).json({ error: err.message })
   }
 }

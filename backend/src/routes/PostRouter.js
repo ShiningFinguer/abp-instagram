@@ -10,8 +10,11 @@ postRouter.get('/api/post', getAllPost)
 
 // Crear un nuevo post
 postRouter.post('/api/post/:id', postPost)
+<<<<<<< HEAD
 
 postRouter.get('/api/post/', getPost)
+=======
+>>>>>>> 4930c2c774e3e177e58afdc0ef75e25947752368
 
 // Obtener todos los post del user
 postRouter.get('/api/post/:id', getUserPost)

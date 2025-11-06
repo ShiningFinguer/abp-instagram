@@ -38,7 +38,11 @@ function App() {
 
       getUser()
         .then(() => console.log('bien'))
+<<<<<<< HEAD
         .catch(e => console.log(e.message))
+=======
+        .catch((e) => console.log(e.message))
+>>>>>>> 4930c2c774e3e177e58afdc0ef75e25947752368
     }
   }, [token])
 
