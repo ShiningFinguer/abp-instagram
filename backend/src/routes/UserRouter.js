@@ -15,7 +15,7 @@ userRouter.get('/api/users/', getUsers)
 userRouter.post('/api/users/login', login)
 
 // Obtener un usuario por ID
-userRouter.get('/api/users/id', getUserByID)
+userRouter.get('/api/users/profile', getUserByID)
 
 // Crear un nuevo ususario
 userRouter.post('/api/users/', register)
