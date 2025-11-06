@@ -3,6 +3,7 @@ import commentIcon from '../../Assets/comment.png'
 import redlikeIcon from '../../Assets/heartRed.png'
 import whitelikeIcon from '../../Assets/heartWhite.png'
 import SendIcon from '../../Assets/send.png'
+import avatar from '../../Assets/avatar.jpeg'
 import './Post.css'
 
 export default function Post({ post }) {
@@ -10,74 +11,46 @@ export default function Post({ post }) {
   const createAtFormat = new Date(createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
-  const [likesCount, setLikesCount] = useState(post?.likes?.length)
-  const [showCommentInput, setShowCommentInput] = useState(false)
-  const [commentText, setCommentText] = useState('')
-  const [comments, setComments] = useState(post?.comments)
-  const [showShareModal, setShowShareModal] = useState(false)
-
-  const postLink = `https://instagram.com/p/${post.id}`
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(postLink)
-    setTimeout(() => {
-      setShowShareModal(false)
-    }, 2000)
-  }
 
   const handleLike = () => {
-    if (isLiked) {
-      setLikesCount(likesCount - 1)
-    } else {
-      setLikesCount(likesCount + 1)
-    }
     setIsLiked(!isLiked)
   }
 
   return (
     <article className="Post">
+      {/* Header */}
       <header className="Post-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div className="Post-header-wrapper">
           <img
-            src={post?.createdBy?.profilePicURL || 'https://i.pravatar.cc/300'}
+            className="Post-avatar"
+            src={post?.createdBy?.profilePicURL || avatar}
             alt="avatar"
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '50%',
-              objectFit: 'cover',
-            }}
           />
           <div>
-            <strong style={{ fontSize: '14px' }}>
+            <strong className="Post-username">
               {post?.createdBy?.username || '@username'}
             </strong>
-            <div style={{ fontSize: '12px', color: '#8e8e8e' }}>
-              {createAtFormat.toDateString()}
-            </div>
+
+            <div className="Post-date">{createAtFormat.toDateString()}</div>
           </div>
         </div>
+
         <span style={{ cursor: 'pointer', fontSize: '20px' }}>⋯</span>
       </header>
 
-      <div className="Post-body" style={{ cursor: 'pointer' }}>
+      {/* Body */}
+      <div className="Post-body">
         <img
+          className="Post-picture"
           onClick={() => setIsOpen(true)}
           src={`/images/` + images[0]?.url + '.jpg'}
           alt="post"
-          style={{ width: '100%', display: 'block' }}
         />
       </div>
 
+      {/* Footer */}
       <footer className="Post-footer">
-        <div
-          style={{
-            display: 'flex',
-            gap: '15px',
-            fontSize: '24px',
-            marginBottom: '8px',
-          }}
-        >
+        <div className="Post-footer-row-1">
           <span
             onClick={handleLike}
             style={{
@@ -91,7 +64,7 @@ export default function Post({ post }) {
               alt="like"
             />
           </span>
-          <span
+          {/* <span
             onClick={() => setShowCommentInput(!showCommentInput)}
             style={{ cursor: 'pointer' }}
           >
@@ -102,32 +75,29 @@ export default function Post({ post }) {
             style={{ cursor: 'pointer', fontSize: '20px' }}
           >
             <img src={SendIcon} className="icon" />
-          </span>
+          </span> */}
+        </div>
+
+        <div className="Post-footer-row-2">{isLiked ? 1 : 0} likes</div>
+
+        <div
+          className="Post-footer-row-3"
+          style={{ marginBottom: '8px', fontSize: '14px' }}
+        >
+          <strong>username</strong>
+          <span style={{ marginLeft: '8px' }}>{description}</span>
         </div>
 
         <div
-          style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '14px' }}
+          style={{
+            fontSize: '14px',
+            color: '#8e8e8e',
+            cursor: 'pointer',
+            marginBottom: '8px',
+          }}
         >
-          {isLiked ? 1 : 0} likes
+          View all comments
         </div>
-
-        <div style={{ marginBottom: '8px', fontSize: '14px' }}>
-          <strong>{post?.createdBy?.username}</strong>
-          <span style={{ marginLeft: '8px' }}>{post?.caption}</span>
-        </div>
-
-        {comments?.length > 0 && (
-          <div
-            style={{
-              fontSize: '14px',
-              color: '#8e8e8e',
-              cursor: 'pointer',
-              marginBottom: '8px',
-            }}
-          >
-            View all {comments?.length} comments
-          </div>
-        )}
       </footer>
     </article>
   )
