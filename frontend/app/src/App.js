@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './Components/Login/Login'
-import Signup from './Components/Signup/Signup'
-import Landing from './Components/Landing/Landing'
-import Home from './Components/Home/Home'
-import Feed from './Components/Feed/Feed'
+import Login from './pages/Login/Login'
+import Signup from './pages/Signup/Signup'
+import Landing from './pages/Landing/Landing'
+import Feed from './pages/Feed/Feed'
+import Profile from './pages/Profile/Profile'
 
 function App() {
   const [token, setToken] = useState(sessionStorage.token)
@@ -13,31 +13,46 @@ function App() {
   useEffect(() => {
     if (token) {
       async function getUser() {
-        const res = await fetch('https://localhost:3001/api/users', {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        try {
+          const res = await fetch('http://localhost:3001/api/users', {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
 
-        if (!res.ok) {
-          alert('Error al ver el ususario')
-          sessionStorage.removeItem('token')
+          if (!res.ok) {
+            alert('Error al ver el ususario')
+            sessionStorage.removeItem('token')
 
-          return
+            return
+          }
+
+          const { username: _username } = await res.json()
+
+          setUsername(_username)
+        } catch (error) {
+          console.log(error.message)
         }
-
-        const { username: _username } = await res.json()
-
-        setUsername(_username)
       }
 
       getUser()
+        .then(() => console.log('bien'))
+<<<<<<< HEAD
+        .catch(e => console.log(e.message))
+=======
+        .catch((e) => console.log(e.message))
+>>>>>>> 4930c2c774e3e177e58afdc0ef75e25947752368
     }
   }, [token])
 
   return (
-    < Feed/>
+    <Routes>
+      <Route path="/" element={token ? <Feed /> : <Landing />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Login setToken={setToken} />} />
+      <Route path="/profile" element={<Profile />} />
+    </Routes>
   )
 }
 

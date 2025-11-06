@@ -1,8 +1,8 @@
 import React from "react";
 import ProfileHeader from "./ProfileHeader";
 import ProfileTabs from "./ProfileTabs";
-import Navbar from "../NavBar/Navbar";
 import ProfilePosts from "./ProfilePosts";
+import Header from "../../Components/Header/Header"
 
 const Profile = () => {
     const dummyUser = {
@@ -46,18 +46,12 @@ const Profile = () => {
 };
 
   return (
-    <div style={{
-        width: "100vw",   
-        height: "100vh",
-        margin: "0",
-        padding: "0",
-    }}>
-      <Navbar/>
+    <div>
+      <Header />
       <ProfileHeader userProfile={dummyUser} />
       <ProfileTabs />
       <ProfilePosts posts={dummyUser.posts} userProfile={dummyUser} />
     </div>
-      
   )
 }
 
