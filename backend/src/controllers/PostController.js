@@ -4,8 +4,9 @@ import Post from '../models/Post.js'
 export const postPost = async (req, res) => {
   try {
     const { description, images, tags } = req.body
+    const userId = req.user.id;
     const post = await Post.create({
-      user: req.params.id,
+      user: userId,
       description,
       images,
       tags,

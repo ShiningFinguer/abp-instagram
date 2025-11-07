@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import commentIcon from '../../Assets/comment.png'
 import redlikeIcon from '../../Assets/heartRed.png'
 import whitelikeIcon from '../../Assets/heartWhite.png'
@@ -11,6 +11,52 @@ export default function Post({ post }) {
   const createAtFormat = new Date(createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
+  const [countLiked, setCountLiked] = useState([])
+
+
+  useEffect(() => {
+    async function countLikes() {
+      const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
+        method: 'get'
+      });
+
+      if (!res.ok) {
+        console.log('error')
+
+        return
+      }
+
+      const count = await res.json()
+
+      setCountLiked(count)
+    }
+
+    countLikes()
+      .then(() => console.log('bien'))
+      .catch(e => console.log(e.message))
+  }, []);
+  // useEffect(() => {
+  //   async function countLikes() {
+  //     const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
+  //       method: 'get'
+  //     });
+
+  //     if (!res.ok) {
+  //       console.log('error')
+
+  //       return
+  //     }
+
+  //     const count = await res.json()
+
+  //     setCountLiked(count)
+  //   }
+
+  //   countLikes()
+  //     .then(() => console.log('bien'))
+  //     .catch(e => console.log(e.message))
+  // }, []);
+
 
   const handleLike = () => {
     setIsLiked(!isLiked)
@@ -78,7 +124,7 @@ export default function Post({ post }) {
           </span> */}
         </div>
 
-        <div className="Post-footer-row-2">{isLiked ? 1 : 0} likes</div>
+        <div className="Post-footer-row-2"> {countLiked.likes} likes</div>
 
         <div
           className="Post-footer-row-3"
