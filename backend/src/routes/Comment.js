@@ -1,8 +1,7 @@
 import express from 'express'
 import { getCommentsByPost } from '../controllers/CommentController.js';
 import { postComment } from '../controllers/CommentController.js';
-import { verifyToken } from '../server.js'
-
+import { verifyToken } from '../middlewares/verifyToken.js'
 export const CommentRouter = express.Router();
 
 CommentRouter.post('/api/posts/comments', verifyToken, postComment)
