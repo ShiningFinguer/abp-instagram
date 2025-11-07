@@ -4,12 +4,12 @@ import { getUserPost } from "../controllers/PostController.js";
 import { updatePost } from "../controllers/PostController.js";
 import { deletePost } from "../controllers/PostController.js";
 import { getPost } from '../controllers/PostController.js';
-import { verifyToken } from '../server.js';
+import { verifyToken } from '../middlewares/verifyToken.js'
 export const postRouter = Router()
 // Crear un nuevo post
-postRouter.post('/api/users/:id/posts', verifyToken, postPost);
+postRouter.post('/api/users/posts', verifyToken, postPost);
 
-postRouter.get('/api/post/', verifyToken, getPost)
+postRouter.get('/api/post/', getPost);
 
 // Obtener todos los post del user
 postRouter.get('/api/post/:id', verifyToken, getUserPost);
