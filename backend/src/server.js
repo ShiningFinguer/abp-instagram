@@ -69,6 +69,10 @@ app.get('/*splat', async (req, res) => {
 const PORT = 3000
 
 // Crear servidor HTTPS
-https.createServer(options, app).listen(PORT, () => {
-  console.log('Servidor HTTPS escuchando en https://localhost:3000')
+// https.createServer(options, app).listen(PORT, () => {
+//   console.log('Servidor HTTPS escuchando en https://localhost:3000')
+// })
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`)
 })
