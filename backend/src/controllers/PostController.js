@@ -32,8 +32,10 @@ export const getPost = async (req, res) => {
 
 // Obtener los Post de un User
 export const getUserPost = async (req, res) => {
+  const { userId } = req
+
   try {
-    const post = await Post.find({ user: req.params.id })
+    const post = await Post.find({ user: userId })
     if (post.length === 0)
       return res.status(404).json({ error: 'No hay ningún post' })
     res.json(post)

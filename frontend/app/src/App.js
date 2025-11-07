@@ -47,7 +47,7 @@ function App() {
       <Route path="/" element={token ? <Feed /> : <Landing />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login setToken={setToken} />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path="/profile" element={<Profile token={token} />} />
     </Routes>
   )
 }
