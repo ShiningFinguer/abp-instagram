@@ -11,7 +11,8 @@ export default function Post({ post }) {
   const createAtFormat = new Date(createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
-  const [countLiked, setCountLiked] = useState([])
+  const [liked, setLiked] = useState([])
+  const [likes, setLikes] = useState([])
 
 
   useEffect(() => {
@@ -28,39 +29,37 @@ export default function Post({ post }) {
 
       const count = await res.json()
 
-      setCountLiked(count)
+      setLikes(likes)
     }
 
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
   }, []);
-  // useEffect(() => {
-  //   async function countLikes() {
-  //     const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
-  //       method: 'get'
-  //     });
-
-  //     if (!res.ok) {
-  //       console.log('error')
-
-  //       return
-  //     }
-
-  //     const count = await res.json()
-
-  //     setCountLiked(count)
-  //   }
-
-  //   countLikes()
-  //     .then(() => console.log('bien'))
-  //     .catch(e => console.log(e.message))
-  // }, []);
-
-
-  const handleLike = () => {
-    setIsLiked(!isLiked)
+  
+  const handleLike = async () => {
+    try {
+      const token = sessionStorage.getItem('token')
+  
+      const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ postId: post._id })
+      })
+  
+      if (!res.ok) return console.log('Error al hacer like')
+  
+      const data = await res.json()
+      setIsLiked(data.liked)
+      setCountLiked(prev => data.liked ? prev + 1 : prev - 1)
+    } catch (error) {
+      console.log(error.message)
+    }
   }
+  
 
   return (
     <article className="Post">
@@ -124,7 +123,7 @@ export default function Post({ post }) {
           </span> */}
         </div>
 
-        <div className="Post-footer-row-2"> {countLiked.likes} likes</div>
+        <div className="Post-footer-row-2"> {likes.likes} likes</div>
 
         <div
           className="Post-footer-row-3"
