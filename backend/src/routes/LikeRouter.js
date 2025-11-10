@@ -1,5 +1,5 @@
 import express from "express";
-import { countLikes, toggleLike } from "../controllers/LikeController";
+import { countLikes, toggleLike } from "../controllers/LikeController.js";
 
 export const LikeRouter = express.Router();
 
