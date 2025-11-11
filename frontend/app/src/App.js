@@ -5,6 +5,7 @@ import Signup from './pages/Signup/Signup'
 import Landing from './pages/Landing/Landing'
 import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
+import Settings from './Components/Settings/Settings'
 
 function App() {
   const [token, setToken] = useState(sessionStorage.token)
@@ -48,6 +49,7 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login setToken={setToken} />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/settings" element={<Settings/>} />
     </Routes>
   )
 }

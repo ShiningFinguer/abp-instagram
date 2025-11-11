@@ -1,32 +1,35 @@
-import { Router } from 'express'
-import { register } from '../controllers/UserController.js'
-import { login } from '../controllers/UserController.js'
-import { getUsers } from '../controllers/UserController.js'
-import { getUserByID } from '../controllers/UserController.js'
-import { deleteUserByID } from '../controllers/UserController.js'
-import { updateUserProfile } from '../controllers/UserController.js'
-import { updateUserPassword } from '../controllers/UserController.js'
-const userRouter = Router()
+import { Router } from 'express';
+import {
+  register,
+  login,
+  getUsers,
+  getUserByID,
+  deleteUserByID,
+  updateUserProfile,
+  updateUserPassword
+} from '../controllers/UserController.js';
 
-// Obtener todos los usuarios
-userRouter.get('/api/users/', getUsers)
+const userRouter = Router();
+
+// Crear usuario
+userRouter.post('/api/users', register);
 
 // Login
-userRouter.post('/api/users/login', login)
+userRouter.post('/api/users/login', login);
 
-// Obtener un usuario por ID
-userRouter.get('/api/users/profile', getUserByID)
+// Obtener todos los usuarios
+userRouter.get('/api/users', getUsers);
 
-// Crear un nuevo ususario
-userRouter.post('/api/users/', register)
+// Obtener usuario por ID
+userRouter.get('/api/users/:id', getUserByID);
 
-// Actualizar perfil de un usuario
-userRouter.put('/api/users/:id/profile', updateUserProfile)
+// Actualizar perfil
+userRouter.put('/api/users/:id/profile', updateUserProfile);
 
-// Actualizar contraseña de un usuario
-userRouter.put('/api/users/:id/password', updateUserPassword)
+// Actualizar contraseña (usa el ID del token, no el de la URL)
+userRouter.put('/api/users/password', updateUserPassword);
 
-// Eliminar un usuario
-userRouter.delete('/api/users/:id', deleteUserByID)
+// Eliminar usuario
+userRouter.delete('/api/users/:id', deleteUserByID);
 
-export default userRouter
+export default userRouter;
