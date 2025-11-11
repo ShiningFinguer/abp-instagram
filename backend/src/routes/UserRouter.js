@@ -12,11 +12,13 @@ import { verifyMySelfProfile } from '../controllers/UserController.js'
 
 const userRouter = Router()
 
-// Obtener todos los usuarios
-userRouter.get('/api/users/', getUsers)
+const userRouter = Router();
+
+// Crear usuario
+userRouter.post('/api/users', register);
 
 // Login
-userRouter.post('/api/users/login', login)
+userRouter.post('/api/users/login', login);
 
 // Conseguir tu propio perfil
 userRouter.get('/api/users/me',verifyToken, getUserByToken)
@@ -24,17 +26,17 @@ userRouter.get('/api/users/me',verifyToken, getUserByToken)
 // Verificar si estas buscando tu propio perfil o no
 userRouter.get('api/users/verifyMySelfProfile', verifyToken,verifyMySelfProfile)
 
-// Crear un nuevo ususario
-userRouter.post('/api/users/', register)
+// Obtener usuario por ID
+userRouter.get('/api/users/:id', getUserByID);
 
-// Actualizar perfil de un usuario
-userRouter.put('/api/users/:id/profile', updateUserProfile)
+// Actualizar perfil
+userRouter.put('/api/users/:id/profile', updateUserProfile);
 
-// Actualizar contraseña de un usuario
-userRouter.put('/api/users/:id/password', updateUserPassword)
+// Actualizar contraseña (usa el ID del token, no el de la URL)
+userRouter.put('/api/users/password', updateUserPassword);
 
-// Eliminar un usuario
-userRouter.delete('/api/users/:id', deleteUserByID)
+// Eliminar usuario
+userRouter.delete('/api/users/:id', deleteUserByID);
 
 // Obtener un usuario por username
 userRouter.get('/api/users/:username', getUserByUsername)
