@@ -5,6 +5,7 @@ import { getUsers } from '../controllers/UserController.js'
 import { deleteUserByID } from '../controllers/UserController.js'
 import { updateUserProfile } from '../controllers/UserController.js'
 import { updateUserPassword } from '../controllers/UserController.js'
+import { getUserByUsername } from '../controllers/UserController.js'
 import { verifyToken } from '../middlewares/verifyToken.js'
 import { getUserByToken } from '../controllers/UserController.js'
 import { verifyMySelfProfile } from '../controllers/UserController.js'
@@ -34,5 +35,8 @@ userRouter.put('/api/users/:id/password', updateUserPassword)
 
 // Eliminar un usuario
 userRouter.delete('/api/users/:id', deleteUserByID)
+
+// Obtener un usuario por username
+userRouter.get('/api/users/:username', getUserByUsername)
 
 export default userRouter
