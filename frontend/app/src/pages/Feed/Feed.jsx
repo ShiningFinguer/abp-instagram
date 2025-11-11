@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import grayimage from '../../Assets/defaultPicture.PNG'
 import defaultPicture from '../../Assets/userDefault.png'
 import Header from '../../Components/Header/Header'
+
 import Posts from '../../Components/Posts/Posts'
 
 const Feed = () => {

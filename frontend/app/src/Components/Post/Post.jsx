@@ -53,6 +53,8 @@ export default function Post({ post }) {
       }
 
       const liked = await res.json()
+
+      setIsLiked(liked.liked)
     }
     Liked()
   }, [])
@@ -89,7 +91,7 @@ export default function Post({ post }) {
           />
           <div>
             <strong className="Post-username">
-              {post?.user || '@username'}
+              {post?.user?.username || '@username'}
             </strong>
 
             <div className="Post-date">{createAtFormat.toDateString()}</div>
@@ -146,7 +148,7 @@ export default function Post({ post }) {
           style={{ marginBottom: '8px', fontSize: '14px' }}
         >
           <strong>
-              {post?.user || '@username'}
+              {post?.user?.username || '@username'}
             </strong>
           <span style={{ marginLeft: '8px' }}>{description}</span>
         </div>
