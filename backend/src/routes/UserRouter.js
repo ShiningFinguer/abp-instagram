@@ -2,11 +2,14 @@ import { Router } from 'express'
 import { register } from '../controllers/UserController.js'
 import { login } from '../controllers/UserController.js'
 import { getUsers } from '../controllers/UserController.js'
-import { getUserByID } from '../controllers/UserController.js'
 import { deleteUserByID } from '../controllers/UserController.js'
 import { updateUserProfile } from '../controllers/UserController.js'
 import { updateUserPassword } from '../controllers/UserController.js'
 import { getUserByUsername } from '../controllers/UserController.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
+import { getUserByToken } from '../controllers/UserController.js'
+import { verifyMySelfProfile } from '../controllers/UserController.js'
+
 const userRouter = Router()
 
 // Obtener todos los usuarios
@@ -15,8 +18,11 @@ userRouter.get('/api/users/', getUsers)
 // Login
 userRouter.post('/api/users/login', login)
 
-// Obtener un usuario por ID
-userRouter.get('/api/users/profile', getUserByID)
+// Conseguir tu propio perfil
+userRouter.get('/api/users/me',verifyToken, getUserByToken)
+
+// Verificar si estas buscando tu propio perfil o no
+userRouter.get('api/users/verifyMySelfProfile', verifyToken,verifyMySelfProfile)
 
 // Crear un nuevo ususario
 userRouter.post('/api/users/', register)

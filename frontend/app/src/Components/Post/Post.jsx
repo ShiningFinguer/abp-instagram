@@ -61,6 +61,8 @@ export default function Post({ post }) {
       }
 
       const liked = await res.json()
+
+      setIsLiked(liked.liked)
     }
     Liked()
   }, [])

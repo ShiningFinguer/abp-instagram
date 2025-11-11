@@ -44,12 +44,9 @@ export const getUsers = async (req, res) => {
 }
 
 // Obtener un usuario por ID
-export const getUserByID = async (req, res) => {
+export const getUserByToken = async (req, res) => {
   try {
-    const { authorization } = req.headers
-    const [, token] = authorization.split(' ')
-
-    const { id } = jwt.verify(token, 'SECRET_KEY')
+    const { id } = user.id
     const user = await User.findById(id)
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
     res.json(user)
@@ -57,6 +54,25 @@ export const getUserByID = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+// Verificar si quiere ver tu propio perfil
+export const verifyMySelfProfile = async (req, res) => {
+  try {
+    const id = user.id
+    const username = req.params.username;
+
+    const user = await User.findById(id)
+    const userCheck = await User.findOne(username)
+    if (user?._id.toString() === userCheck?._id.toString()){
+      res.json({verify: true})
+    } else{
+      res.json({verify: false})
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+} 
+
 
 //Actualizar perfil de usuario
 export const updateUserProfile = async (req, res) => {
