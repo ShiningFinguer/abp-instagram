@@ -4,9 +4,10 @@ import Post from "../models/Post.js";
 // Dar o quitar like a un post
 export const toggleLike = async (req, res) => {
   try {
-    const { postId } = req.body;
-    const userId = req.params.id; // el ID del usuario que da el like
+    const postId = req.params.postId;
+    const userId = req.user.id;
 
+    if (!userId) return res.status(401).json({ error: 'Usuario no autenticado' });
     // Verificamos que el post exista
     const post = await Post.findById(postId);
     if (!post) return res.status(404).json({ error: "El post no existe" });
@@ -27,6 +28,28 @@ export const toggleLike = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+export const isLiked = async (req, res) =>{
+  try {
+    const postId = req.params.postId;
+    const userId = req.user.id;
+
+    if (!userId) return res.status(401).json({ error: 'Usuario no autenticado' });
+    // Verificamos que el post exista
+    const post = await Post.findById(postId);
+    if (!post) return res.status(404).json({ error: "El post no existe" });
+
+    const existingLike = await Like.findOne({ postId, userId });
+
+    if (existingLike) {
+      return res.status(200).json({ liked: true});
+    } else {
+      return res.status(200).json({ liked: false});
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
 
 // Contar likes de un post
 export const countLikes = async (req, res) => {
