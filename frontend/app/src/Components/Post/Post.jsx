@@ -5,6 +5,9 @@ import whitelikeIcon from '../../Assets/heartWhite.png'
 import SendIcon from '../../Assets/send.png'
 import avatar from '../../Assets/avatar.jpeg'
 import './Post.css'
+import Comment from '../Comment/Comment'
+import Caption from '../Comment/Caption'
+import Comments from '../Comments/Comments'
 
 export default function Post({ post }) {
   const { description, images, createdAt } = post
@@ -12,13 +15,17 @@ export default function Post({ post }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
   const [likes, setLikes] = useState([])
+  const [comments, setComments] = useState([])
   const token = sessionStorage.getItem('token')
-  
+
   useEffect(() => {
     async function countLikes() {
-      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/likes', {
-        method: 'get'
-      });
+      const res = await fetch(
+        'http://localhost:3001/api/post/' + post._id + '/likes',
+        {
+          method: 'get',
+        }
+      )
 
       if (!res.ok) {
         console.log('error')
@@ -33,19 +40,20 @@ export default function Post({ post }) {
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
-
-  }, [isLiked]);
-
+  }, [isLiked])
 
   useEffect(() => {
     async function Liked() {
-      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/isliked', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      })
+      const res = await fetch(
+        'http://localhost:3001/api/post/' + post._id + '/isliked',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
 
       if (!res.ok) {
         console.log('error')
@@ -53,29 +61,70 @@ export default function Post({ post }) {
       }
 
       const liked = await res.json()
+
+      setIsLiked(liked.liked)
     }
     Liked()
   }, [])
 
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/posts/${post._id}/comments`)
+      .then(res => {
+        if (!res.ok) return console.log('Algo salio mal!')
+
+        return res.json()
+      })
+      .then(setComments)
+      .catch(e => console.log(e.message))
+  }, [])
+
   const handleLike = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/likes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-      })
-  
+      const res = await fetch(
+        'http://localhost:3001/api/post/' + post._id + '/likes',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
       if (!res.ok) return console.log('Error al hacer like')
-        const data = await res.json()
-        console.log(data)
-        setIsLiked(!isLiked)
+      const data = await res.json()
+      console.log(data)
+      setIsLiked(!isLiked)
     } catch (error) {
       console.log(error.message)
     }
   }
 
+  const handleCommentSubmit = async e => {
+    e.preventDefault()
+
+    const text = e.target.text.value
+
+    const res = await fetch(
+      `http://localhost:3001/api/posts/${post._id}/comments`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ text }),
+      }
+    )
+
+    if (!res.ok) return console.log('No se ha podido crear el comentario')
+
+    const { comment } = await res.json()
+
+    setComments(prevComments => [...prevComments, comment])
+
+    e.target.reset()
+  }
 
   return (
     <article className="Post">
@@ -89,7 +138,7 @@ export default function Post({ post }) {
           />
           <div>
             <strong className="Post-username">
-              {post?.user || '@username'}
+              {post?.user?.username || '@username'}
             </strong>
 
             <div className="Post-date">{createAtFormat.toDateString()}</div>
@@ -141,15 +190,13 @@ export default function Post({ post }) {
 
         <div className="Post-footer-row-2"> {likes.likes} likes</div>
 
-        <div
-          className="Post-footer-row-3"
-          style={{ marginBottom: '8px', fontSize: '14px' }}
-        >
-          <strong>
-              {post?.user || '@username'}
-            </strong>
-          <span style={{ marginLeft: '8px' }}>{description}</span>
-        </div>
+        <Caption description={description} />
+
+        <Comments comments={comments} />
+
+        <form onSubmit={handleCommentSubmit}>
+          <input type="text" name="text" placeholder="Comentario..." />
+        </form>
 
         <div
           style={{

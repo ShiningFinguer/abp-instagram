@@ -1,13 +1,16 @@
-import { Router } from 'express';
-import {
-  register,
-  login,
-  getUsers,
-  getUserByID,
-  deleteUserByID,
-  updateUserProfile,
-  updateUserPassword
-} from '../controllers/UserController.js';
+import { Router } from 'express'
+import { register } from '../controllers/UserController.js'
+import { login } from '../controllers/UserController.js'
+import { getUsers } from '../controllers/UserController.js'
+import { deleteUserByID } from '../controllers/UserController.js'
+import { updateUserProfile } from '../controllers/UserController.js'
+import { updateUserPassword } from '../controllers/UserController.js'
+import { getUserByUsername } from '../controllers/UserController.js'
+import { verifyToken } from '../middlewares/verifyToken.js'
+import { getUserByToken } from '../controllers/UserController.js'
+import { verifyMySelfProfile } from '../controllers/UserController.js'
+
+const userRouter = Router()
 
 const userRouter = Router();
 
@@ -17,8 +20,11 @@ userRouter.post('/api/users', register);
 // Login
 userRouter.post('/api/users/login', login);
 
-// Obtener todos los usuarios
-userRouter.get('/api/users', getUsers);
+// Conseguir tu propio perfil
+userRouter.get('/api/users/me',verifyToken, getUserByToken)
+
+// Verificar si estas buscando tu propio perfil o no
+userRouter.get('api/users/verifyMySelfProfile', verifyToken,verifyMySelfProfile)
 
 // Obtener usuario por ID
 userRouter.get('/api/users/:id', getUserByID);
@@ -32,4 +38,7 @@ userRouter.put('/api/users/password', updateUserPassword);
 // Eliminar usuario
 userRouter.delete('/api/users/:id', deleteUserByID);
 
-export default userRouter;
+// Obtener un usuario por username
+userRouter.get('/api/users/:username', getUserByUsername)
+
+export default userRouter

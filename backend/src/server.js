@@ -7,6 +7,7 @@ import cors from 'cors'
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
 import { LikeRouter } from './routes/LikeRouter.js'
+import { CommentRouter } from './routes/Comment.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
@@ -38,6 +39,7 @@ app.use(cors())
 app.use(userRouter)
 app.use(postRouter)
 app.use(LikeRouter)
+app.use(CommentRouter)
 
 
 
