@@ -11,56 +11,71 @@ export default function Post({ post }) {
   const createAtFormat = new Date(createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
-  const [countLiked, setCountLiked] = useState([])
-
-
+  const [likes, setLikes] = useState([])
+  const token = sessionStorage.getItem('token')
+  
   useEffect(() => {
     async function countLikes() {
-      const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
+      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/likes', {
         method: 'get'
       });
 
       if (!res.ok) {
         console.log('error')
-
         return
       }
 
       const count = await res.json()
 
-      setCountLiked(count)
+      setLikes(count)
     }
 
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
-  }, []);
-  // useEffect(() => {
-  //   async function countLikes() {
-  //     const res = await fetch(`http://localhost:3001/api/post/${post._id}/likes`, {
-  //       method: 'get'
-  //     });
 
-  //     if (!res.ok) {
-  //       console.log('error')
-
-  //       return
-  //     }
-
-  //     const count = await res.json()
-
-  //     setCountLiked(count)
-  //   }
-
-  //   countLikes()
-  //     .then(() => console.log('bien'))
-  //     .catch(e => console.log(e.message))
-  // }, []);
+  }, [isLiked]);
 
 
-  const handleLike = () => {
-    setIsLiked(!isLiked)
+  useEffect(() => {
+    async function Liked() {
+      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/isliked', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+
+      if (!res.ok) {
+        console.log('error')
+        return
+      }
+
+      const liked = await res.json()
+    }
+    Liked()
+  }, [])
+
+  const handleLike = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/api/post/' + post._id + '/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+      })
+  
+      if (!res.ok) return console.log('Error al hacer like')
+        const data = await res.json()
+        console.log(data)
+        setIsLiked(!isLiked)
+    } catch (error) {
+      console.log(error.message)
+    }
   }
+
 
   return (
     <article className="Post">
@@ -74,7 +89,7 @@ export default function Post({ post }) {
           />
           <div>
             <strong className="Post-username">
-              {post?.createdBy?.username || '@username'}
+              {post?.user || '@username'}
             </strong>
 
             <div className="Post-date">{createAtFormat.toDateString()}</div>
@@ -124,13 +139,15 @@ export default function Post({ post }) {
           </span> */}
         </div>
 
-        <div className="Post-footer-row-2"> {countLiked.likes} likes</div>
+        <div className="Post-footer-row-2"> {likes.likes} likes</div>
 
         <div
           className="Post-footer-row-3"
           style={{ marginBottom: '8px', fontSize: '14px' }}
         >
-          <strong>username</strong>
+          <strong>
+              {post?.user || '@username'}
+            </strong>
           <span style={{ marginLeft: '8px' }}>{description}</span>
         </div>
 
