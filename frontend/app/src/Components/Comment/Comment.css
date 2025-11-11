@@ -1,0 +1,12 @@
+.Comment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.Comment-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
