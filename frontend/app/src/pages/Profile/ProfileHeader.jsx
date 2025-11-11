@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 
 const ProfileHeader = ({}) => {
   const [isFollowing, setIsFollowing] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [isOwnProfile, setIsOwnProfile] = useState(null);
+  const [userProfile, setUserProfile] = useState([]);
+
 
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const ProfileHeader = ({}) => {
         const data = await res.json();
         if (res.ok) {
           setUserProfile(data);
-          setUserProfile(data.user)
+
         } else {
           console.error(data.error);
         }
@@ -41,7 +41,11 @@ const ProfileHeader = ({}) => {
   }
 
   const handleEditProfile = () => {
+    return(
+      <div>
 
+      </div>
+    )
   }
   const EditProfileButton = () => {
     return (
@@ -49,12 +53,6 @@ const ProfileHeader = ({}) => {
     )
   }
 
-  const HandleIsOwnProfile = () => {
-    
-    return(
-      isOwnProfile ? <HandleFollow/> : <EditProfileButton/>
-    )
-  }
 
   return (
     <div
@@ -84,13 +82,9 @@ const ProfileHeader = ({}) => {
         }}
       >
         <h2>{userProfile?.username}</h2>
-<<<<<<< HEAD
         <button onClick={handleFollowUser}>
           {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
-=======
-        <HandleIsOwnProfile/>
->>>>>>> 6303fd8 (add own profile)
       </div>
 
       {/* Profile Info */}

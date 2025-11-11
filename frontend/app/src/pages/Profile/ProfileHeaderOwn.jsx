@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const ProfileHeader = ({}) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [userProfile, setUserProfile] = useState(null);
-  const [isOwnProfile, setIsOwnProfile] = useState(null);
+const ProfileHeaderOwn = ({}) => {
+  const [userProfile, setUserProfile] = useState([]);
 
 
   useEffect(() => {
@@ -11,7 +9,7 @@ const ProfileHeader = ({}) => {
       const token = sessionStorage.getItem("token");
 
       try {
-        const res = await fetch("http://localhost:3001/api/users/profile", {
+        const res = await fetch("http://localhost:3001/api/users/me", {
           headers: {
             'Authorization': `Bearer ${token}` },
         });
@@ -19,7 +17,6 @@ const ProfileHeader = ({}) => {
         const data = await res.json();
         if (res.ok) {
           setUserProfile(data);
-          setUserProfile(data.user)
         } else {
           console.error(data.error);
         }
@@ -31,28 +28,17 @@ const ProfileHeader = ({}) => {
     fetchUserProfile();
   }, []);
 
-
-
-  const HandleFollow = () => {
-    
-    return (
-      <button>{isFollowing ? "Unfollow" : "Follow"}</button>
-    )
-  }
-
   const handleEditProfile = () => {
-
+    return(
+      <div>
+        lol
+      </div>
+      
+    )
   }
   const EditProfileButton = () => {
     return (
-      <button onclick={() => handleEditProfile()}>Edit Profile</button>
-    )
-  }
-
-  const HandleIsOwnProfile = () => {
-    
-    return(
-      isOwnProfile ? <HandleFollow/> : <EditProfileButton/>
+      <button onClick={() => handleEditProfile()}>Edit Profile</button>
     )
   }
 
@@ -70,7 +56,7 @@ const ProfileHeader = ({}) => {
       {/* Username and Follow */}
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
         <h2>{userProfile?.username}</h2>
-        <HandleIsOwnProfile/>
+        <EditProfileButton/>
       </div>
 
       {/* Profile Info */}
@@ -95,4 +81,4 @@ const ProfileHeader = ({}) => {
   );
 };
 
-export default ProfileHeader;
+export default ProfileHeaderOwn;
