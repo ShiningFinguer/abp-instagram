@@ -19,7 +19,7 @@ export const postComment = async (req, res) => {
 export const getCommentsByPost = async (req, res) => {
   try {
     const { postId } = req.params
-    const comments = await Comment.find({ postId })
+    const comments = await Comment.find({ postId }).populate('userId')
     if (comments.length === 0)
       return res.status(404).json({ error: 'No hay ningún comentario' })
     res.json(comments)

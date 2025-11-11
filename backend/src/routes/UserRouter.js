@@ -6,6 +6,7 @@ import { getUserByID } from '../controllers/UserController.js'
 import { deleteUserByID } from '../controllers/UserController.js'
 import { updateUserProfile } from '../controllers/UserController.js'
 import { updateUserPassword } from '../controllers/UserController.js'
+import { getUserByUsername } from '../controllers/UserController.js'
 const userRouter = Router()
 
 // Obtener todos los usuarios
@@ -28,5 +29,8 @@ userRouter.put('/api/users/:id/password', updateUserPassword)
 
 // Eliminar un usuario
 userRouter.delete('/api/users/:id', deleteUserByID)
+
+// Obtener un usuario por username
+userRouter.get('/api/users/:username', getUserByUsername)
 
 export default userRouter
