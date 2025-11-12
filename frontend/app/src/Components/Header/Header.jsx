@@ -1,4 +1,4 @@
-import { Home, Search, PlusSquare, User } from 'lucide-react';
+import { Home, Search, PlusSquare, User, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom'
 import './Header.css'
 
@@ -13,6 +13,7 @@ export default function Header() {
             <Link to="/search"><Search/></Link>
             <Link to="/create"><PlusSquare/></Link>
             <Link to="/profile"><User/></Link>
+            <Link to="/settings"><Settings/></Link>
           </div>
         </div>
       </nav>
