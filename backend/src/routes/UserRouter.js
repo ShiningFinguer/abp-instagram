@@ -10,7 +10,6 @@ import { getUserByToken } from '../controllers/UserController.js'
 import { verifyMySelfProfile } from '../controllers/UserController.js'
 import {getUsersFiltered} from '../controllers/UserController.js'
 
-const userRouter = Router()
 
 // Crear usuario
 userRouter.post('/api/users', register)
@@ -29,7 +28,7 @@ userRouter.get(
 )
 
 // Obtener usuario por ID
-userRouter.get('/api/users/:id', getUserByToken)
+userRouter.get('/api/users/me', verifyToken, getUserByToken);
 
 // Actualizar perfil
 userRouter.put('/api/users/:id/profile', updateUserProfile)
