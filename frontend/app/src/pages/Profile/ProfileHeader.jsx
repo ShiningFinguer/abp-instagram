@@ -4,8 +4,6 @@ const ProfileHeader = ({}) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [userProfile, setUserProfile] = useState([]);
 
-
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       const token = sessionStorage.getItem("token");
@@ -33,25 +31,12 @@ const ProfileHeader = ({}) => {
 
 
 
-  const HandleFollow = () => {
+  const handleFollowUser = () => {
     
-    return (
-      <button>{isFollowing ? "Unfollow" : "Follow"}</button>
-    )
+    
   }
 
-  const handleEditProfile = () => {
-    return(
-      <div>
-
-      </div>
-    )
-  }
-  const EditProfileButton = () => {
-    return (
-      <button onclick={() => handleEditProfile()}>Edit Profile</button>
-    )
-  }
+  
 
 
   return (

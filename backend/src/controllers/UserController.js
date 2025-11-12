@@ -46,10 +46,10 @@ export const getUsers = async (req, res) => {
 // Obtener un usuario por ID
 export const getUserByToken = async (req, res) => {
   try {
-    const { id } = user.id
-    const user = await User.findById(id)
-    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
-    res.json(user)
+    const id = req.user.id
+    const users = await User.findById(id)
+    if (!users) return res.status(404).json({ error: 'Usuario no encontrado' })
+    res.json(users)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
