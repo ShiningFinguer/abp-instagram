@@ -9,6 +9,7 @@ import { getUserByUsername } from '../controllers/UserController.js'
 import { verifyToken } from '../middlewares/verifyToken.js'
 import { getUserByToken } from '../controllers/UserController.js'
 import { verifyMySelfProfile } from '../controllers/UserController.js'
+import {getUsersFiltered} from '../controllers/UserController.js'
 
 const userRouter = Router()
 
@@ -37,6 +38,10 @@ userRouter.put('/api/users/:id/password', updateUserPassword)
 userRouter.delete('/api/users/:id', deleteUserByID)
 
 // Obtener un usuario por username
-userRouter.get('/api/users/:username', getUserByUsername)
+userRouter.get('/api/users/:username/profile', getUserByUsername)
+
+userRouter.get('/api/users/filter/:name', getUsersFiltered)
+
+
 
 export default userRouter
