@@ -10,7 +10,7 @@ import Caption from '../Comment/Caption'
 import Comments from '../Comments/Comments'
 
 export default function Post({ post }) {
-  const { description, images, createdAt } = post
+  const { description, image, createdAt } = post
   const createAtFormat = new Date(createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLiked, setIsLiked] = useState(false)
@@ -153,7 +153,7 @@ export default function Post({ post }) {
         <img
           className="Post-picture"
           onClick={() => setIsOpen(true)}
-          src={`/images/` + images[0]?.url + '.jpg'}
+          src={`http://localhost:3001/uploads/` + image}
           alt="post"
         />
       </div>

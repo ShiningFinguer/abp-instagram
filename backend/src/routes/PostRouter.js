@@ -1,14 +1,21 @@
 import { Router } from 'express'
+import multer from 'multer'
+
 import { postPost } from "../controllers/PostController.js";
 import { getUserPost } from "../controllers/PostController.js";
 import { updatePost } from "../controllers/PostController.js";
 import { deletePost } from "../controllers/PostController.js";
 import { getPost } from '../controllers/PostController.js';
 import { verifyToken } from '../middlewares/verifyToken.js'
-export const postRouter = Router()
-// Crear un nuevo post
-postRouter.post('/api/users/posts', verifyToken, postPost);
 
+export const postRouter = Router()
+
+const upload = multer({ dest: 'public/uploads/' })
+
+// Crear un nuevo post
+postRouter.post('/api/users/post', verifyToken, upload.single('image'), postPost);
+
+// Obtener todos los posts
 postRouter.get('/api/post/', getPost);
 
 // Obtener todos los post del user
