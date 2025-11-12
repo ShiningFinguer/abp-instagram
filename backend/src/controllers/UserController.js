@@ -35,13 +35,39 @@ export const login = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
     const user = await User.find()
-    if (!user)
-      return res.status(404).json({ error: 'Ningún usuario encontrado' })
+    if (user.length === 0) return res.status(404).json({ error: 'Ningún usuario encontrado' })
     res.json(user)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 }
+
+
+
+// UserController.js
+export const getUsersFiltered = async (req, res) => {
+  try {
+    const name = req.params.name || "";
+
+    if (!name.trim()) {
+      return res.status(400).json({ error: "Debes proporcionar un nombre para buscar"});
+    }
+
+    const users = await User.find({
+      username: { $regex: name, $options: "i" } // insensible a mayúsculas
+    }).limit(50);
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No se encontraron usuarios" });
+    }
+
+    res.json(users);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 
 // Obtener un usuario por ID
 export const getUserByToken = async (req, res) => {

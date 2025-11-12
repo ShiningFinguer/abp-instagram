@@ -1,6 +1,10 @@
 import { Home, Search, PlusSquare, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import './Header.css'
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { SearchBoard } from '../SearchBoard/SearchBoard';
+import { SearchName } from '../SearchName/SearchName';
 
 export default function Header({ setIsOPenNewPostModal }) {
   return (
@@ -27,6 +31,11 @@ export default function Header({ setIsOPenNewPostModal }) {
               <User />
             </Link>
           </div>
+        </div>
+        {Users.map(user => (
+          <SearchName key={user._id} user={user} />
+        ))}
+        <div>
         </div>
       </nav>
     </header>
