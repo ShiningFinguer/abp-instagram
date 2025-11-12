@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import grayimage from '../../Assets/defaultPicture.PNG'
 import defaultPicture from '../../Assets/userDefault.png'
 import Header from '../../Components/Header/Header'
-
 import Posts from '../../Components/Posts/Posts'
+import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 
 const Feed = () => {
   const [posts, setPosts] = useState([])
+  const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
 
   useEffect(() => {
     async function getAllPost() {
@@ -30,8 +31,15 @@ const Feed = () => {
 
   return (
     <>
-      <Header />
+      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} />
       <Posts posts={posts} />
+      {isOpenNewPostModal && (
+        <NewPostModal
+          isOpen={isOpenNewPostModal}
+          setIsOpen={setIsOPenNewPostModal}
+          setPosts={setPosts}
+        />
+      )}
     </>
   )
 }

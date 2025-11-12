@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Alert } from '../../Components/Alert/Alert'
 import './Login.css'
 
 export default function Login({ setToken }) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
@@ -10,26 +13,36 @@ export default function Login({ setToken }) {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3001/api/users/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    })
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:3001/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
 
-    if (!res.ok) {
-      alert('Usuario o contraseñas incorrectos')
+      if (!res.ok) {
+        setError('Usuario o contraseñas incorrectos')
 
-      return
+        return
+      }
+
+      const { token } = await res.json()
+
+      sessionStorage.setItem('token', token)
+
+      setToken(token)
+
+      navigate('/')
+    } catch (error) {
+      setError(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
-
-    const { token } = await res.json()
-
-    sessionStorage.setItem('token', token)
-    setToken(token)
-
-    navigate('/')
   }
 
   return (
@@ -53,7 +66,9 @@ export default function Login({ setToken }) {
             onChange={e => setPassword(e.target.value)}
           />
 
-          <button type="submit">Entrar</button>
+          <button type="submit">{loading ? 'Cargando..' : 'Entrar'}</button>
+
+          {error && <Alert>{error}</Alert>}
         </form>
 
         <p>

@@ -19,7 +19,6 @@ const options = {
   rejectUnauthorized: false, // solo en desarrollo
 }
 
-
 const app = express()
 
 // URL de conexión a MongoDB
@@ -32,17 +31,13 @@ mongoose
   .then(() => console.log('Conectado a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err))
 
-
- 
+app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
 app.use(userRouter)
 app.use(postRouter)
 app.use(LikeRouter)
 app.use(CommentRouter)
-
-
-
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')
