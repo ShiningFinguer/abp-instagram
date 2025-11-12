@@ -15,6 +15,7 @@ const upload = multer({ dest: 'public/uploads/' })
 // Crear un nuevo post
 postRouter.post('/api/users/post', verifyToken, upload.single('image'), postPost);
 
+// Obtener todos los posts
 postRouter.get('/api/post/', getPost);
 
 // Obtener todos los post del user
