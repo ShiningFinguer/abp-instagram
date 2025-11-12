@@ -3,12 +3,16 @@ import Post from '../models/Post.js'
 // Subir Post
 export const postPost = async (req, res) => {
   try {
-    const { description, images, tags } = req.body
+    const filename = req?.file?.filename
+
+    if (!filename) return res.status(400).json({ error: 'Falta la imagen' })
+
+    const { description, tags } = req.body
     const userId = req.user.id
     const post = await Post.create({
       user: userId,
       description,
-      images,
+      image: filename,
       tags,
     })
     if (!post) return res.status(404).json({ error: 'No hay ningún post' })
@@ -22,7 +26,7 @@ export const postPost = async (req, res) => {
 // Obtener todos los Post
 export const getPost = async (req, res) => {
   try {
-    const post = await Post.find().populate('user');
+    const post = await Post.find()
     if (post.length === 0)
       return res.status(404).json({ error: 'No hay ningún post' })
     res.json(post)
