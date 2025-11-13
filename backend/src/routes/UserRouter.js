@@ -10,8 +10,6 @@ import { verifyToken } from '../middlewares/verifyToken.js'
 import { getUserByToken } from '../controllers/UserController.js'
 import { verifyMySelfProfile } from '../controllers/UserController.js'
 
-const userRouter = Router()
-
 const userRouter = Router();
 
 // Crear usuario
@@ -27,7 +25,7 @@ userRouter.get('/api/users/me',verifyToken, getUserByToken)
 userRouter.get('api/users/verifyMySelfProfile', verifyToken,verifyMySelfProfile)
 
 // Obtener usuario por ID
-userRouter.get('/api/users/:id', getUserByID);
+userRouter.get('/api/users/:id', getUserByToken);
 
 // Actualizar perfil
 userRouter.put('/api/users/:id/profile', updateUserProfile);

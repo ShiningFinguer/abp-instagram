@@ -17,6 +17,7 @@ export default function Post({ post }) {
   const [likes, setLikes] = useState([])
   const [comments, setComments] = useState([])
   const token = sessionStorage.getItem('token')
+  const [showToolTip, setshowToolTip] = useState(false);
 
   useEffect(() => {
     async function countLikes() {
@@ -125,6 +126,22 @@ export default function Post({ post }) {
 
     e.target.reset()
   }
+  
+  const handleDeletePost = async () => {
+    const res = await fetch(`http://localhost:3001/api/post/${post._id}`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+
+    if(!res.ok) {
+      alert('No tienes permisos para eliminar este post')
+      return
+    } 
+
+    alert('Eliminado correctamente');
+  } 
 
   return (
     <article className="Post">
@@ -145,7 +162,16 @@ export default function Post({ post }) {
           </div>
         </div>
 
-        <span style={{ cursor: 'pointer', fontSize: '20px' }}>⋯</span>
+        <span onClick={() => setshowToolTip(true)} style={{ cursor: 'pointer', fontSize: '20px' }}>⋯</span>
+        {
+          showToolTip ? <div>
+            <button style={{backgroundColor:'red'}} onClick={handleDeletePost}>Eliminar post</button>
+            <button onClick={() => {setshowToolTip(false)}}>Esconder</button>
+          </div> : null
+        }
+
+
+
       </header>
 
       {/* Body */}
