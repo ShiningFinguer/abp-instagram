@@ -149,8 +149,6 @@ export default function Post({ post }) {
   };
   
 
-  console.log(comments)
-
   return (
     <article className="Post">
       {/* Header */}
