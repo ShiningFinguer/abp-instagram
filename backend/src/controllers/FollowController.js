@@ -1,4 +1,4 @@
-import Follow from "../models/Follow";
+import Follow from "../models/Follow.js";
 
 
 export const toggleFollow = async (req, res) => {
@@ -17,7 +17,7 @@ export const toggleFollow = async (req, res) => {
         return res.status(200).json({ message: "Follow eliminado" });
       } else {
         // Si no estas siguiendo, empeiza a seguirlo
-        const like = await Follow.create({ simp, following });
+        const Follow = await Follow.create({ simp, following });
         return res.status(200).json({ message: "Follow añadido", Follow });
       }
     } catch (err) {
