@@ -7,7 +7,8 @@ import cors from 'cors'
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
 import { LikeRouter } from './routes/LikeRouter.js'
-import { CommentRouter } from './routes/Comment.js'
+import { CommentRouter } from './routes/CommentRouter.js'
+import { FollowRouter } from './routes/FollowRouter.js'
 
 // Cargar certificados
 const __dirname = process.cwd()
@@ -38,6 +39,7 @@ app.use(userRouter)
 app.use(postRouter)
 app.use(LikeRouter)
 app.use(CommentRouter)
+app.use(FollowRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')

@@ -1,4 +1,4 @@
-.header {
+.Header {
   position: sticky;
   top: 0;
   border-bottom: 1px solid #dbdbdb;
@@ -8,7 +8,7 @@
 }
 
 .container {
-  max-width: 975px;
+  max-width: 800px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -22,7 +22,12 @@
   color: black;
 }
 
-.icons a {
-  margin-left: 1rem;
+.Header-icons {
+  display: flex;
+  gap: 1rem;
+  color: black;
+}
+
+.Header-icons > * {
   color: black;
 }

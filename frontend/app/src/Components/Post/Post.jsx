@@ -4,10 +4,9 @@ import redlikeIcon from '../../Assets/heartRed.png'
 import whitelikeIcon from '../../Assets/heartWhite.png'
 import SendIcon from '../../Assets/send.png'
 import avatar from '../../Assets/avatar.jpeg'
-import './Post.css'
-import Comment from '../Comment/Comment'
 import Caption from '../Comment/Caption'
 import Comments from '../Comments/Comments'
+import './Post.css'
 
 export default function Post({ post }) {
   const { description, image, createdAt } = post
@@ -149,6 +148,8 @@ export default function Post({ post }) {
 
   };
   
+
+  console.log(comments)
 
   return (
     <article className="Post">

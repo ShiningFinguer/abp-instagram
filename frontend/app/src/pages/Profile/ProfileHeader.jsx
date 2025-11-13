@@ -1,12 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-const ProfileHeader = ({ userProfile }) => {
-  const [isFollowing, setIsFollowing] = useState(false)
+const ProfileHeader = ({}) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [userProfile, setUserProfile] = useState([]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const token = sessionStorage.getItem("token");
+
+      try {
+        const res = await fetch("http://localhost:3001/api/users/profile", {
+          headers: {
+            'Authorization': `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          setUserProfile(data);
+
+        } else {
+          console.error(data.error);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+
 
   const handleFollowUser = () => {
-    alert('Todavia no está conectado a la BBDD xd')
-    setIsFollowing(!isFollowing)
+    
+    
   }
+
+  
+
 
   return (
     <div
@@ -44,23 +75,21 @@ const ProfileHeader = ({ userProfile }) => {
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{userProfile?.posts?.length}</strong> Posts
+          <strong>userProfile?.posts?.length</strong> Posts
         </div>
         <div>
-          <strong>{userProfile?.followers?.length}</strong> Followers
+          <strong>userProfile?.followers?.length</strong> Followers
         </div>
         <div>
-          <strong>{userProfile?.following?.length}</strong> Following
+          <strong>userProfile?.following?.length</strong> Following
         </div>
       </div>
 
       {/* NAme */}
-      <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
-        {userProfile?.fullName}
-      </div>
+      <div style={{ textAlign: "center", fontWeight: "bold" }}>{userProfile?.username}</div>
 
       {/* Bio */}
-      <div style={{ textAlign: 'center' }}>{userProfile?.bio}</div>
+      <div style={{ textAlign: "center" }}>{userProfile?.bio}</div>
     </div>
   )
 }

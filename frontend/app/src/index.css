@@ -9,6 +9,7 @@ body {
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-color: #f2f3f5;
   margin: 0;
+  line-height: 1.5;
 }
 
 form {
@@ -26,6 +27,7 @@ label {
 
 input,
 textarea {
+  font: inherit;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;
