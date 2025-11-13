@@ -1,10 +1,10 @@
 import express from "express";
-import { verifyToken } from "../middlewares/verifyToken";
-import { toggleFollow } from "../controllers/FollowController";
-import { isFollowed } from "../controllers/FollowController";
+import { verifyToken } from "../middlewares/verifyToken.js";
+import { toggleFollow } from "../controllers/FollowController.js";
+import { isFollowed } from "../controllers/FollowController.js";
 
 export const FollowRouter = express.Router()
 
-LikeRouter.post('/api/user/:user/follow', verifyToken, toggleFollow)
+FollowRouter.post('/api/user/:user/follow', verifyToken, toggleFollow)
 
-LikeRouter.get('/api/user/:user/follow', verifyToken, isFollowed)
+FollowRouter.get('/api/user/:user/follow', verifyToken, isFollowed)
