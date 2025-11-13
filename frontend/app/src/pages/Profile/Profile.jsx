@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { redirect, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import ProfileHeader from './ProfileHeader'
 import ProfileHeaderOwn from './ProfileHeaderOwn'
 import ProfileTabs from './ProfileTabs'
@@ -7,31 +7,12 @@ import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
 
 const Profile = () => {
-  const { username } = useParams()
-  const [user, setUser] = useState({})
-  const [posts, setPosts] = useState([])
-  const [itsMe, setItsMe] = useState(false)
-  const token = sessionStorage.token
+  const { username } = useParams();
+  const [user, setUser] = useState({});
+  const [posts, setPosts] = useState([]);
+  const [isOwnProfile, setIsOwnProfile] = useState([]);
 
   useEffect(() => {
-    if (token && !username) {
-      fetch(`http://localhost:3001/api/users/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(user => {
-          setUser(user)
-          setItsMe(true)
-        })
-        .catch(e => {
-          redirect('/')
-        })
-
-      return
-    }
-
     fetch(`http://localhost:3001/api/users/${username}`)
       .then(res => {
         if (!res.ok) return console.log('Algo ha ido mal')
@@ -39,19 +20,38 @@ const Profile = () => {
         return res.json()
       })
       .then(setUser)
+      .catch(e => console.log(e.message))
+  }, [])
+
+  useEffect(() => {
+    const fetchIsOwnProfile = async () => {
+      const token = sessionStorage.getItem("token");
+      try {
+        const res = await fetch("api/users/verifyMySelfProfile", {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        });
+  
+        const data = await res.json();
+  
+        data.verify ? setIsOwnProfile(true) : setIsOwnProfile(false);
+  
+      } catch (error){
+        console.error("Error:", error);
+      }
+    }
+
+    fetchIsOwnProfile();
   }, [])
 
   return (
     <div>
       <Header />
-      <ProfileHeader itsMe={itsMe} />
-      {token ? (
-        <h1>
-          Username: {user?.username} <br /> email: {user?.email}
-        </h1>
-      ) : null}
-      {/* <ProfileTabs /> */}
-      {/* <ProfilePosts posts={posts} userProfile={user} /> */}
+      {isOwnProfile? <ProfileHeaderOwn/> : <ProfileHeader userProfile={user}/>}
+      <ProfileTabs />
+      <ProfilePosts posts={posts} userProfile={user} />
+
     </div>
   )
 }
