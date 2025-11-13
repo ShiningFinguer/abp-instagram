@@ -143,6 +143,13 @@ export default function Post({ post }) {
     alert('Eliminado correctamente');
   } 
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText('http://localhost:3000/')
+    alert('¡Link copiado al portapapeles!');
+
+  };
+  
+
   return (
     <article className="Post">
       {/* Header */}
@@ -165,6 +172,7 @@ export default function Post({ post }) {
         <span onClick={() => setshowToolTip(true)} style={{ cursor: 'pointer', fontSize: '20px' }}>⋯</span>
         {
           showToolTip ? <div>
+            <button onClick={handleCopyLink}>Copy Link</button>
             <button style={{backgroundColor:'red'}} onClick={handleDeletePost}>Eliminar post</button>
             <button onClick={() => {setshowToolTip(false)}}>Esconder</button>
           </div> : null
