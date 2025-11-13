@@ -23,13 +23,11 @@ export const postPost = async (req, res) => {
   }
 }
 
-// Obtener todos los Post
-export const getPost = async (req, res) => {
+// Obtener todos los post
+export const getAllPost = async (req, res) => {
   try {
-    const post = await Post.find()
-    if (post.length === 0)
-      return res.status(404).json({ error: 'No hay ningún post' })
-    res.json(post)
+    const posts = await Post.find().populate('user', { username: true })
+    res.json(posts)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -38,9 +36,10 @@ export const getPost = async (req, res) => {
 // Obtener todos los Posts de un User
 export const getUserPost = async (req, res) => {
   try {
-    const post = await Post.find({ user: req.params.id }).populate('user')
-    if (post.length === 0)
-      return res.status(404).json({ error: 'No hay ningún post' })
+    const id = req.user.id
+    const post = await Post.find({ user: id }).populate('user', {
+      username: true,
+    })
     res.json(post)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -66,17 +65,6 @@ export const deletePost = async (req, res) => {
     if (post.deletedCount === 0)
       return res.status(404).json({ error: 'No se ha podido borrar el post' })
     res.json(post)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-}
-
-// Obtener todos los post
-export const getAllPost = async (req, res) => {
-  try {
-    const posts = await Post.find()
-    if (!posts) return res.status(404).json({ error: 'Ningún post encontrado' })
-    res.json(posts)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

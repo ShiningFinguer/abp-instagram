@@ -1,18 +1,39 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProfileHeader from './ProfileHeader'
-import ProfileHeaderOwn from './ProfileHeaderOwn'
 import ProfileTabs from './ProfileTabs'
 import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
+import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 
 const Profile = () => {
-  const { username } = useParams();
-  const [user, setUser] = useState({});
-  const [posts, setPosts] = useState([]);
-  const [isOwnProfile, setIsOwnProfile] = useState([]);
+  const { username } = useParams()
+  const [user, setUser] = useState({})
+  const [posts, setPosts] = useState([])
+  const [itsMe, setItsMe] = useState(false)
+  const token = sessionStorage.token
+  const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
+    if (token && !username) {
+      fetch(`http://localhost:3001/api/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(res => res.json())
+        .then(user => {
+          setUser(user)
+          setItsMe(true)
+        })
+        .catch(e => {
+          navigate('/')
+        })
+
+      return
+    }
+
     fetch(`http://localhost:3001/api/users/${username}`)
       .then(res => {
         if (!res.ok) return console.log('Algo ha ido mal')
@@ -20,39 +41,52 @@ const Profile = () => {
         return res.json()
       })
       .then(setUser)
-      .catch(e => console.log(e.message))
   }, [])
 
   useEffect(() => {
-    const fetchIsOwnProfile = async () => {
-      const token = sessionStorage.getItem("token");
-      try {
-        const res = await fetch("api/users/verifyMySelfProfile", {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        });
-  
-        const data = await res.json();
-  
-        data.verify ? setIsOwnProfile(true) : setIsOwnProfile(false);
-  
-      } catch (error){
-        console.error("Error:", error);
-      }
+    if (user?.username && token) {
+      fetch(`http://localhost:3001/api/users/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then(res => res.json())
+        .then(me => {
+          if (me.username === username) setItsMe(true)
+        })
+        .catch(console.error)
     }
+  }, [user, username, token])
 
-    fetchIsOwnProfile();
+  useEffect(() => {
+    fetch('http://localhost:3001/api/post/me', {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(setPosts)
+      .catch(e => console.log(e.message))
   }, [])
 
   return (
-    <div>
-      <Header />
-      {isOwnProfile? <ProfileHeaderOwn/> : <ProfileHeader userProfile={user}/>}
-      <ProfileTabs />
-      <ProfilePosts posts={posts} userProfile={user} />
-
-    </div>
+    <>
+      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} />
+      {user ? (
+        <>
+          <ProfileHeader user={user} itsMe={itsMe} />
+          <ProfileTabs />
+          <ProfilePosts posts={posts} userProfile={user} />
+        </>
+      ) : (
+        <p>No existe este usuario</p>
+      )}
+      {isOpenNewPostModal && (
+        <NewPostModal
+          isOpen={isOpenNewPostModal}
+          setIsOpen={setIsOPenNewPostModal}
+          setPosts={setPosts}
+        />
+      )}
+    </>
   )
 }
 

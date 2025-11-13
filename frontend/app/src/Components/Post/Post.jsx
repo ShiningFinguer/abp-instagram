@@ -125,8 +125,6 @@ export default function Post({ post }) {
     e.target.reset()
   }
 
-  console.log(comments)
-
   return (
     <article className="Post">
       {/* Header */}

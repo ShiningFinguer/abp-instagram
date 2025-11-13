@@ -4,10 +4,12 @@ import defaultPicture from '../../Assets/userDefault.png'
 import Header from '../../Components/Header/Header'
 import Posts from '../../Components/Posts/Posts'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
+import PostModal from '../../Components/_Posts/Modal/PostModal'
 
 const Feed = () => {
   const [posts, setPosts] = useState([])
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
+  const [isOpenProfilePost, setIsOpenProfilePost] = useState(false)
 
   useEffect(() => {
     async function getAllPost() {
