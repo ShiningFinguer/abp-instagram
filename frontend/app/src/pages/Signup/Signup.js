@@ -11,6 +11,8 @@ export default function Signup() {
     bio: '',
     profilePic: null,
   })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = e => {
     const { name, value, files } = e.target
