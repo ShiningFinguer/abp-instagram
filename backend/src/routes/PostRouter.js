@@ -22,7 +22,7 @@ postRouter.get('/api/post/', getPost);
 postRouter.get('/api/post/:id', verifyToken, getUserPost);
 
 // Update post
-postRouter.put('/api/post/', verifyToken, updatePost);
+postRouter.put('/api/post/:id', verifyToken, updatePost);
 
 // Delete post
-postRouter.delete('/api/post/', verifyToken, deletePost);
+postRouter.delete('/api/post/:id', verifyToken, deletePost);
