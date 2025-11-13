@@ -27,6 +27,7 @@ label {
 
 input,
 textarea {
+  font: inherit;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 6px;

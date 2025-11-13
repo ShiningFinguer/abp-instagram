@@ -75,29 +75,39 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
         ✕
       </button>
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <textarea
-          value={description}
-          onChange={e => setDescription(e.target.value)}
-          placeholder="Escribe una descripción..."
-          maxLength={200}
-          required
-        />
+      <div className="NewPostModal-panel">
+        <h3 className="NewPostModal-title">Nuevo Post</h3>
 
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <textarea
+            className="NewPostModal-text-area"
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            placeholder="Escribe una descripción..."
+            maxLength={200}
+            required
+            name="description"
+          />
 
-        {preview && (
-          <div className="NewPostModal-preview">
-            <img src={preview} alt="Vista previa" />
-          </div>
-        )}
+          <input type="file" accept="image/*" onChange={handleFileChange} />
 
-        <button type="submit" disabled={loading}>
-          {loading ? 'Subiendo...' : 'Subir post'}
-        </button>
+          {preview && (
+            <div className="NewPostModal-preview">
+              <img
+                style={{ maxWidth: '100%' }}
+                src={preview}
+                alt="Vista previa"
+              />
+            </div>
+          )}
 
-        {error && <p className="NewPostModal-error">{error}</p>}
-      </form>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Subiendo...' : 'Subir post'}
+          </button>
+
+          {error && <p className="NewPostModal-error">{error}</p>}
+        </form>
+      </div>
     </div>
   )
 }

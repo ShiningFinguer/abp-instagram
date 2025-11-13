@@ -20,8 +20,6 @@ export const getCommentsByPost = async (req, res) => {
   try {
     const { postId } = req.params
     const comments = await Comment.find({ postId }).populate('userId')
-    if (comments.length === 0)
-      return res.status(404).json({ error: 'No hay ningún comentario' })
     res.json(comments)
   } catch (err) {
     res.status(500).json({ error: err.message })
