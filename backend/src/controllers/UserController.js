@@ -35,8 +35,6 @@ export const login = async (req, res) => {
 export const getUsers = async (req, res) => {
   try {
     const user = await User.find()
-    if (user.length === 0)
-      return res.status(404).json({ error: 'Ningún usuario encontrado' })
     res.json(user)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -98,7 +96,7 @@ export const verifyMySelfProfile = async (req, res) => {
   }
 }
 
-//Actualizar perfil de usuario
+// Actualizar perfil de usuario
 export const updateUserProfile = async (req, res) => {
   try {
     const { username, email, profilePic, bio } = req.body
@@ -149,7 +147,7 @@ export const updateUserPassword = async (req, res) => {
   }
 }
 
-//Eliminar un usuario por ID
+// Eliminar un usuario por ID
 export const deleteUserByID = async (req, res) => {
   try {
     const user = await User.deleteOne({ _id: req.params.id })

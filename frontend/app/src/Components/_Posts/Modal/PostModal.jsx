@@ -7,10 +7,10 @@ import commentIcon from '../../../Assets/comment.png'
 
 const PostModal = ({ isOpen, post, userProfile, onClose }) => {
   const [isLiked, setIsLiked] = useState(false)
-  const [likesCount, setLikesCount] = useState(post.likes.length)
+  const [likesCount, setLikesCount] = useState(post?.likes?.length)
   const [showCommentInput, setShowCommentInput] = useState(false)
   const [commentText, setCommentText] = useState('')
-  const [comments, setComments] = useState(post.comments)
+  const [comments, setComments] = useState(post?.comments)
 
   const handleLike = () => {
     if (isLiked) {
@@ -24,8 +24,8 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
   const handleAddComment = () => {
     if (commentText.trim()) {
       const newComment = {
-        id: comments.length + 1,
-        username: userProfile.username,
+        id: comments?.length + 1,
+        username: userProfile?.username,
         text: commentText,
         createdAt: 'Just now',
       }
@@ -72,7 +72,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
               }}
             >
               <img
-                src={post.imageURL}
+                src={post?.imageURL}
                 alt="post"
                 style={{
                   width: '100%',
@@ -101,7 +101,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                 }}
               >
                 <img
-                  src={userProfile.profilePicURL}
+                  src={userProfile?.profilePicURL}
                   alt="avatar"
                   style={{
                     width: '40px',
@@ -110,7 +110,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                     objectFit: 'cover',
                   }}
                 />
-                <strong>{userProfile.username}</strong>
+                <strong>{userProfile?.username}</strong>
               </div>
 
               <div
@@ -122,10 +122,10 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                   maxHeight: '400px',
                 }}
               >
-                {post.caption && (
+                {post?.caption && (
                   <Caption post={post} userProfile={userProfile} />
                 )}
-                {comments.map(comment => (
+                {comments?.map(comment => (
                   <Comment key={comment.id} comment={comment} />
                 ))}
               </div>
@@ -166,7 +166,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                     marginBottom: '10px',
                   }}
                 >
-                  {post.createdAt}
+                  {post?.createdAt}
                 </div>
 
                 {showCommentInput && (
