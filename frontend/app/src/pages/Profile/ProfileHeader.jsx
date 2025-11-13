@@ -1,43 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-const ProfileHeader = ({}) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [userProfile, setUserProfile] = useState([]);
+const ProfileHeader = ({ itsMe }) => {
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [userProfile, setUserProfile] = useState([])
+  const token = sessionStorage.token
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const token = sessionStorage.getItem("token");
+      const token = sessionStorage.getItem('token')
 
       try {
-        const res = await fetch("http://localhost:3001/api/users/profile", {
+        const res = await fetch('http://localhost:3001/api/users/profile', {
           headers: {
-            'Authorization': `Bearer ${token}` },
-        });
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-        const data = await res.json();
+        const data = await res.json()
         if (res.ok) {
-          setUserProfile(data);
-
+          setUserProfile(data)
         } else {
-          console.error(data.error);
+          console.error(data.error)
         }
       } catch (err) {
-        console.error(err);
+        console.error(err)
       }
-    };
+    }
 
-    fetchUserProfile();
-  }, []);
+    fetchUserProfile()
+  }, [])
 
-
-
-  const handleFollowUser = () => {
-    
-    
-  }
-
-  
-
+  const handleFollowUser = () => {}
 
   return (
     <div
@@ -48,7 +41,7 @@ const ProfileHeader = ({}) => {
         padding: '2rem',
       }}
     >
-      {/*Profile Picture */}
+      {/* Profile Picture */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
           src={userProfile?.profilePicURL || 'https://i.pravatar.cc/300'}
@@ -67,29 +60,33 @@ const ProfileHeader = ({}) => {
         }}
       >
         <h2>{userProfile?.username}</h2>
-        <button onClick={handleFollowUser}>
-          {isFollowing ? 'Unfollow' : 'Follow'}
-        </button>
+        {!itsMe && (
+          <button onClick={handleFollowUser}>
+            {isFollowing ? 'Unfollow' : 'Follow'}
+          </button>
+        )}
       </div>
 
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>userProfile?.posts?.length</strong> Posts
+          <strong>{userProfile?.posts?.length}</strong> Posts
         </div>
         <div>
-          <strong>userProfile?.followers?.length</strong> Followers
+          <strong>{userProfile?.followers?.length}</strong> Followers
         </div>
         <div>
-          <strong>userProfile?.following?.length</strong> Following
+          <strong>{userProfile?.following?.length}</strong> Following
         </div>
       </div>
 
-      {/* NAme */}
-      <div style={{ textAlign: "center", fontWeight: "bold" }}>{userProfile?.username}</div>
+      {/* Name */}
+      <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
+        {userProfile?.username}
+      </div>
 
       {/* Bio */}
-      <div style={{ textAlign: "center" }}>{userProfile?.bio}</div>
+      <div style={{ textAlign: 'center' }}>{userProfile?.bio}</div>
     </div>
   )
 }

@@ -41,7 +41,7 @@ userRouter.put('/api/users/password', updateUserPassword)
 userRouter.delete('/api/users/:id', deleteUserByID)
 
 // Obtener un usuario por username
-userRouter.get('/api/users/:username/profile', getUserByUsername)
+userRouter.get('/api/users/:username', getUserByUsername)
 
 userRouter.get('/api/users/filter/:name', getUsersFiltered)
 
