@@ -1,9 +1,57 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const ProfileHeader = ({ user, itsMe }) => {
   const [isFollowing, setIsFollowing] = useState(false)
   const [userProfile, setUserProfile] = useState([])
   const token = sessionStorage.token
+
+  useEffect(() => {
+    if (!user) {
+      fetch(`http://localhost:3001/api/users/${user.username}/follow`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(res => res.json())
+        .then(({ followed }) => setIsFollowing(followed))
+        .catch(e => console.log(e))
+    }
+  }, [user])
+
+  const handleFollowClick = async e => {
+    if (!token) return console.log('Debes iniciar sesion')
+
+    if (!user) {
+      try {
+        const res = await fetch(
+          `http://localhost:3001/api/users/${user.username}/follow`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        if (!res.ok) {
+          const error = await res.json()
+
+          console.log(error)
+
+          return
+        }
+
+        const success = await res.json()
+
+        console.log(success)
+
+        setIsFollowing(!isFollowing)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 
   return (
     <div
@@ -33,7 +81,11 @@ const ProfileHeader = ({ user, itsMe }) => {
         }}
       >
         <h2>{user?.username}</h2>
-        {!itsMe && <button>{isFollowing ? 'Unfollow' : 'Follow'}</button>}
+        {!itsMe && (
+          <button onClick={handleFollowClick}>
+            {isFollowing ? 'Unfollow' : 'Follow'}
+          </button>
+        )}
       </div>
 
       {/* Profile Info */}
