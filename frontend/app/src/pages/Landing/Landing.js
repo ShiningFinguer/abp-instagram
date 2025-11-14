@@ -1,30 +1,90 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import './Landing.css'
 import Logo from '../../Components/Logo/Logo'
+import { Link, useNavigate } from 'react-router-dom'
+import { Alert } from '../../Components/Alert/Alert'
 
-export default function Landing() {
+export default function Landing({ setToken }) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:3001/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+
+      if (!res.ok) {
+        setError('Usuario o contraseñas incorrectos')
+
+        return
+      }
+
+      const { token } = await res.json()
+
+      sessionStorage.setItem('token', token)
+
+      setToken(token)
+
+      navigate('/')
+    } catch (error) {
+      setError(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="Landing">
       <main className="Landing-main">
         <img className="Landing-img" src="/landing.png" />
 
-        <form style={{ textAlign: 'center' }}>
-          <Logo />
-          <input type="text" />
-          <input type="text" />
-          <button>Iniciar sesión</button>
-        </form>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <Logo />
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Usuario o correo"
+              required
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+            />
+
+            <input
+              type="password"
+              placeholder="Contraseña"
+              required
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+            />
+
+            <button type="submit">{loading ? 'Cargando..' : 'Entrar'}</button>
+
+            {error && <Alert>{error}</Alert>}
+          </form>
+
+          <p>
+            ¿No tienes una cuenta? <Link to="/signup">Regístrate</Link>
+          </p>
+        </div>
       </main>
 
       <footer className="Landing-footer">
-        <nav className="Landing-nav">
-          <a href="#">Meta</a>
-          <a href="#">Información</a>
-          <a href="#">Blog</a>
-          <a href="#">Empleo</a>
-          <a href="#">AI</a>
-        </nav>
-
         <p>© 2025 Qihao - Adrian - Rhian - Sebastian</p>
       </footer>
     </div>

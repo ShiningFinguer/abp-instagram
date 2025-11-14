@@ -45,7 +45,10 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={token ? <Feed /> : <Landing />} />
+      <Route
+        path="/"
+        element={token ? <Feed /> : <Landing setToken={setToken} />}
+      />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login setToken={setToken} />} />
       <Route path="/profile" element={<Profile />} />
