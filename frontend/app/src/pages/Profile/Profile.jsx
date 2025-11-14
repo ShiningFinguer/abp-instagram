@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import ProfileHeader from './ProfileHeader'
 import ProfileTabs from './ProfileTabs'
 import ProfilePosts from './ProfilePosts'
@@ -8,6 +8,7 @@ import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 
 const Profile = () => {
   const { username } = useParams()
+  const location = useLocation()
   const [user, setUser] = useState({})
   const [posts, setPosts] = useState([])
   const [itsMe, setItsMe] = useState(false)
@@ -41,7 +42,7 @@ const Profile = () => {
         return res.json()
       })
       .then(setUser)
-  }, [])
+  }, [location])
 
   useEffect(() => {
     if (user?.username && token) {
