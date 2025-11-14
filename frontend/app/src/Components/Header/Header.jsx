@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { SearchBoard } from '../SearchBoard/SearchBoard'
 import { SearchName } from '../SearchName/SearchName'
 import './Header.css'
+import Logo from '../Logo/Logo'
 
 export default function Header({ setIsOPenNewPostModal }) {
   const [users, setUsers] = useState([])
@@ -14,7 +15,7 @@ export default function Header({ setIsOPenNewPostModal }) {
         <div className="container">
           {/* Logo */}
           <Link to="/" className="logo">
-            Instagram
+            <Logo />
           </Link>
 
           {/* Buscador */}
