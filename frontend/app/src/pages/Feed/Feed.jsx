@@ -6,7 +6,7 @@ import Posts from '../../Components/Posts/Posts'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 import PostModal from '../../Components/_Posts/Modal/PostModal'
 
-const Feed = () => {
+const Feed = ({ logOut }) => {
   const [posts, setPosts] = useState([])
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
   const [isOpenProfilePost, setIsOpenProfilePost] = useState(false)
@@ -33,7 +33,7 @@ const Feed = () => {
 
   return (
     <>
-      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} />
+      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} logOut={logOut} />
       <Posts posts={posts} />
       {isOpenNewPostModal && (
         <NewPostModal

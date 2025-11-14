@@ -6,7 +6,7 @@ import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 
-const Profile = () => {
+const Profile = ({ logOut }) => {
   const { username } = useParams()
   const [user, setUser] = useState({})
   const [posts, setPosts] = useState([])
@@ -69,7 +69,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} />
+      <Header setIsOPenNewPostModal={setIsOPenNewPostModal} logOut={logOut} />
       {user ? (
         <>
           <ProfileHeader user={user} itsMe={itsMe} />

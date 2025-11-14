@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Home, Search, PlusSquare, User } from 'lucide-react'
+import { Home, Search, PlusSquare, User, LogOut } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SearchBoard } from '../SearchBoard/SearchBoard'
 import { SearchName } from '../SearchName/SearchName'
 import './Header.css'
 import Logo from '../Logo/Logo'
 
-export default function Header({ setIsOPenNewPostModal }) {
+export default function Header({ setIsOPenNewPostModal, logOut }) {
   const [users, setUsers] = useState([])
 
   return (
@@ -38,6 +38,9 @@ export default function Header({ setIsOPenNewPostModal }) {
             <Link to="/profile">
               <User />
             </Link>
+            <div onClick={logOut} style={{ cursor: 'pointer' }}>
+              <LogOut />
+            </div>
           </div>
         </div>
 
