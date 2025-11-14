@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './Signup.css'
 
 export default function Signup() {
+  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
   const [formData, setFormData] = useState({
     name: '',
     username: '',
@@ -24,6 +25,11 @@ export default function Signup() {
 
   const handleSubmit = async e => {
     e.preventDefault()
+
+    if (!checkPassword.test(formData.password)) {
+      alert("La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.");
+      return;
+    }
 
     const res = await fetch('http://localhost:3001/api/users', {
       method: 'POST',
