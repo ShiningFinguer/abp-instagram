@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/Login/Login'
+import { Routes, Route } from 'react-router-dom'
 import Signup from './pages/Signup/Signup'
 import Landing from './pages/Landing/Landing'
 import Feed from './pages/Feed/Feed'
@@ -50,7 +49,6 @@ function App() {
         element={token ? <Feed /> : <Landing setToken={setToken} />}
       />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login setToken={setToken} />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/:username" element={<Profile />} />
