@@ -75,7 +75,7 @@ export default function Landing({ setToken }) {
 
             <button type="submit">{loading ? 'Cargando..' : 'Entrar'}</button>
 
-            {error && <Alert>{error}</Alert>}
+            {error && <Alert variant="error">{error}</Alert>}
           </form>
 
           <p>

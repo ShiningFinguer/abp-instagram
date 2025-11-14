@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Signup.css'
+import { Alert } from '../../Components/Alert/Alert'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function Signup() {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleChange = e => {
     const { name, value, files } = e.target
@@ -25,32 +27,42 @@ export default function Signup() {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    const res = await fetch('http://localhost:3001/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: formData.username,
-        password: formData.password,
-        email: formData.email,
-      }),
-    })
+    setSuccess('')
+    setError('')
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:3001/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+          email: formData.email,
+        }),
+      })
 
-    if (!res.ok) {
-      console.log('No se ha podido crear ususario')
+      if (!res.ok) {
+        setError('Usuario ya registrado, vuelve a intentarlo')
 
-      return
+        return
+      }
+
+      setSuccess('Usuario registrado sastifactoriamente')
+    } catch (error) {
+      setError(error.message)
+      setLoading(false)
+    } finally {
+      setLoading(false)
     }
-
-    alert('Usuario creado sastifactoriamente')
   }
 
   return (
     <div className="signup-wrapper">
       <main className="signup-container">
         <h1>Crear cuenta</h1>
-        <form onSubmit={handleSubmit}>
+        <form className="signup-form" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Nombre completo"
@@ -101,7 +113,17 @@ export default function Signup() {
             onChange={handleChange}
           />
 
-          <button type="submit">Registrarme</button>
+          <button type="submit">
+            {loading ? 'Registrando...' : 'Registrar'}
+          </button>
+
+          {error && <Alert>{error}</Alert>}
+
+          {success && (
+            <Alert variant="success">
+              {success} <br /> Inicia sesión ⬇️
+            </Alert>
+          )}
         </form>
 
         <p>
