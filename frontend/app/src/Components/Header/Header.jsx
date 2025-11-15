@@ -11,8 +11,8 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
 
   return (
     <header className="Header">
-      <nav className="navbar">
-        <div className="container">
+      <div className="Header-container">
+        <nav className="Header-navbar">
           {/* Logo */}
           <Link to="/" className="logo">
             <Logo />
@@ -42,12 +42,12 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
               <LogOut />
             </div>
           </div>
-        </div>
+        </nav>
 
         {users.map(user => (
           <SearchName key={user._id} user={user} />
         ))}
-      </nav>
+      </div>
     </header>
   )
 }

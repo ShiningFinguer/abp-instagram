@@ -7,9 +7,17 @@
   background: white;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
+.Header-container {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.Header-navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -31,4 +39,16 @@
 
 .Header-icons > * {
   color: black;
+}
+
+@media (min-width: 768px) {
+  .Header-container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .Header-container {
+    max-width: 960px;
+  }
 }
