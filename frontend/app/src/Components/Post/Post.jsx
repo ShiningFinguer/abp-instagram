@@ -7,13 +7,15 @@ import avatar from '../../Assets/avatar.jpeg'
 import Caption from '../Comment/Caption'
 import Comments from '../Comments/Comments'
 import './Post.css'
+import { simpleTimeAgo } from '../../utils'
+import Like from '../_Posts/Like/Like'
 
 export default function Post({ post }) {
   const { description, image, createdAt } = post
-  const createAtFormat = new Date(createdAt)
+  const formatedCreatedAt = simpleTimeAgo(post.createdAt)
   const [isOpen, setIsOpen] = useState(false)
-  const [isLiked, setIsLiked] = useState(false)
-  const [likes, setLikes] = useState([])
+  const [isLike, setIsLike] = useState(false)
+  const [countLikes, setCountLikes] = useState([])
   const [comments, setComments] = useState([])
   const token = sessionStorage.getItem('token')
   const [showToolTip, setshowToolTip] = useState(false)
@@ -34,13 +36,13 @@ export default function Post({ post }) {
 
       const count = await res.json()
 
-      setLikes(count)
+      setCountLikes(count)
     }
 
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
-  }, [isLiked])
+  }, [isLike])
 
   useEffect(() => {
     async function Liked() {
@@ -62,7 +64,7 @@ export default function Post({ post }) {
 
       const liked = await res.json()
 
-      setIsLiked(liked.liked)
+      setIsLike(liked.liked)
     }
     Liked()
   }, [])
@@ -77,28 +79,6 @@ export default function Post({ post }) {
       .then(setComments)
       .catch(e => console.log(e.message))
   }, [])
-
-  const handleLike = async () => {
-    try {
-      const res = await fetch(
-        'http://localhost:3001/api/post/' + post._id + '/likes',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-
-      if (!res.ok) return console.log('Error al hacer like')
-      const data = await res.json()
-      console.log(data)
-      setIsLiked(!isLiked)
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
 
   const handleCommentSubmit = async e => {
     e.preventDefault()
@@ -154,7 +134,7 @@ export default function Post({ post }) {
         <div className="Post-header-wrapper">
           <img
             className="Post-avatar"
-            src={post?.createdBy?.profilePicURL || avatar}
+            src={post?.user?.avatar || avatar}
             alt="avatar"
           />
           <div>
@@ -162,7 +142,7 @@ export default function Post({ post }) {
               {`@${post?.user?.username || 'username'}`}
             </strong>
 
-            <div className="Post-date">{createAtFormat.toDateString()}</div>
+            <div className="Post-date">{formatedCreatedAt}</div>
           </div>
         </div>
 
@@ -205,19 +185,7 @@ export default function Post({ post }) {
       {/* Footer */}
       <footer className="Post-footer">
         <div className="Post-footer-row-1">
-          <span
-            onClick={handleLike}
-            style={{
-              cursor: 'pointer',
-              transition: 'transform 0.2s',
-            }}
-          >
-            <img
-              src={isLiked ? redlikeIcon : whitelikeIcon}
-              className="icon"
-              alt="like"
-            />
-          </span>
+          <Like isLike={isLike} setIsLike={setIsLike} postId={post._id} />
           {/* <span
             onClick={() => setShowCommentInput(!showCommentInput)}
             style={{ cursor: 'pointer' }}
@@ -232,9 +200,14 @@ export default function Post({ post }) {
           </span> */}
         </div>
 
-        <div className="Post-footer-row-2"> {likes.likes} likes</div>
+        <div className="Post-footer-row-2"> {countLikes.likes} Me gusta</div>
 
-        <Caption description={description} />
+        <Caption
+          avatar={post?.user?.avatar}
+          username={post?.user?.username}
+          description={description}
+          createdAt={post.createdAt}
+        />
 
         <Comments comments={comments} />
 

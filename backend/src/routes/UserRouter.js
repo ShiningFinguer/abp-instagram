@@ -22,11 +22,7 @@ userRouter.post('/api/users/login', login)
 userRouter.get('/api/users/me', verifyToken, getUserByToken)
 
 // Verificar si estas buscando tu propio perfil o no
-userRouter.get(
-  'api/users/verifyMySelfProfile',
-  verifyToken,
-  verifyMySelfProfile
-)
+userRouter.get('api/users/verifyMySelfProfile', verifyToken, verifyMySelfProfile)
 
 // Obtener usuario por ID
 userRouter.get('/api/users/me', verifyToken, getUserByToken)

@@ -91,13 +91,13 @@ const ProfileHeader = ({ user, itsMe }) => {
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{user?.posts?.length}</strong> Posts
+          <strong>{user?.posts}</strong> Posts
         </div>
         <div>
-          <strong>{user?.followers?.length}</strong> Followers
+          <strong>{user?.following}</strong> Followers
         </div>
         <div>
-          <strong>{user?.following?.length}</strong> Following
+          <strong>{user?.followers}</strong> Following
         </div>
       </div>
 

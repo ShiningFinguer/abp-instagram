@@ -29,10 +29,18 @@ const Profile = ({ logOut }) => {
           setItsMe(true)
         })
         .catch(e => {
+          console.log(e.message)
           navigate('/')
         })
 
-      return
+      fetch('http://localhost:3001/api/post/me', {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.token}`,
+        },
+      })
+        .then(res => res.json())
+        .then(setPosts)
+        .catch(e => console.log(e.message))
     }
 
     fetch(`http://localhost:3001/api/users/${username}`)
@@ -42,8 +50,18 @@ const Profile = ({ logOut }) => {
         return res.json()
       })
       .then(setUser)
+
+    fetch(`http://localhost:3001/api/post/${username}`, {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(setPosts)
+      .catch(e => console.log(e.message))
   }, [location])
 
+  // si el username de la barra de direcciones es el mio, entonces cambiamos estado itsMe
   useEffect(() => {
     if (user?.username && token) {
       fetch(`http://localhost:3001/api/users/me`, {
@@ -71,22 +89,30 @@ const Profile = ({ logOut }) => {
   return (
     <>
       <Header setIsOPenNewPostModal={setIsOPenNewPostModal} logOut={logOut} />
-      {user ? (
-        <>
-          <ProfileHeader user={user} itsMe={itsMe} />
-          <ProfileTabs />
-          <ProfilePosts posts={posts} userProfile={user} />
-        </>
-      ) : (
-        <p>No existe este usuario</p>
-      )}
-      {isOpenNewPostModal && (
-        <NewPostModal
-          isOpen={isOpenNewPostModal}
-          setIsOpen={setIsOPenNewPostModal}
-          setPosts={setPosts}
-        />
-      )}
+      <div
+        style={{
+          maxWidth: '720px',
+          margin: '0 auto',
+          padding: '0 0.75rem',
+        }}
+      >
+        {user ? (
+          <>
+            <ProfileHeader user={user} itsMe={itsMe} />
+            <ProfileTabs />
+            <ProfilePosts posts={posts} userProfile={user} />
+          </>
+        ) : (
+          <p>No existe este usuario</p>
+        )}
+        {isOpenNewPostModal && (
+          <NewPostModal
+            isOpen={isOpenNewPostModal}
+            setIsOpen={setIsOPenNewPostModal}
+            setPosts={setPosts}
+          />
+        )}
+      </div>
     </>
   )
 }

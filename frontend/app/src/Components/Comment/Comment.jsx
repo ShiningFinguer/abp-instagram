@@ -1,11 +1,14 @@
 import React from 'react'
 import userDefault from '../../Assets/userDefault.png'
 import './Comment.css'
+import { simpleTimeAgo } from '../../utils'
 
-const Comment = ({ username, text, createdAt }) => {
+const Comment = ({ avatar, username, text, createdAt }) => {
+  const formatedCreatedAt = simpleTimeAgo(createdAt)
+
   return (
     <li className="Comment">
-      <img className="Comment-avatar" src={userDefault} />
+      <img className="Comment-avatar" src={avatar || userDefault} />
 
       <div>
         <div>
@@ -13,7 +16,7 @@ const Comment = ({ username, text, createdAt }) => {
           <span style={{ marginLeft: '8px' }}>{text}</span>
         </div>
         <div style={{ fontSize: '12px', color: 'grey', marginTop: '4px' }}>
-          {createdAt}
+          {formatedCreatedAt}
         </div>
       </div>
     </li>

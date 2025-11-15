@@ -12,7 +12,7 @@ const ProfilePosts = ({ posts, userProfile }) => {
               'repeat(auto-fill, minmax(200px, max-content))',
             justifyContent: 'center',
             gap: '0.75rem',
-            padding: '20px',
+            padding: '1.25rem 0',
           }}
         >
           {posts?.map(post => (

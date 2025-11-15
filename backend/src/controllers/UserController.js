@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
+import Follow from '../models/Follow.js'
+import Post from '../models/Post.js'
 
 // Registro
 export const register = async (req, res) => {
@@ -70,9 +72,21 @@ export const getUsersFiltered = async (req, res) => {
 export const getUserByToken = async (req, res) => {
   try {
     const id = req.user.id
-    const users = await User.findById(id)
-    if (!users) return res.status(404).json({ error: 'Usuario no encontrado' })
-    res.json(users)
+
+    const user = await User.findById(id)
+
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+
+    const postsCount = await Post.countDocuments({ user: user._id })
+    const followersCount = await Follow.countDocuments({ simp: user._id })
+    const followingCount = await Follow.countDocuments({ following: user._id })
+
+    res.json({
+      ...user.toObject(),
+      posts: postsCount,
+      followers: followersCount,
+      following: followingCount,
+    })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }

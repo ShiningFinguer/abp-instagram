@@ -1,25 +1,81 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Comment from '../../Comment/Comment'
 import Caption from '../../Comment/Caption'
 import Like from '../Like/Like'
 
 import commentIcon from '../../../Assets/comment.png'
 
-const PostModal = ({ isOpen, post, userProfile, onClose }) => {
-  const [isLiked, setIsLiked] = useState(false)
-  const [likesCount, setLikesCount] = useState(post?.likes?.length)
+import './PostModal.css'
+import Comments from '../../Comments/Comments'
+import { simpleTimeAgo } from '../../../utils'
+
+const PostModal = ({ isOpen, post, onClose, userProfile }) => {
+  const [isLike, setIsLike] = useState(false)
+  const [countLikes, setCountLikes] = useState([])
   const [showCommentInput, setShowCommentInput] = useState(false)
   const [commentText, setCommentText] = useState('')
-  const [comments, setComments] = useState(post?.comments)
+  const [comments, setComments] = useState([])
+  const formattedCreatedAt = simpleTimeAgo(post.createdAt)
 
-  const handleLike = () => {
-    if (isLiked) {
-      setLikesCount(likesCount - 1)
-    } else {
-      setLikesCount(likesCount + 1)
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/posts/${post._id}/comments`)
+      .then(res => {
+        if (!res.ok) return console.log('Algo salio mal!')
+
+        return res.json()
+      })
+      .then(setComments)
+      .catch(e => console.log(e.message))
+  }, [])
+
+  useEffect(() => {
+    async function countLikes() {
+      const res = await fetch(
+        'http://localhost:3001/api/post/' + post._id + '/likes',
+        {
+          method: 'get',
+        }
+      )
+
+      if (!res.ok) {
+        console.log('error')
+        return
+      }
+
+      const count = await res.json()
+
+      setCountLikes(count)
     }
-    setIsLiked(!isLiked)
-  }
+
+    countLikes()
+      .then(() => console.log('bien'))
+      .catch(e => console.log(e.message))
+  }, [isLike])
+
+  useEffect(() => {
+    async function Liked() {
+      const res = await fetch(
+        'http://localhost:3001/api/post/' + post._id + '/isliked',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${sessionStorage.token}`,
+          },
+        }
+      )
+
+      if (!res.ok) {
+        console.log('error')
+        return
+      }
+
+      const liked = await res.json()
+
+      setIsLike(liked.liked)
+    }
+    Liked()
+  }, [])
 
   const handleAddComment = () => {
     if (commentText.trim()) {
@@ -38,70 +94,18 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
   return (
     <>
       {isOpen && (
-        <div
-          onClick={onClose}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000,
-          }}
-        >
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{
-              backgroundColor: 'white',
-              display: 'flex',
-              maxWidth: '90%',
-              maxHeight: '90%',
-              position: 'relative',
-            }}
-          >
-            <div
-              style={{
-                flex: '1.5',
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: 'black',
-              }}
-            >
-              <img
-                src={post?.imageURL}
-                alt="post"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  maxHeight: '90vh',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
+        <div className="PostModal" onClick={onClose}>
+          <div className="PostModal-panel" onClick={e => e.stopPropagation()}>
+            <img
+              className="PostModal-img"
+              src={'http://localhost:3001/uploads/' + post?.image}
+              alt="post"
+            />
 
-            <div
-              style={{
-                flex: '1',
-                padding: '20px',
-                display: 'flex',
-                flexDirection: 'column',
-                minWidth: '300px',
-              }}
-            >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  marginBottom: '20px',
-                }}
-              >
+            <div className="PostModal-body">
+              <div className="PostModal-header">
                 <img
-                  src={userProfile?.profilePicURL}
+                  src={post?.user?.avatar || 'https://i.pravatar.cc/300'}
                   alt="avatar"
                   style={{
                     width: '40px',
@@ -113,30 +117,20 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                 <strong>{userProfile?.username}</strong>
               </div>
 
-              <div
-                style={{
-                  borderTop: '1px solid #dbdbdb',
-                  paddingTop: '20px',
-                  flex: 1,
-                  overflowY: 'auto',
-                  maxHeight: '400px',
-                }}
-              >
-                {post?.caption && (
-                  <Caption post={post} userProfile={userProfile} />
+              <div className="PostModal-comments">
+                {post?.description && (
+                  <Caption
+                    avatar={post?.user?.avatar}
+                    username={post?.user?.username}
+                    description={post.description}
+                    createdAt={post.createdAt}
+                  />
                 )}
-                {comments?.map(comment => (
-                  <Comment key={comment.id} comment={comment} />
-                ))}
+
+                {comments && <Comments comments={comments} />}
               </div>
 
-              <div
-                style={{
-                  borderTop: '1px solid #dbdbdb',
-                  paddingTop: '10px',
-                  marginTop: '10px',
-                }}
-              >
+              <div className="PostModal-footer">
                 <div
                   style={{
                     display: 'flex',
@@ -145,7 +139,11 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                     marginBottom: '10px',
                   }}
                 >
-                  <Like isLiked={isLiked} handleLike={handleLike} />
+                  <Like
+                    isLike={isLike}
+                    setIsLike={setIsLike}
+                    postId={post._id}
+                  />
                   <span
                     onClick={e => {
                       e.stopPropagation()
@@ -157,7 +155,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                   </span>
                 </div>
                 <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
-                  {likesCount} likes
+                  {countLikes.likes} Me gusta
                 </div>
                 <div
                   style={{
@@ -166,7 +164,7 @@ const PostModal = ({ isOpen, post, userProfile, onClose }) => {
                     marginBottom: '10px',
                   }}
                 >
-                  {post?.createdAt}
+                  {formattedCreatedAt}
                 </div>
 
                 {showCommentInput && (
