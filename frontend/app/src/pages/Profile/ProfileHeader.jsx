@@ -22,34 +22,34 @@ const ProfileHeader = ({ user, itsMe }) => {
   const handleFollowClick = async e => {
     if (!token) return console.log('Debes iniciar sesion')
 
-    if (!user) {
-      try {
-        const res = await fetch(
-          `http://localhost:3001/api/users/${user.username}/follow`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
+    if (!user) return console.log('No has iniciado sesión')
 
-        if (!res.ok) {
-          const error = await res.json()
-
-          console.log(error)
-
-          return
+    try {
+      const res = await fetch(
+        `http://localhost:3001/api/users/${user.username}/follow`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      )
 
-        const success = await res.json()
+      if (!res.ok) {
+        const error = await res.json()
 
-        console.log(success)
-
-        setIsFollowing(!isFollowing)
-      } catch (error) {
         console.log(error)
+
+        return
       }
+
+      const success = await res.json()
+
+      console.log(success)
+
+      setIsFollowing(!isFollowing)
+    } catch (error) {
+      console.log(error)
     }
   }
 

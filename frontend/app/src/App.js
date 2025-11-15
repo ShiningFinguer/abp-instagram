@@ -8,7 +8,6 @@ import Settings from './Components/Settings/Settings'
 
 function App() {
   const [token, setToken] = useState(sessionStorage.token)
-  const [username, setUsername] = useState('')
   const navigate = useNavigate()
 
   const logOut = () => {
@@ -16,38 +15,6 @@ function App() {
     sessionStorage.removeItem('token')
     navigate('/')
   }
-
-  useEffect(() => {
-    if (token) {
-      async function getUser() {
-        try {
-          const res = await fetch('http://localhost:3001/api/users', {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-
-          if (!res.ok) {
-            alert('Error al ver el ususario')
-            sessionStorage.removeItem('token')
-
-            return
-          }
-
-          const { username: _username } = await res.json()
-
-          setUsername(_username)
-        } catch (error) {
-          console.log(error.message)
-        }
-      }
-
-      getUser()
-        .then(() => console.log('bien'))
-        .catch(e => console.log(e.message))
-    }
-  }, [token])
 
   return (
     <Routes>

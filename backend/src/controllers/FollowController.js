@@ -1,25 +1,41 @@
 import Follow from '../models/Follow.js'
+import User from '../models/User.js'
 
 export const toggleFollow = async (req, res) => {
   try {
     const simp = req.user.id
-    const following = req.params.user
+    const userToFollow = req.params.userToFollow
 
     if (!simp) return res.status(401).json({ error: 'Necesita logearse' })
 
+    if (!userToFollow)
+      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+
+    const userToFollowDB = await User.findOne({ username: userToFollow })
+
+    if (!userToFollowDB)
+      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+
     // Comprobamos si el usuario ya esta siguiendo o no
-    const followed = await Follow.findOne({ simp, following })
+    const followed = await Follow.findOne({
+      simp,
+      following: userToFollowDB._id,
+    })
 
     if (followed) {
-      // SI ya estas siguiendo, deja de seguir
+      // Si ya estas siguiendo, deja de seguir
       await Follow.deleteOne({ _id: followed._id })
       return res.status(200).json({ message: 'Follow eliminado' })
     } else {
       // Si no estas siguiendo, empeiza a seguirlo
-      const Follow = await Follow.create({ simp, following })
-      return res.status(200).json({ message: 'Follow añadido', Follow })
+      const follow = await Follow.create({
+        simp,
+        following: userToFollowDB._id,
+      })
+      return res.status(200).json({ message: 'Follow añadido', follow })
     }
   } catch (err) {
+    console.log(err.message)
     res.status(500).json({ error: err.message })
   }
 }

@@ -16,7 +16,7 @@ export default function Post({ post }) {
   const [likes, setLikes] = useState([])
   const [comments, setComments] = useState([])
   const token = sessionStorage.getItem('token')
-  const [showToolTip, setshowToolTip] = useState(false);
+  const [showToolTip, setshowToolTip] = useState(false)
 
   useEffect(() => {
     async function countLikes() {
@@ -125,29 +125,27 @@ export default function Post({ post }) {
 
     e.target.reset()
   }
-  
+
   const handleDeletePost = async () => {
     const res = await fetch(`http://localhost:3001/api/post/${post._id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
 
-    if(!res.ok) {
+    if (!res.ok) {
       alert('No tienes permisos para eliminar este post')
       return
-    } 
+    }
 
-    alert('Eliminado correctamente');
-  } 
+    alert('Eliminado correctamente')
+  }
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText('http://localhost:3000/')
-    alert('¡Link copiado al portapapeles!');
-
-  };
-  
+    alert('¡Link copiado al portapapeles!')
+  }
 
   return (
     <article className="Post">
@@ -161,24 +159,37 @@ export default function Post({ post }) {
           />
           <div>
             <strong className="Post-username">
-              {post?.user?.username || '@username'}
+              {`@${post?.user?.username || 'username'}`}
             </strong>
 
             <div className="Post-date">{createAtFormat.toDateString()}</div>
           </div>
         </div>
 
-        <span onClick={() => setshowToolTip(true)} style={{ cursor: 'pointer', fontSize: '20px' }}>⋯</span>
-        {
-          showToolTip ? <div>
+        <span
+          onClick={() => setshowToolTip(true)}
+          style={{ cursor: 'pointer', fontSize: '20px' }}
+        >
+          ⋯
+        </span>
+        {showToolTip ? (
+          <div>
             <button onClick={handleCopyLink}>Copy Link</button>
-            <button style={{backgroundColor:'red'}} onClick={handleDeletePost}>Eliminar post</button>
-            <button onClick={() => {setshowToolTip(false)}}>Esconder</button>
-          </div> : null
-        }
-
-
-
+            <button
+              style={{ backgroundColor: 'red' }}
+              onClick={handleDeletePost}
+            >
+              Eliminar post
+            </button>
+            <button
+              onClick={() => {
+                setshowToolTip(false)
+              }}
+            >
+              Esconder
+            </button>
+          </div>
+        ) : null}
       </header>
 
       {/* Body */}
