@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 
 const ProfileHeader = ({ user, itsMe }) => {
   const [isFollowing, setIsFollowing] = useState(false)
-  const [userProfile, setUserProfile] = useState([])
   const token = sessionStorage.token
 
   useEffect(() => {
-    if (!user) {
+    if (user) {
+
+      // Fetch is Followed
       fetch(`http://localhost:3001/api/users/${user.username}/follow`, {
         method: 'GET',
         headers: {
@@ -81,23 +82,21 @@ const ProfileHeader = ({ user, itsMe }) => {
         }}
       >
         <h2>{user?.username}</h2>
-        {!itsMe && (
-          <button onClick={handleFollowClick}>
+        <button onClick={handleFollowClick}>
             {isFollowing ? 'Unfollow' : 'Follow'}
-          </button>
-        )}
+        </button>
       </div>
 
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{user?.posts}</strong> Posts
+          <strong>{user?.posts.length}</strong> Posts
         </div>
         <div>
-          <strong>{user?.following}</strong> Followers
+          <strong>{user?.following.length}</strong> Followers
         </div>
         <div>
-          <strong>{user?.followers}</strong> Following
+          <strong>{user?.followers.length}</strong> Following
         </div>
       </div>
 

@@ -5,6 +5,7 @@ import ProfileTabs from './ProfileTabs'
 import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
+import ProfileHeaderOwn from './ProfileHeaderOwn'
 
 const Profile = ({ logOut }) => {
   const { username } = useParams()
@@ -98,7 +99,7 @@ const Profile = ({ logOut }) => {
       >
         {user ? (
           <>
-            <ProfileHeader user={user} itsMe={itsMe} />
+            {itsMe ? (<ProfileHeaderOwn/>) : (<ProfileHeader user={user} itsMe={itsMe} />)}
             <ProfileTabs />
             <ProfilePosts posts={posts} userProfile={user} />
           </>
