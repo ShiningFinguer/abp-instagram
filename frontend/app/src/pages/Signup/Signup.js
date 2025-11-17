@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Signup.css'
 import { Alert } from '../../Components/Alert/Alert'
+import { API_URL } from '../../constants'
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -38,7 +39,7 @@ export default function Signup() {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:3001/api/users', {
+      const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

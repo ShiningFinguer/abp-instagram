@@ -6,6 +6,7 @@ import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 import ProfileHeaderOwn from './ProfileHeaderOwn'
+import { API_URL } from '../../constants'
 
 const Profile = ({ logOut }) => {
   const { username } = useParams()
@@ -19,7 +20,7 @@ const Profile = ({ logOut }) => {
 
   useEffect(() => {
     if (token && !username) {
-      fetch(`http://localhost:3001/api/users/me`, {
+      fetch(`${API_URL}/api/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +35,7 @@ const Profile = ({ logOut }) => {
           navigate('/')
         })
 
-      fetch('http://localhost:3001/api/post/me', {
+      fetch(`${API_URL}/api/post/me`, {
         headers: {
           Authorization: `Bearer ${sessionStorage.token}`,
         },
@@ -44,7 +45,7 @@ const Profile = ({ logOut }) => {
         .catch(e => console.log(e.message))
     }
 
-    fetch(`http://localhost:3001/api/users/${username}`)
+    fetch(`${API_URL}/api/users/${username}`)
       .then(res => {
         if (!res.ok) return console.log('Algo ha ido mal')
 
@@ -52,7 +53,7 @@ const Profile = ({ logOut }) => {
       })
       .then(setUser)
 
-    fetch(`http://localhost:3001/api/post/${username}`, {
+    fetch(`${API_URL}/api/post/${username}`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.token}`,
       },
@@ -65,7 +66,7 @@ const Profile = ({ logOut }) => {
   // si el username de la barra de direcciones es el mio, entonces cambiamos estado itsMe
   useEffect(() => {
     if (user?.username && token) {
-      fetch(`http://localhost:3001/api/users/me`, {
+      fetch(`${API_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then(res => res.json())
@@ -77,7 +78,7 @@ const Profile = ({ logOut }) => {
   }, [user, username, token])
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/post/me', {
+    fetch(`${API_URL}/api/post/me`, {
       headers: {
         Authorization: `Bearer ${sessionStorage.token}`,
       },
@@ -99,7 +100,11 @@ const Profile = ({ logOut }) => {
       >
         {user ? (
           <>
-            {itsMe ? (<ProfileHeaderOwn post={posts}/>) : (<ProfileHeader user={user} itsMe={itsMe} post={posts} />)}
+            {itsMe ? (
+              <ProfileHeaderOwn post={posts} />
+            ) : (
+              <ProfileHeader user={user} itsMe={itsMe} post={posts} />
+            )}
             <ProfileTabs />
             <ProfilePosts posts={posts} userProfile={user} />
           </>

@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
+import { API_URL } from '../../constants'
 
 const ProfileHeader = ({ user, itsMe, posts }) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followers, setFollowers] = useState(0);
-  const [following, setFollowing] = useState(0);
+  const [isFollowing, setIsFollowing] = useState(false)
+  const [followers, setFollowers] = useState(0)
+  const [following, setFollowing] = useState(0)
 
-  const location = useLocation();
-  const token = sessionStorage.token;
+  const location = useLocation()
+  const token = sessionStorage.token
 
   useEffect(() => {
     if (user) {
-
       // Fetch is Followed
-      fetch(`http://localhost:3001/api/users/${user.username}/follow`, {
+      fetch(`${API_URL}/api/users/${user.username}/follow`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -23,11 +23,11 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
         .then(({ followed }) => setIsFollowing(followed))
         .catch(e => console.log(e))
     }
-  }, [user, location]);
+  }, [user, location])
 
   useEffect(() => {
     if (user?.username) {
-      fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
+      fetch(`${API_URL}/api/users/${user.username}/followers/count`)
         .then(res => res.json())
         .then(data => setFollowers(data.followers ?? 0))
         .catch(err => {
@@ -35,7 +35,7 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
           setFollowers(0)
         })
 
-      fetch(`http://localhost:3001/api/users/${user.username}/following/count`)
+      fetch(`${API_URL}/api/users/${user.username}/following/count`)
         .then(res => res.json())
         .then(data => setFollowing(data.following ?? 0))
         .catch(err => {
@@ -51,15 +51,12 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
     if (!user) return console.log('No has iniciado sesión')
 
     try {
-      const res = await fetch(
-        `http://localhost:3001/api/users/${user.username}/follow`,
-        {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      const res = await fetch(`${API_URL}/api/users/${user.username}/follow`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       if (!res.ok) {
         const error = await res.json()
@@ -108,7 +105,7 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
       >
         <h2>{user?.username}</h2>
         <button onClick={handleFollowClick}>
-            {isFollowing ? 'Unfollow' : 'Follow'}
+          {isFollowing ? 'Unfollow' : 'Follow'}
         </button>
       </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PostModal from '../../Components/_Posts/Modal/PostModal'
+import { API_URL } from '../../constants'
 
 const ProfilePost = ({ post, userProfile }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,7 +15,7 @@ const ProfilePost = ({ post, userProfile }) => {
         }}
       >
         <img
-          src={'http://localhost:3001/uploads/' + post.image}
+          src={`${API_URL}/uploads/` + post.image}
           alt="post"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
