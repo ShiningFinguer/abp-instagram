@@ -4,6 +4,8 @@ import React, { useState } from "react";
 export default function Settings() {
   const [formData, setFormData] = useState({ password: "" });
   const [message, setMessage] = useState("");
+  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,6 +13,11 @@ export default function Settings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!checkPassword.test(formData.password)) {
+      alert("La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.");
+      return;
+    }
+
 
     try {
       // Obtén el token del almacenamiento (asumiendo que lo guardas al hacer login)
