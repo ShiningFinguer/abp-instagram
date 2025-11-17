@@ -3,6 +3,7 @@ import './Landing.css'
 import Logo from '../../Components/Logo/Logo'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert } from '../../Components/Alert/Alert'
+import { API_URL } from '../../constants'
 
 export default function Landing({ setToken }) {
   const [loading, setLoading] = useState(false)
@@ -17,7 +18,7 @@ export default function Landing({ setToken }) {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:3001/api/users/login', {
+      const res = await fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

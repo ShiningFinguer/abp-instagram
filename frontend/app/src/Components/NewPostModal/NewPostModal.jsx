@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './NewPostModal.css'
+import { API_URL } from '../../constants'
 
 export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
   const [description, setDescription] = useState('')
@@ -24,7 +25,7 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
     formData.append('image', image)
 
     try {
-      const res = await fetch('http://localhost:3001/api/users/post', {
+      const res = await fetch(`${API_URL}/api/users/post`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem('token')}`,
@@ -40,7 +41,7 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
       console.log('✅ Post creado satisfactoriamente')
 
       // Actualiza la lista de posts
-      const res2 = await fetch('http://localhost:3001/api/post')
+      const res2 = await fetch(`${API_URL}/api/post`)
       if (!res2.ok) throw new Error('Error al obtener los posts')
 
       const posts = await res2.json()

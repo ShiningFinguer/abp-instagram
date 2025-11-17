@@ -8,6 +8,7 @@ import commentIcon from '../../../Assets/comment.png'
 import './PostModal.css'
 import Comments from '../../Comments/Comments'
 import { simpleTimeAgo } from '../../../utils'
+import { API_URL } from '../../../constants'
 
 const PostModal = ({ isOpen, post, onClose, userProfile }) => {
   const [isLike, setIsLike] = useState(false)
@@ -18,7 +19,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
   const formattedCreatedAt = simpleTimeAgo(post.createdAt)
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/posts/${post._id}/comments`)
+    fetch(`${API_URL}/api/posts/${post._id}/comments`)
       .then(res => {
         if (!res.ok) return console.log('Algo salio mal!')
 
@@ -30,12 +31,9 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
 
   useEffect(() => {
     async function countLikes() {
-      const res = await fetch(
-        'http://localhost:3001/api/post/' + post._id + '/likes',
-        {
-          method: 'get',
-        }
-      )
+      const res = await fetch(`${API_URL}/api/post/` + post._id + '/likes', {
+        method: 'get',
+      })
 
       if (!res.ok) {
         console.log('error')
@@ -54,16 +52,13 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
 
   useEffect(() => {
     async function Liked() {
-      const res = await fetch(
-        'http://localhost:3001/api/post/' + post._id + '/isliked',
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.token}`,
-          },
-        }
-      )
+      const res = await fetch(`${API_URL}/api/post/` + post._id + '/isliked', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionStorage.token}`,
+        },
+      })
 
       if (!res.ok) {
         console.log('error')
@@ -98,7 +93,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
           <div className="PostModal-panel" onClick={e => e.stopPropagation()}>
             <img
               className="PostModal-img"
-              src={'http://localhost:3001/uploads/' + post?.image}
+              src={`${API_URL}/uploads/` + post?.image}
               alt="post"
             />
 

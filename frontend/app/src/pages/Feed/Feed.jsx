@@ -5,6 +5,7 @@ import Header from '../../Components/Header/Header'
 import Posts from '../../Components/Posts/Posts'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
 import PostModal from '../../Components/_Posts/Modal/PostModal'
+import { API_URL } from '../../constants'
 
 const Feed = ({ logOut }) => {
   const [posts, setPosts] = useState([])
@@ -13,7 +14,7 @@ const Feed = ({ logOut }) => {
 
   useEffect(() => {
     async function getAllPost() {
-      const res = await fetch('http://localhost:3001/api/post')
+      const res = await fetch(`${API_URL}/api/post`)
 
       if (!res.ok) {
         console.log('error')

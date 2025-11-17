@@ -1,19 +1,17 @@
 import redlikeIcon from '../../../Assets/heartRed.png'
 import whitelikeIcon from '../../../Assets/heartWhite.png'
+import { API_URL } from '../../../constants'
 
 const Like = ({ isLike, setIsLike, postId }) => {
   const handleLike = async () => {
     try {
-      const res = await fetch(
-        'http://localhost:3001/api/post/' + postId + '/likes',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${sessionStorage.token}`,
-          },
-        }
-      )
+      const res = await fetch(`${API_URL}/api/post/` + postId + '/likes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${sessionStorage.token}`,
+        },
+      })
 
       if (!res.ok) return console.log('Error al hacer like')
       const data = await res.json()

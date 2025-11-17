@@ -1,47 +1,47 @@
-import React, { useState } from "react";
-
+import React, { useState } from 'react'
+import { API_URL } from '../../constants'
 
 export default function Settings() {
-  const [formData, setFormData] = useState({ password: "" });
-  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({ password: '' })
+  const [message, setMessage] = useState('')
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async e => {
+    e.preventDefault()
 
     try {
       // Obtén el token del almacenamiento (asumiendo que lo guardas al hacer login)
-      const token = sessionStorage.getItem("token");
+      const token = sessionStorage.getItem('token')
 
       if (!token) {
-        setMessage("No se ha encontrado el token. Inicia sesión primero.");
-        return;
+        setMessage('No se ha encontrado el token. Inicia sesión primero.')
+        return
       }
 
-      const res = await fetch("http://localhost:3001/api/users/password", {
-        method: "PUT",
+      const res = await fetch(`${API_URL}/api/users/password`, {
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ password: formData.password }),
-      });
+      })
 
-      const data = await res.json();
+      const data = await res.json()
 
       if (!res.ok) {
-        throw new Error(data.message || "Error al cambiar contraseña");
+        throw new Error(data.message || 'Error al cambiar contraseña')
       }
 
-      setMessage("✅ Contraseña actualizada correctamente");
-      setFormData({ password: "" });
+      setMessage('✅ Contraseña actualizada correctamente')
+      setFormData({ password: '' })
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message)
     }
-  };
+  }
 
   return (
     <>
@@ -75,12 +75,15 @@ export default function Settings() {
             required
           />
           <button type="submit">Guardar cambios</button>
-          <button type="button" onClick={() => alert("Cerrar sesión aún no implementado")}>
+          <button
+            type="button"
+            onClick={() => alert('Cerrar sesión aún no implementado')}
+          >
             Cerrar sesión
           </button>
         </form>
         {message && <p>{message}</p>}
       </main>
     </>
-  );
+  )
 }

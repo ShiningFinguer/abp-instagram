@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './SearchBoard.css'
+import { API_URL } from '../../constants'
 
 export const SearchBoard = ({ setUsers }) => {
   const [query, setQuery] = useState()
@@ -12,9 +13,7 @@ export const SearchBoard = ({ setUsers }) => {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          'http://localhost:3001/api/users/filter/' + query
-        )
+        const res = await fetch(`${API_URL}/api/users/filter/` + query)
 
         if (!res.ok) {
           console.log('error')

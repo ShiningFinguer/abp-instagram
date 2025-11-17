@@ -1,59 +1,60 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useLoaderData } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { useLocation, useLoaderData } from 'react-router-dom'
+import { API_URL } from '../../constants'
 
-const ProfileHeaderOwn = ({posts}) => {
-  const [userProfile, setUserProfile] = useState([]);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [profile, setProfile] = useState(userProfile);
-  const [followers, setFollowers] = useState(0);
-  const [following, setFollowing] = useState(0);
+const ProfileHeaderOwn = ({ posts }) => {
+  const [userProfile, setUserProfile] = useState([])
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [profile, setProfile] = useState(userProfile)
+  const [followers, setFollowers] = useState(0)
+  const [following, setFollowing] = useState(0)
 
-  const location = useLocation();
-  const token = sessionStorage.getItem("token");
+  const location = useLocation()
+  const token = sessionStorage.getItem('token')
 
   const fetchUserProfile = async () => {
-
     try {
-      const res = await fetch("http://localhost:3001/api/users/me", {
+      const res = await fetch(`${API_URL}/api/users/me`, {
         headers: {
-          'Authorization': `Bearer ${token}` },
-      });
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
-      const data = await res.json();
+      const data = await res.json()
       if (res.ok) {
-        setUserProfile(data);
+        setUserProfile(data)
         console.log(data)
       } else {
-        console.error(data.error);
+        console.error(data.error)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchUserProfile(); 
-  }, [location]);
+    fetchUserProfile()
+  }, [location])
 
-    useEffect(() => {
-      if (userProfile?.username) {
-        fetch(`http://localhost:3001/api/users/${userProfile.username}/followers/count`)
-          .then(res => res.json())
-          .then(data => setFollowers(data.followers ?? 0))
-          .catch(err => {
-            console.error('Error loading followers:', err)
-            setFollowers(0)
-          })
-  
-        fetch(`http://localhost:3001/api/users/${userProfile.username}/following/count`)
-          .then(res => res.json())
-          .then(data => setFollowing(data.following ?? 0))
-          .catch(err => {
-            console.error('Error loading following:', err)
-            setFollowing(0)
-          })
-      }
-    }, [userProfile])
+  useEffect(() => {
+    if (userProfile?.username) {
+      fetch(`${API_URL}/api/users/${userProfile.username}/followers/count`)
+        .then(res => res.json())
+        .then(data => setFollowers(data.followers ?? 0))
+        .catch(err => {
+          console.error('Error loading followers:', err)
+          setFollowers(0)
+        })
+
+      fetch(`${API_URL}/api/users/${userProfile.username}/following/count`)
+        .then(res => res.json())
+        .then(data => setFollowing(data.following ?? 0))
+        .catch(err => {
+          console.error('Error loading following:', err)
+          setFollowing(0)
+        })
+    }
+  }, [userProfile])
 
   const EditProfileForm = ({ onClose, onProfileUpdated }) => {
     const [formData, setFormData] = useState({
@@ -61,38 +62,40 @@ const ProfileHeaderOwn = ({posts}) => {
       email: userProfile.email || '',
       profilePic: userProfile.profilePic || '',
       bio: userProfile.bio || '',
-    });
-  
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
+    })
+
+    const handleChange = e => {
+      const { name, value } = e.target
+      setFormData(prev => ({ ...prev, [name]: value }))
+    }
+
+    const handleSubmit = async e => {
+      e.preventDefault()
       try {
-        const res = await fetch(`http://localhost:3001/api/users/${userProfile._id}/profile`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        });
-        const data = await res.json();
-  
+        const res = await fetch(
+          `${API_URL}/api/users/${userProfile._id}/profile`,
+          {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+          }
+        )
+        const data = await res.json()
+
         if (res.ok) {
-          alert('Perfil actualizado correctamente');
-          onProfileUpdated(data.userProfile); 
-          onClose();
+          alert('Perfil actualizado correctamente')
+          onProfileUpdated(data.userProfile)
+          onClose()
         } else {
-          alert(data.error || 'Error al actualizar el perfil');
+          alert(data.error || 'Error al actualizar el perfil')
         }
       } catch (err) {
-        console.error(err);
-        alert('Error del servidor');
+        console.error(err)
+        alert('Error del servidor')
       }
-      fetchUserProfile(); 
+      fetchUserProfile()
+    }
 
-    };
-  
     return (
       <div className="modal-backdrop">
         <div className="modal">
@@ -106,7 +109,7 @@ const ProfileHeaderOwn = ({posts}) => {
               onChange={handleChange}
               required
             />
-  
+
             <label>Email:</label>
             <input
               type="email"
@@ -115,7 +118,7 @@ const ProfileHeaderOwn = ({posts}) => {
               onChange={handleChange}
               required
             />
-  
+
             <label>Foto de perfil (URL):</label>
             <input
               type="text"
@@ -123,27 +126,28 @@ const ProfileHeaderOwn = ({posts}) => {
               value={formData.profilePic}
               onChange={handleChange}
             />
-  
+
             <label>Biografía:</label>
-            <textarea
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-            />
-  
+            <textarea name="bio" value={formData.bio} onChange={handleChange} />
+
             <div className="form-buttons">
               <button type="submit">Guardar cambios</button>
-              <button type="button" onClick={onClose}>Cancelar</button>
+              <button type="button" onClick={onClose}>
+                Cancelar
+              </button>
             </div>
           </form>
         </div>
-  
+
         {/* Estilos rápidos */}
         <style jsx>{`
           .modal-backdrop {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -153,51 +157,64 @@ const ProfileHeaderOwn = ({posts}) => {
             border-radius: 10px;
             padding: 20px;
             width: 400px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
           }
           .form-buttons {
             margin-top: 15px;
             display: flex;
             justify-content: space-between;
           }
-          input, textarea {
+          input,
+          textarea {
             width: 100%;
             margin-bottom: 10px;
             padding: 8px;
-          } 
+          }
         `}</style>
       </div>
-    );
-  };
-  
-
+    )
+  }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "2rem" }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        padding: '2rem',
+      }}
+    >
       {/*Profile Picture */}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
           src={userProfile?.profilePic}
           alt="Profile"
-          style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+          style={{ width: '150px', height: '150px', borderRadius: '50%' }}
         />
       </div>
 
       {/* Username and Follow */}
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1rem" }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '1rem',
+        }}
+      >
         <h2>{userProfile?.username}</h2>
-        <button onClick={() => setShowEditForm(true)}>Editar perfil</button>        
+        <button onClick={() => setShowEditForm(true)}>Editar perfil</button>
         {showEditForm && (
-        <EditProfileForm
-          userProfile={profile}
-          onClose={() => setShowEditForm(false)}
-          onProfileUpdated={setProfile}
-        />
-      )}
+          <EditProfileForm
+            userProfile={profile}
+            onClose={() => setShowEditForm(false)}
+            onProfileUpdated={setProfile}
+          />
+        )}
       </div>
 
       {/* Profile Info */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
           <strong>{posts?.count}</strong> Posts
         </div>
@@ -210,12 +227,14 @@ const ProfileHeaderOwn = ({posts}) => {
       </div>
 
       {/* NAme */}
-      <div style={{ textAlign: "center", fontWeight: "bold" }}>{userProfile?.username}</div>
+      <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
+        {userProfile?.username}
+      </div>
 
       {/* Bio */}
-      <div style={{ textAlign: "center" }}>{userProfile?.bio}</div>
+      <div style={{ textAlign: 'center' }}>{userProfile?.bio}</div>
     </div>
-  );
-};
+  )
+}
 
-export default ProfileHeaderOwn;
+export default ProfileHeaderOwn
