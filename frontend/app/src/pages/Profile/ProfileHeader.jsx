@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom';
 
 const ProfileHeader = ({ user, itsMe, posts }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
+
+  const location = useLocation();
   const token = sessionStorage.token;
 
   useEffect(() => {
@@ -20,7 +23,7 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
         .then(({ followed }) => setIsFollowing(followed))
         .catch(e => console.log(e))
     }
-  }, [user]);
+  }, [user, location]);
 
   useEffect(() => {
     if (user?.username) {
