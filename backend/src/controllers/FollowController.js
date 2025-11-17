@@ -59,3 +59,59 @@ export const isFollowed = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+export const getFollowCounts = async (req, res) => {
+  try {
+    const username = req.params.user
+
+    if (!username) return res.status(400).json({ error: 'Missing user parameter' })
+
+    const user = await User.findOne({ username })
+    if (!user) return res.status(404).json({ error: 'User not found' })
+
+    const userId = user._id
+
+    // followers: people who follow this user -> Follow.following === userId
+    const followersCount = await Follow.countDocuments({ following: userId })
+
+    // following: people this user follows -> Follow.simp === userId
+    const followingCount = await Follow.countDocuments({ simp: userId })
+
+    return res.status(200).json({ followers: followersCount, following: followingCount })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).json({ error: err.message })
+  }
+}
+
+export const getFollowersCount = async (req, res) => {
+  try {
+    const username = req.params.user
+    if (!username) return res.status(400).json({ error: 'Missing user parameter' })
+
+    const user = await User.findOne({ username })
+    if (!user) return res.status(404).json({ error: 'User not found' })
+
+    const followersCount = await Follow.countDocuments({ following: user._id })
+    return res.status(200).json({ followers: followersCount })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).json({ error: err.message })
+  }
+}
+
+export const getFollowingCount = async (req, res) => {
+  try {
+    const username = req.params.user
+    if (!username) return res.status(400).json({ error: 'Missing user parameter' })
+
+    const user = await User.findOne({ username })
+    if (!user) return res.status(404).json({ error: 'User not found' })
+
+    const followingCount = await Follow.countDocuments({ simp: user._id })
+    return res.status(200).json({ following: followingCount })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(500).json({ error: err.message })
+  }
+}

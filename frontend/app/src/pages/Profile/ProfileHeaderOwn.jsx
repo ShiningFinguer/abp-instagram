@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-const ProfileHeaderOwn = () => {
+const ProfileHeaderOwn = ({posts}) => {
   const [userProfile, setUserProfile] = useState([]);
   const [showEditForm, setShowEditForm] = useState(false);
   const [profile, setProfile] = useState(userProfile);
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
   const token = sessionStorage.getItem("token");
 
   const fetchUserProfile = async () => {
@@ -29,6 +31,26 @@ const ProfileHeaderOwn = () => {
   useEffect(() => {
     fetchUserProfile(); 
   }, []);
+
+    useEffect(() => {
+      if (user?.username) {
+        fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
+          .then(res => res.json())
+          .then(data => setFollowers(data.followers ?? 0))
+          .catch(err => {
+            console.error('Error loading followers:', err)
+            setFollowers(0)
+          })
+  
+        fetch(`http://localhost:3001/api/users/${user.username}/following/count`)
+          .then(res => res.json())
+          .then(data => setFollowing(data.following ?? 0))
+          .catch(err => {
+            console.error('Error loading following:', err)
+            setFollowing(0)
+          })
+      }
+    }, [userProfile])
 
   const EditProfileForm = ({ onClose, onProfileUpdated }) => {
     const [formData, setFormData] = useState({
@@ -174,13 +196,13 @@ const ProfileHeaderOwn = () => {
       {/* Profile Info */}
       <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
         <div>
-          <strong>userProfile?.posts?.length</strong> Posts
+          <strong>{posts?.length}</strong> Posts
         </div>
         <div>
-          <strong>userProfile?.followers?.length</strong> Followers
+          <strong>{followers}</strong> Followers
         </div>
         <div>
-          <strong>userProfile?.following?.length</strong> Following
+          <strong>{following}</strong> Following
         </div>
       </div>
 

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 
-const ProfileHeader = ({ user, itsMe }) => {
-  const [isFollowing, setIsFollowing] = useState(false)
-  const token = sessionStorage.token
+const ProfileHeader = ({ user, itsMe, posts }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
+  const token = sessionStorage.token;
 
   useEffect(() => {
     if (user) {
@@ -18,7 +20,27 @@ const ProfileHeader = ({ user, itsMe }) => {
         .then(({ followed }) => setIsFollowing(followed))
         .catch(e => console.log(e))
     }
-  }, [user])
+  }, [user]);
+
+  useEffect(() => {
+    if (user?.username) {
+      fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
+        .then(res => res.json())
+        .then(data => setFollowers(data.followers ?? 0))
+        .catch(err => {
+          console.error('Error loading followers:', err)
+          setFollowers(0)
+        })
+
+      fetch(`http://localhost:3001/api/users/${user.username}/following/count`)
+        .then(res => res.json())
+        .then(data => setFollowing(data.following ?? 0))
+        .catch(err => {
+          console.error('Error loading following:', err)
+          setFollowing(0)
+        })
+    }
+  }, [user, isFollowing])
 
   const handleFollowClick = async e => {
     if (!token) return console.log('Debes iniciar sesion')
@@ -90,13 +112,13 @@ const ProfileHeader = ({ user, itsMe }) => {
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{user?.posts.length}</strong> Posts
+          <strong>{posts?.length}</strong> Posts
         </div>
         <div>
-          <strong>{user?.following.length}</strong> Followers
+          <strong>{followers}</strong> Followers
         </div>
         <div>
-          <strong>{user?.followers.length}</strong> Following
+          <strong>{following}</strong> Following
         </div>
       </div>
 

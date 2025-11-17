@@ -99,7 +99,7 @@ const Profile = ({ logOut }) => {
       >
         {user ? (
           <>
-            {itsMe ? (<ProfileHeaderOwn/>) : (<ProfileHeader user={user} itsMe={itsMe} />)}
+            {itsMe ? (<ProfileHeaderOwn post={posts}/>) : (<ProfileHeader user={user} itsMe={itsMe} post={posts} />)}
             <ProfileTabs />
             <ProfilePosts posts={posts} userProfile={user} />
           </>
