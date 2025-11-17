@@ -24,6 +24,7 @@ const app = express()
 
 // URL de conexión a MongoDB
 const mongoURI =
+  process.env.MONGO_URL ||
   'mongodb://admin:password@db:27017/abp-instagram?authSource=admin'
 
 // Conectar a MongoDB
