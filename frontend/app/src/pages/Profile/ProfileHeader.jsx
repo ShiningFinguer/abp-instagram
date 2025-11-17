@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom';
 
-const ProfileHeader = ({ user, itsMe }) => {
-  const [isFollowing, setIsFollowing] = useState(false)
-  const [userProfile, setUserProfile] = useState([])
-  const token = sessionStorage.token
+const ProfileHeader = ({ user, itsMe, posts }) => {
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
+
+  const location = useLocation();
+  const token = sessionStorage.token;
 
   useEffect(() => {
-    if (!user) {
+    if (user) {
+
+      // Fetch is Followed
       fetch(`http://localhost:3001/api/users/${user.username}/follow`, {
         method: 'GET',
         headers: {
@@ -17,7 +23,27 @@ const ProfileHeader = ({ user, itsMe }) => {
         .then(({ followed }) => setIsFollowing(followed))
         .catch(e => console.log(e))
     }
-  }, [user])
+  }, [user, location]);
+
+  useEffect(() => {
+    if (user?.username) {
+      fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
+        .then(res => res.json())
+        .then(data => setFollowers(data.followers ?? 0))
+        .catch(err => {
+          console.error('Error loading followers:', err)
+          setFollowers(0)
+        })
+
+      fetch(`http://localhost:3001/api/users/${user.username}/following/count`)
+        .then(res => res.json())
+        .then(data => setFollowing(data.following ?? 0))
+        .catch(err => {
+          console.error('Error loading following:', err)
+          setFollowing(0)
+        })
+    }
+  }, [user, isFollowing])
 
   const handleFollowClick = async e => {
     if (!token) return console.log('Debes iniciar sesion')
@@ -81,23 +107,21 @@ const ProfileHeader = ({ user, itsMe }) => {
         }}
       >
         <h2>{user?.username}</h2>
-        {!itsMe && (
-          <button onClick={handleFollowClick}>
+        <button onClick={handleFollowClick}>
             {isFollowing ? 'Unfollow' : 'Follow'}
-          </button>
-        )}
+        </button>
       </div>
 
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{user?.posts}</strong> Posts
+          <strong>{posts?.length}</strong> Posts
         </div>
         <div>
-          <strong>{user?.following}</strong> Followers
+          <strong>{followers}</strong> Followers
         </div>
         <div>
-          <strong>{user?.followers}</strong> Following
+          <strong>{following}</strong> Following
         </div>
       </div>
 
