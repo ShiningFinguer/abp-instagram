@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useLoaderData } from "react-router-dom";
 
 const ProfileHeaderOwn = ({posts}) => {
   const [userProfile, setUserProfile] = useState([]);
@@ -6,6 +7,8 @@ const ProfileHeaderOwn = ({posts}) => {
   const [profile, setProfile] = useState(userProfile);
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
+
+  const location = useLocation();
   const token = sessionStorage.getItem("token");
 
   const fetchUserProfile = async () => {
@@ -30,11 +33,11 @@ const ProfileHeaderOwn = ({posts}) => {
 
   useEffect(() => {
     fetchUserProfile(); 
-  }, []);
+  }, [location]);
 
     useEffect(() => {
       if (userProfile?.username) {
-        fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
+        fetch(`http://localhost:3001/api/users/${userProfile.username}/followers/count`)
           .then(res => res.json())
           .then(data => setFollowers(data.followers ?? 0))
           .catch(err => {
@@ -42,7 +45,7 @@ const ProfileHeaderOwn = ({posts}) => {
             setFollowers(0)
           })
   
-        fetch(`http://localhost:3001/api/users/${user.username}/following/count`)
+        fetch(`http://localhost:3001/api/users/${userProfile.username}/following/count`)
           .then(res => res.json())
           .then(data => setFollowing(data.following ?? 0))
           .catch(err => {
@@ -77,7 +80,7 @@ const ProfileHeaderOwn = ({posts}) => {
   
         if (res.ok) {
           alert('Perfil actualizado correctamente');
-          onProfileUpdated(data.user); 
+          onProfileUpdated(data.userProfile); 
           onClose();
         } else {
           alert(data.error || 'Error al actualizar el perfil');
@@ -196,7 +199,7 @@ const ProfileHeaderOwn = ({posts}) => {
       {/* Profile Info */}
       <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
         <div>
-          <strong>{posts?.length}</strong> Posts
+          <strong>{posts?.count}</strong> Posts
         </div>
         <div>
           <strong>{followers}</strong> Followers
