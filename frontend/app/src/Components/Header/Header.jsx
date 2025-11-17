@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Home, Search, PlusSquare, User, LogOut } from 'lucide-react'
+import { Home, Search, PlusSquare, User, Settings, LogOut } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { SearchBoard } from '../SearchBoard/SearchBoard'
 import { SearchName } from '../SearchName/SearchName'
@@ -38,6 +38,13 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
             <Link to="/profile">
               <User />
             </Link>
+            <div>
+              <Link to="/settings">
+                <Settings style={{color: 'black'}}/>
+              </Link>
+
+            </div>
+
             <div onClick={logOut} style={{ cursor: 'pointer' }}>
               <LogOut />
             </div>
