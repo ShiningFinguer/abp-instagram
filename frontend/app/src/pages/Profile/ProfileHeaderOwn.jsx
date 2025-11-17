@@ -33,7 +33,7 @@ const ProfileHeaderOwn = ({posts}) => {
   }, []);
 
     useEffect(() => {
-      if (user?.username) {
+      if (userProfile?.username) {
         fetch(`http://localhost:3001/api/users/${user.username}/followers/count`)
           .then(res => res.json())
           .then(data => setFollowers(data.followers ?? 0))
