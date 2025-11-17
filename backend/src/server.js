@@ -4,11 +4,15 @@ import fs from 'fs'
 import path from 'path'
 import mongoose from 'mongoose'
 import cors from 'cors'
+import dotenv from 'dotenv'
+
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
 import { LikeRouter } from './routes/LikeRouter.js'
 import { CommentRouter } from './routes/CommentRouter.js'
 import { FollowRouter } from './routes/FollowRouter.js'
+
+dotenv.config()
 
 // Cargar certificados
 const __dirname = process.cwd()
