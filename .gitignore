@@ -2,3 +2,4 @@ node_modules
 backend/images
 backend/uploads
 backend/public/uploads
+backend/public

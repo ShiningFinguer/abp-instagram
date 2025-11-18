@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Signup.css'
 import { Alert } from '../../Components/Alert/Alert'
@@ -11,12 +11,12 @@ export default function Signup() {
     email: '',
     password: '',
     bio: '',
-    profilePic: null,
+    avatar: null,
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 
   const handleChange = e => {
     const { name, value, files } = e.target
@@ -28,40 +28,42 @@ export default function Signup() {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    
-    if (!checkPassword.test(formData.password)) {
-      alert("La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.");
-      return;
-    }
 
+    if (!checkPassword.test(formData.password)) {
+      alert(
+        'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.'
+      )
+      return
+    }
 
     setSuccess('')
     setError('')
     setLoading(true)
+
+    const dataToSend = new FormData()
+    dataToSend.append('name', formData.name)
+    dataToSend.append('username', formData.username)
+    dataToSend.append('password', formData.password)
+    dataToSend.append('email', formData.email)
+    dataToSend.append('bio', formData.bio)
+    if (formData.avatar) {
+      dataToSend.append('avatar', formData.avatar)
+    }
+
     try {
       const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          password: formData.password,
-          email: formData.email,
-          bio: formData.bio
-        }),
+        body: dataToSend,
       })
 
       if (!res.ok) {
         setError('Usuario ya registrado, vuelve a intentarlo')
-
         return
       }
 
       setSuccess('Usuario registrado sastifactoriamente')
     } catch (error) {
       setError(error.message)
-      setLoading(false)
     } finally {
       setLoading(false)
     }
@@ -71,7 +73,11 @@ export default function Signup() {
     <div className="signup-wrapper">
       <main className="signup-container">
         <h1>Crear cuenta</h1>
-        <form className="signup-form" onSubmit={handleSubmit}>
+        <form
+          className="signup-form"
+          onSubmit={handleSubmit}
+          encType="multipart/form-data"
+        >
           <input
             type="text"
             placeholder="Nombre completo"
@@ -117,7 +123,7 @@ export default function Signup() {
 
           <input
             type="file"
-            name="profilePic"
+            name="avatar"
             accept="image/*"
             onChange={handleChange}
           />

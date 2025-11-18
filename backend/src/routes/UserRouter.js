@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import multer from 'multer'
 import { register } from '../controllers/UserController.js'
 import { login } from '../controllers/UserController.js'
 import { deleteUserByID } from '../controllers/UserController.js'
@@ -10,10 +11,14 @@ import { getUserByToken } from '../controllers/UserController.js'
 import { verifyMySelfProfile } from '../controllers/UserController.js'
 import { getUsersFiltered } from '../controllers/UserController.js'
 
+export const postRouter = Router()
+
+const upload = multer({ dest: 'public/avatars/' })
+
 const userRouter = Router()
 
 // Crear usuario
-userRouter.post('/api/users', register)
+userRouter.post('/api/users', upload.single('avatar'), register)
 
 // Login
 userRouter.post('/api/users/login', login)
@@ -22,7 +27,11 @@ userRouter.post('/api/users/login', login)
 userRouter.get('/api/users/me', verifyToken, getUserByToken)
 
 // Verificar si estas buscando tu propio perfil o no
-userRouter.get('api/users/verifyMySelfProfile', verifyToken, verifyMySelfProfile)
+userRouter.get(
+  'api/users/verifyMySelfProfile',
+  verifyToken,
+  verifyMySelfProfile
+)
 
 // Obtener usuario por ID
 userRouter.get('/api/users/me', verifyToken, getUserByToken)

@@ -27,7 +27,10 @@ export const postPost = async (req, res) => {
 // Obtener los posts de todos los usuarios
 export const getAllPost = async (req, res) => {
   try {
-    const posts = await Post.find().populate('user', { username: true })
+    const posts = await Post.find().populate('user', {
+      username: true,
+      profilePic: true,
+    })
     res.json(posts)
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -40,6 +43,7 @@ export const getPostsById = async (req, res) => {
     const id = req.user.id
     const post = await Post.find({ user: id }).populate('user', {
       username: true,
+      profilePic: true,
     })
     res.json(post)
   } catch (err) {
@@ -57,6 +61,7 @@ export const getPostsByUsername = async (req, res) => {
 
     const post = await Post.find({ user: user._id }).populate('user', {
       username: true,
+      profilePic: true,
     })
     res.json(post)
   } catch (err) {

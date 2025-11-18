@@ -7,9 +7,17 @@ import Post from '../models/Post.js'
 // Registro
 export const register = async (req, res) => {
   try {
-    const { username, email, password } = req.body
+    const filename = req?.file?.filename
+    console.log(filename)
+    const { username, email, password, bio } = req.body
     const hashed = await bcrypt.hash(password, 10)
-    const user = await User.create({ username, email, password: hashed })
+    const user = await User.create({
+      username,
+      email,
+      password: hashed,
+      bio,
+      profilePic: filename,
+    })
     res.status(201).json({ message: 'Usuario creado', user })
   } catch (err) {
     res.status(400).json({ error: err.message })

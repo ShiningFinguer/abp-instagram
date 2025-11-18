@@ -85,9 +85,19 @@ const ProfileHeader = ({ user, itsMe }) => {
       {/* Profile Picture */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
-          src={user?.avatar || userDefault}
+          src={
+            user?.profilePic
+              ? `${API_URL}/avatars/${user.profilePic}`
+              : userDefault
+          }
           alt="Profile"
-          style={{ width: '150px', height: '150px', borderRadius: '50%' }}
+          style={{
+            width: '150px',
+            height: '150px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
         />
       </div>
 
@@ -110,6 +120,9 @@ const ProfileHeader = ({ user, itsMe }) => {
         )}
       </div>
 
+      {/* Bio */}
+      <div style={{ textAlign: 'center' }}>{user?.bio}</div>
+
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
@@ -122,14 +135,6 @@ const ProfileHeader = ({ user, itsMe }) => {
           <strong>{following}</strong> Following
         </div>
       </div>
-
-      {/* Name */}
-      <div style={{ textAlign: 'center', fontWeight: 'bold' }}>
-        {user?.username}
-      </div>
-
-      {/* Bio */}
-      <div style={{ textAlign: 'center' }}>{user?.bio}</div>
 
       {showEditForm && (
         <EditProfileForm onClose={() => setShowEditForm(false)} />

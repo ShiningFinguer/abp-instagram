@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   profilePic: { type: String, default: '' },
   bio: { type: String, default: '' },
   // privacy: { type: String, enum: ['public', 'private'], default: 'public' },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+})
 
-export default mongoose.model('User', UserSchema);
+export default mongoose.model('User', UserSchema)

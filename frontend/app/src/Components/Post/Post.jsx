@@ -121,7 +121,11 @@ export default function Post({ post, onDelete }) {
         <div className="Post-header-wrapper">
           <img
             className="Post-avatar"
-            src={post?.user?.avatar || userDefault}
+            src={
+              post?.user?.profilePic
+                ? `${API_URL}/avatars/${post?.user?.profilePic}`
+                : userDefault
+            }
             alt="avatar"
           />
           <div>
@@ -175,7 +179,7 @@ export default function Post({ post, onDelete }) {
         <div className="Post-footer-row-2"> {countLikes.likes} Me gusta</div>
 
         <Caption
-          avatar={post?.user?.avatar}
+          avatar={post?.user?.profilePic}
           username={post?.user?.username}
           description={description}
           createdAt={post.createdAt}
