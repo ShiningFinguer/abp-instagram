@@ -4,6 +4,25 @@ ABP-Instagram es una aplicación web de red social inspirada en Instagram, desar
 
 ![alt](./docs/images/abp-home.png)
 
+## Características del Proyecto
+
+- **Autenticación con JWT**
+  Registro, login y manejo de sesiones seguras mediante tokens.
+- **Gestión completa de posts**
+  Crear, leer, dar like y comentar publicaciones.
+- **Sistema de seguidores**
+  Seguir o dejar de seguir usuarios, y consultar seguidores/seguidos.
+- **API REST escalable y modular**
+  Rutas organizadas por recursos, middlewares reutilizables y controladores limpios.
+- **Subida de imágenes** _(opcional, si lo usas)_
+  Soporte para imágenes en posts con almacenamiento local o en la nube.
+- **Frontend con Create React App**
+  Interfaz moderna, componentes reutilizables y manejo de estado eficiente.
+- **Protección de rutas en el frontend**
+  Acceso restringido basado en token.
+- **Likes y comentarios**
+  Interacciones sin recargar la página.
+
 ## Tecnologías
 
 ### Backend
@@ -125,7 +144,7 @@ frontend/
 └── package-lock.json
 ```
 
-## Base de datos diagrama
+## Diagrama de base de datos
 
 ![Database diagram](./docs/images/db-diagram.png)
 
@@ -151,3 +170,7 @@ frontend/
 | GET    | `/posts/:id/isliked` | Verificar si ha dado like             | `Authorization: Bearer <JWT_TOKEN>` |
 | POST   | `/posts/:id/comment` | Comentar un post                      | `Authorization: Bearer <JWT_TOKEN>` |
 | POST   | `/users/:id/follow`  | Seguir o dejar de seguir a un usuario | `Authorization: Bearer <JWT_TOKEN>` |
+
+## 🚀 Despliegue
+
+[Abp-Instagram](https://tranquil-patience-production.up.railway.app/)

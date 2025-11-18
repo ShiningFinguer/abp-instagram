@@ -35,11 +35,11 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
             <Link to="/profile">
               <User />
             </Link>
-            <div>
+            {/* <div>
               <Link to="/settings">
                 <Settings style={{ color: 'black' }} />
               </Link>
-            </div>
+            </div> */}
 
             <div onClick={logOut} style={{ cursor: 'pointer' }}>
               <LogOut />
