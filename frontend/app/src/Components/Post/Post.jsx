@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react'
-import commentIcon from '../../Assets/comment.png'
-import redlikeIcon from '../../Assets/heartRed.png'
-import whitelikeIcon from '../../Assets/heartWhite.png'
-import SendIcon from '../../Assets/send.png'
-import avatar from '../../Assets/avatar.jpeg'
+import userDefault from '../../Assets/userDefault.png'
 import Caption from '../Comment/Caption'
 import Comments from '../Comments/Comments'
 import './Post.css'
 import { simpleTimeAgo } from '../../utils'
 import Like from '../_Posts/Like/Like'
 import { API_URL } from '../../constants'
+import { Trash2 } from 'lucide-react'
 
-export default function Post({ post }) {
+export default function Post({ post, onDelete }) {
   const { description, image, createdAt } = post
   const formatedCreatedAt = simpleTimeAgo(post.createdAt)
   const [isOpen, setIsOpen] = useState(false)
@@ -99,6 +96,8 @@ export default function Post({ post }) {
   }
 
   const handleDeletePost = async () => {
+    if (!window.confirm('¿Estás seguro de eliminar este post?')) return
+
     const res = await fetch(`${API_URL}/api/post/${post._id}`, {
       method: 'DELETE',
       headers: {
@@ -111,12 +110,8 @@ export default function Post({ post }) {
       return
     }
 
-    alert('Eliminado correctamente')
-  }
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText('http://localhost:3000/')
-    alert('¡Link copiado al portapapeles!')
+    // Llamar la función del padre para eliminar el post de la lista
+    if (onDelete) onDelete(post._id)
   }
 
   return (
@@ -126,7 +121,7 @@ export default function Post({ post }) {
         <div className="Post-header-wrapper">
           <img
             className="Post-avatar"
-            src={post?.user?.avatar || avatar}
+            src={post?.user?.avatar || userDefault}
             alt="avatar"
           />
           <div>
@@ -138,30 +133,27 @@ export default function Post({ post }) {
           </div>
         </div>
 
-        <span
-          onClick={() => setshowToolTip(true)}
-          style={{ cursor: 'pointer', fontSize: '20px' }}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
         >
-          ⋯
-        </span>
-        {showToolTip ? (
-          <div>
-            <button onClick={handleCopyLink}>Copy Link</button>
-            <button
-              style={{ backgroundColor: 'red' }}
-              onClick={handleDeletePost}
-            >
-              Eliminar post
-            </button>
-            <button
-              onClick={() => {
-                setshowToolTip(false)
-              }}
-            >
-              Esconder
-            </button>
-          </div>
-        ) : null}
+          {showToolTip && (
+            <div style={{ cursor: 'pointer' }} onClick={handleDeletePost}>
+              <Trash2 color="#f83e3e" />
+            </div>
+          )}
+
+          <span
+            onClick={() => setshowToolTip(!showToolTip)}
+            style={{ cursor: 'pointer', fontSize: '20px' }}
+          >
+            ⋯
+          </span>
+        </div>
       </header>
 
       {/* Body */}
@@ -178,18 +170,6 @@ export default function Post({ post }) {
       <footer className="Post-footer">
         <div className="Post-footer-row-1">
           <Like isLike={isLike} setIsLike={setIsLike} postId={post._id} />
-          {/* <span
-            onClick={() => setShowCommentInput(!showCommentInput)}
-            style={{ cursor: 'pointer' }}
-          >
-            <img src={commentIcon} className="icon" alt="comment" />
-          </span>
-          <span
-            onClick={() => setShowShareModal(true)}
-            style={{ cursor: 'pointer', fontSize: '20px' }}
-          >
-            <img src={SendIcon} className="icon" />
-          </span> */}
         </div>
 
         <div className="Post-footer-row-2"> {countLikes.likes} Me gusta</div>
@@ -206,17 +186,6 @@ export default function Post({ post }) {
         <form onSubmit={handleCommentSubmit}>
           <input type="text" name="text" placeholder="Comentario..." />
         </form>
-
-        <div
-          style={{
-            fontSize: '14px',
-            color: '#8e8e8e',
-            cursor: 'pointer',
-            marginBottom: '8px',
-          }}
-        >
-          View all comments
-        </div>
       </footer>
     </article>
   )

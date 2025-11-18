@@ -10,7 +10,6 @@ import { API_URL } from '../../constants'
 const Feed = ({ logOut }) => {
   const [posts, setPosts] = useState([])
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
-  const [isOpenProfilePost, setIsOpenProfilePost] = useState(false)
 
   useEffect(() => {
     async function getAllPost() {
@@ -32,10 +31,14 @@ const Feed = ({ logOut }) => {
       .catch(e => console.log(e.message))
   }, [])
 
+  const handleDeletePost = postId => {
+    setPosts(prevPosts => prevPosts.filter(p => p._id !== postId))
+  }
+
   return (
     <>
       <Header setIsOPenNewPostModal={setIsOPenNewPostModal} logOut={logOut} />
-      <Posts posts={posts} />
+      <Posts posts={posts} onDelete={handleDeletePost} />
       {isOpenNewPostModal && (
         <NewPostModal
           isOpen={isOpenNewPostModal}

@@ -26,9 +26,6 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
             <Link to="/">
               <Home />
             </Link>
-            <Link to="/search">
-              <Search />
-            </Link>
             <div
               onClick={() => setIsOPenNewPostModal(true)}
               style={{ display: 'inline', cursor: 'pointer' }}
@@ -40,9 +37,8 @@ export default function Header({ setIsOPenNewPostModal, logOut }) {
             </Link>
             <div>
               <Link to="/settings">
-                <Settings style={{color: 'black'}}/>
+                <Settings style={{ color: 'black' }} />
               </Link>
-
             </div>
 
             <div onClick={logOut} style={{ cursor: 'pointer' }}>

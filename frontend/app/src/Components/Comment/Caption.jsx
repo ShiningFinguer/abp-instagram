@@ -1,4 +1,5 @@
 import { simpleTimeAgo } from '../../utils'
+import userDefault from '../../Assets/userDefault.png'
 
 const Caption = ({ avatar, username, description, createdAt }) => {
   const formatedCreatedAt = simpleTimeAgo(createdAt)
@@ -6,7 +7,7 @@ const Caption = ({ avatar, username, description, createdAt }) => {
   return (
     <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
       <img
-        src={avatar || 'https://i.pravatar.cc/300'}
+        src={avatar || userDefault}
         alt="avatar"
         style={{
           width: '32px',

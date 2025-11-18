@@ -177,8 +177,18 @@ export const getUserByUsername = async (req, res) => {
   try {
     const { username } = req.params
     const user = await User.findOne({ username })
+    const postsCount = await Post.countDocuments({ user: user._id })
+    const followersCount = await Follow.countDocuments({ simp: user._id })
+    const followingCount = await Follow.countDocuments({
+      following: user._id,
+    })
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
-    res.json(user)
+    res.json({
+      ...user.toObject(),
+      posts: postsCount,
+      followers: followersCount,
+      following: followingCount,
+    })
   } catch (error) {
     res.status(500).json({ error: err.message })
   }

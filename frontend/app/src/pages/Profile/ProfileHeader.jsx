@@ -1,78 +1,75 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 import { API_URL } from '../../constants'
+import { EditProfileForm } from '../../Components/EditProfileForm/EditProfileForm'
+import userDefault from '../../Assets/userDefault.png'
+import { useNavigate } from 'react-router-dom'
 
-const ProfileHeader = ({ user, itsMe, posts }) => {
+const ProfileHeader = ({ user, itsMe }) => {
   const [isFollowing, setIsFollowing] = useState(false)
   const [followers, setFollowers] = useState(0)
   const [following, setFollowing] = useState(0)
-
-  const location = useLocation()
+  const [showEditForm, setShowEditForm] = useState(false)
   const token = sessionStorage.token
+  const navigate = useNavigate()
 
+  // Cargar datos de follow y contadores
   useEffect(() => {
-    if (user) {
-      // Fetch is Followed
-      fetch(`${API_URL}/api/users/${user.username}/follow`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(({ followed }) => setIsFollowing(followed))
-        .catch(e => console.log(e))
+    if (!user?.username || !token) return
+
+    const fetchData = async () => {
+      try {
+        // Saber si lo sigo
+        const followRes = await fetch(
+          `${API_URL}/api/users/${user.username}/follow`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        )
+        const { followed } = await followRes.json()
+        setIsFollowing(followed)
+
+        // Contadores
+        const [followersRes, followingRes] = await Promise.all([
+          fetch(`${API_URL}/api/users/${user.username}/followers/count`),
+          fetch(`${API_URL}/api/users/${user.username}/following/count`),
+        ])
+        const followersData = await followersRes.json()
+        const followingData = await followingRes.json()
+        setFollowers(followersData.followers ?? 0)
+        setFollowing(followingData.following ?? 0)
+      } catch (err) {
+        console.error('Error loading profile data:', err)
+        setFollowers(0)
+        setFollowing(0)
+      }
     }
-  }, [user, location])
 
-  useEffect(() => {
-    if (user?.username) {
-      fetch(`${API_URL}/api/users/${user.username}/followers/count`)
-        .then(res => res.json())
-        .then(data => setFollowers(data.followers ?? 0))
-        .catch(err => {
-          console.error('Error loading followers:', err)
-          setFollowers(0)
-        })
+    fetchData()
+  }, [user, token])
 
-      fetch(`${API_URL}/api/users/${user.username}/following/count`)
-        .then(res => res.json())
-        .then(data => setFollowing(data.following ?? 0))
-        .catch(err => {
-          console.error('Error loading following:', err)
-          setFollowing(0)
-        })
-    }
-  }, [user, isFollowing])
-
-  const handleFollowClick = async e => {
-    if (!token) return console.log('Debes iniciar sesion')
-
-    if (!user) return console.log('No has iniciado sesión')
+  // Manejar follow/unfollow
+  const handleFollowClick = async () => {
+    if (!token) return navigate('/login')
+    if (!user) return console.log('No hay usuario')
 
     try {
       const res = await fetch(`${API_URL}/api/users/${user.username}/follow`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
 
       if (!res.ok) {
         const error = await res.json()
-
-        console.log(error)
-
-        return
+        return console.log(error)
       }
 
-      const success = await res.json()
-
-      console.log(success)
-
-      setIsFollowing(!isFollowing)
-    } catch (error) {
-      console.log(error)
+      // Actualizar estado local correctamente
+      setIsFollowing(prev => {
+        setFollowers(f => (prev ? f - 1 : f + 1))
+        return !prev
+      })
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -88,7 +85,7 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
       {/* Profile Picture */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
-          src={user?.avatar || 'https://i.pravatar.cc/300'}
+          src={user?.avatar || userDefault}
           alt="Profile"
           style={{ width: '150px', height: '150px', borderRadius: '50%' }}
         />
@@ -104,15 +101,19 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
         }}
       >
         <h2>{user?.username}</h2>
-        <button onClick={handleFollowClick}>
-          {isFollowing ? 'Unfollow' : 'Follow'}
-        </button>
+        {itsMe ? (
+          <button onClick={() => setShowEditForm(true)}>Editar perfil</button>
+        ) : (
+          <button onClick={handleFollowClick}>
+            {isFollowing ? 'Unfollow' : 'Follow'}
+          </button>
+        )}
       </div>
 
       {/* Profile Info */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
         <div>
-          <strong>{posts?.length}</strong> Posts
+          <strong>{user?.posts}</strong> Posts
         </div>
         <div>
           <strong>{followers}</strong> Followers
@@ -129,6 +130,10 @@ const ProfileHeader = ({ user, itsMe, posts }) => {
 
       {/* Bio */}
       <div style={{ textAlign: 'center' }}>{user?.bio}</div>
+
+      {showEditForm && (
+        <EditProfileForm onClose={() => setShowEditForm(false)} />
+      )}
     </div>
   )
 }

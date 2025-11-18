@@ -5,13 +5,11 @@ import ProfileTabs from './ProfileTabs'
 import ProfilePosts from './ProfilePosts'
 import Header from '../../Components/Header/Header'
 import { NewPostModal } from '../../Components/NewPostModal/NewPostModal'
-import ProfileHeaderOwn from './ProfileHeaderOwn'
 import { API_URL } from '../../constants'
 
 const Profile = ({ logOut }) => {
   const { username } = useParams()
-  const location = useLocation()
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
   const [posts, setPosts] = useState([])
   const [itsMe, setItsMe] = useState(false)
   const token = sessionStorage.token
@@ -19,74 +17,54 @@ const Profile = ({ logOut }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (token && !username) {
-      fetch(`${API_URL}/api/users/me`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(user => {
-          setUser(user)
+    const fetchData = async () => {
+      try {
+        // Si no hay username, cargamos MI perfil
+        if (!username && token) {
+          const meRes = await fetch(`${API_URL}/api/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+
+          const me = await meRes.json()
+          setUser(me)
           setItsMe(true)
-        })
-        .catch(e => {
-          console.log(e.message)
-          navigate('/')
-        })
 
-      fetch(`${API_URL}/api/post/me`, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.token}`,
-        },
-      })
-        .then(res => res.json())
-        .then(setPosts)
-        .catch(e => console.log(e.message))
+          const postsRes = await fetch(`${API_URL}/api/post/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          setPosts(await postsRes.json())
+          return
+        }
+
+        // Si hay username, cargamos el perfil de ese user
+        const userRes = await fetch(`${API_URL}/api/users/${username}`)
+        if (!userRes.ok) return navigate('/')
+
+        const fetchedUser = await userRes.json()
+        setUser(fetchedUser)
+
+        // Revisar si soy yo SIN volver a pedir "me"
+        if (fetchedUser.username) {
+          const meRes = await fetch(`${API_URL}/api/users/me`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          const me = await meRes.json()
+          setItsMe(me.username === fetchedUser.username)
+        }
+
+        // Posts de ese usuario
+        const postsRes = await fetch(`${API_URL}/api/post/${username}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        setPosts(await postsRes.json())
+      } catch (e) {
+        console.log(e.message)
+        navigate('/')
+      }
     }
 
-    fetch(`${API_URL}/api/users/${username}`)
-      .then(res => {
-        if (!res.ok) return console.log('Algo ha ido mal')
-
-        return res.json()
-      })
-      .then(setUser)
-
-    fetch(`${API_URL}/api/post/${username}`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(setPosts)
-      .catch(e => console.log(e.message))
-  }, [location])
-
-  // si el username de la barra de direcciones es el mio, entonces cambiamos estado itsMe
-  useEffect(() => {
-    if (user?.username && token) {
-      fetch(`${API_URL}/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then(res => res.json())
-        .then(me => {
-          if (me.username === username) setItsMe(true)
-        })
-        .catch(console.error)
-    }
-  }, [user, username, token])
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/post/me`, {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.token}`,
-      },
-    })
-      .then(res => res.json())
-      .then(setPosts)
-      .catch(e => console.log(e.message))
-  }, [])
+    fetchData()
+  }, [username])
 
   return (
     <>
@@ -100,11 +78,7 @@ const Profile = ({ logOut }) => {
       >
         {user ? (
           <>
-            {itsMe ? (
-              <ProfileHeaderOwn post={posts} />
-            ) : (
-              <ProfileHeader user={user} itsMe={itsMe} post={posts} />
-            )}
+            <ProfileHeader itsMe={itsMe} posts={posts} user={user} />
             <ProfileTabs />
             <ProfilePosts posts={posts} userProfile={user} />
           </>
