@@ -4,24 +4,12 @@ ABP-Instagram es una aplicación web de red social inspirada en Instagram, desar
 
 ![alt](./docs/images/abp-home.png)
 
-## Características del Proyecto
+## Miembros
 
-- **Autenticación con JWT**
-  Registro, login y manejo de sesiones seguras mediante tokens.
-- **Gestión completa de posts**
-  Crear, leer, dar like y comentar publicaciones.
-- **Sistema de seguidores**
-  Seguir o dejar de seguir usuarios, y consultar seguidores/seguidos.
-- **API REST escalable y modular**
-  Rutas organizadas por recursos, middlewares reutilizables y controladores limpios.
-- **Subida de imágenes** _(opcional, si lo usas)_
-  Soporte para imágenes en posts con almacenamiento local o en la nube.
-- **Frontend con Create React App**
-  Interfaz moderna, componentes reutilizables y manejo de estado eficiente.
-- **Protección de rutas en el frontend**
-  Acceso restringido basado en token.
-- **Likes y comentarios**
-  Interacciones sin recargar la página.
+- [Adrian Alvarado](https://gitlab.inf.edt.cat/a243469aa)
+- [Sebastian Oliver](https://gitlab.inf.edt.cat/a220195lo)
+- [Rhian Frances Estante](https://gitlab.inf.edt.cat/a220064re)
+- [Qihao Lin](https://gitlab.inf.edt.cat/a220602ql)
 
 ## Tecnologías
 
@@ -43,21 +31,26 @@ ABP-Instagram es una aplicación web de red social inspirada en Instagram, desar
 ![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=vsc&logoColor=white)
 ![Markdown](https://img.shields.io/badge/Markdown-%23000000.svg?logo=markdown&logoColor=white)
 ![GitLab](https://img.shields.io/badge/GitLab-FC6D26?logo=gitlab&logoColor=fff)
+![Postman](https://img.shields.io/badge/-Postman-FF6C37?style=flat&logo=postman&logoColor=white)
 
-## Instalación y Uso
+## Características del Proyecto
 
-1. Clonar el repositorio:
-
-```bash
-git clone https://gitlab.inf.edt.cat/dam/abp-25-26/estante-oliver-alvarado
-cd estante-oliver-alvarado
-```
-
-2. Iniciar docker
-
-```bash
-docker compose up -d
-```
+- **Autenticación con JWT**
+  Registro, login y manejo de sesiones seguras mediante tokens.
+- **Gestión completa de posts**
+  Crear, leer, dar like y comentar publicaciones.
+- **Sistema de seguidores**
+  Seguir o dejar de seguir usuarios, y consultar seguidores/seguidos.
+- **API REST escalable y modular**
+  Rutas organizadas por recursos, middlewares reutilizables y controladores limpios.
+- **Subida de imágenes** _(opcional, si lo usas)_
+  Soporte para imágenes en posts con almacenamiento local o en la nube.
+- **Frontend con Create React App**
+  Interfaz moderna, componentes reutilizables y manejo de estado eficiente.
+- **Protección de rutas en el frontend**
+  Acceso restringido basado en token.
+- **Likes y comentarios**
+  Interacciones sin recargar la página.
 
 ## Estructura del proyecto
 
@@ -144,6 +137,21 @@ frontend/
 └── package-lock.json
 ```
 
+## Planificación y metodología
+
+![Gitlab Issue Board](./docs/images/gitlab-issue-board.png)
+
+Para la organización y gestión del proyecto utilizamos **Scrum** como marco de trabajo ágil. Este método nos permite dividir el desarrollo en **sprints cortos**, priorizar tareas de forma iterativa y adaptarnos rápidamente a cambios o nuevas necesidades.
+
+Toda la planificación, seguimiento y control del progreso la realizamos mediante **GitLab**, aprovechando:
+
+- **Issues** para registrar y gestionar tareas, bugs y mejoras.
+- **Milestones** para definir objetivos y fechas de entrega por sprint.
+- **Labels** para clasificar el trabajo (frontend, backend, bug, feature, prioridad…).
+- **Boards** de GitLab para visualizar el flujo de trabajo en columnas (To Do, Doing, Done).
+
+Gracias a esta estructura, mantenemos una visión clara del estado del proyecto, facilitamos la colaboración entre miembros del equipo y aseguramos que cada entrega se realice dentro de los tiempos definidos.
+
 ## Diagrama de base de datos
 
 ![Database diagram](./docs/images/db-diagram.png)
@@ -151,6 +159,15 @@ frontend/
 ## Wireframe
 
 ![Wireframe](./docs/images/wireframe.png)
+
+## Seguridad
+
+El proyecto implementa varias medidas para garantizar la protección de los datos:
+
+- **bcrypt** para hashear contraseñas antes de guardarlas en la base de datos.
+- **JWT (jsonwebtoken)** para gestionar la autenticación mediante tokens seguros.
+- **CORS** configurado para permitir únicamente solicitudes desde orígenes autorizados.
+- **HTTPS** para cifrar toda la comunicación entre el frontend y el backend.
 
 ## Api Rutas
 
@@ -171,6 +188,36 @@ frontend/
 | POST   | `/posts/:id/comment` | Comentar un post                      | `Authorization: Bearer <JWT_TOKEN>` |
 | POST   | `/users/:id/follow`  | Seguir o dejar de seguir a un usuario | `Authorization: Bearer <JWT_TOKEN>` |
 
+## Instalación y Uso
+
+1. Clonar el repositorio:
+
+```bash
+git clone https://gitlab.inf.edt.cat/dam/abp-25-26/estante-oliver-alvarado
+cd estante-oliver-alvarado
+```
+
+2. Iniciar docker
+
+```bash
+docker compose up -d
+```
+
 ## 🚀 Despliegue
 
 [Abp-Instagram](https://tranquil-patience-production.up.railway.app/)
+
+## Roadmap
+
+- [x] Registro de usuario
+- [x] Inicio de sesión
+- [x] Perfil del usuario
+- [x] Subir imagenes del post
+- [x] Likes
+- [x] Comentarios
+- [x] Seguimientos de usuarios
+- [x] Busqueda de personas
+- [ ] Multiples imagenes por publicación
+- [ ] Subir videos
+- [ ] Música por publicación
+- [ ] Etiquetar personas
