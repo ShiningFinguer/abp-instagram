@@ -160,32 +160,7 @@ Gracias a esta estructura, mantenemos una visión clara del estado del proyecto,
 
 ![Wireframe](./docs/images/wireframe.png)
 
-## 🔒 Seguridad
-
-La seguridad es una parte fundamental del proyecto, por lo que se han implementado diversas medidas para proteger los datos de los usuarios y asegurar la integridad del sistema:
-
-### **🔐 Hashing de Contraseñas (bcrypt)**
-
-Utilizamos **bcrypt** para hashear las contraseñas antes de almacenarlas en la base de datos.
-Esto garantiza que las contraseñas nunca se almacenen en texto plano y añade una capa adicional de protección mediante _salt_ y múltiples rondas de encriptación.
-
-### **🛡️ Autenticación con JSON Web Tokens (JWT)**
-
-La autenticación del usuario se gestiona mediante **jsonwebtoken** (JWT).
-Cada usuario obtiene un token firmado que permite acceder a rutas protegidas.
-El servidor valida la autenticidad del token en cada petición, manteniendo sesiones seguras sin almacenar información sensible en el backend.
-
-### **🌐 CORS (Cross-Origin Resource Sharing)**
-
-Se configura **CORS** para permitir únicamente solicitudes desde dominios autorizados.
-Esto evita accesos no deseados desde orígenes no permitidos y contribuye a la protección de la API frente a ataques externos.
-
-### **🔐 HTTPS**
-
-Todo el tráfico entre el frontend y la API viaja mediante **HTTPS**, cifrando la comunicación y evitando que terceros puedan interceptar o modificar la información transmitida.
-Con esto garantizamos la integridad y confidencialidad de los datos, especialmente durante procesos críticos como el login o el registro.
-
-## 🔒 Seguridad
+## Seguridad
 
 El proyecto implementa varias medidas para garantizar la protección de los datos:
 
@@ -234,6 +209,15 @@ docker compose up -d
 
 ## Roadmap
 
-- [x] Registro
-- [ ] Login
-- [ ] Crear post
+- [x] Registro de usuario
+- [x] Inicio de sesión
+- [x] Perfil del usuario
+- [x] Subir imagenes del post
+- [x] Likes
+- [x] Comentarios
+- [x] Seguimientos de usuarios
+- [x] Busqueda de personas
+- [ ] Multiples imagenes por publicación
+- [ ] Subir videos
+- [ ] Música por publicación
+- [ ] Etiquetar personas
