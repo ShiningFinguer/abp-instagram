@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import userDefault from '../../Assets/userDefault.png'
+import SendIcon from '../../Assets/send.png'
 import Caption from '../Comment/Caption'
 import Comments from '../Comments/Comments'
 import './Post.css'
@@ -174,6 +175,7 @@ export default function Post({ post, onDelete }) {
       <footer className="Post-footer">
         <div className="Post-footer-row-1">
           <Like isLike={isLike} setIsLike={setIsLike} postId={post._id} />
+          <img src={SendIcon} className="icon" />
         </div>
 
         <div className="Post-footer-row-2"> {countLikes.likes} Me gusta</div>
