@@ -34,7 +34,7 @@ export default function Landing({ setToken }) {
 
       const { token } = await res.json()
 
-      sessionStorage.setItem('token', token)
+      localStorage.setItem('token', token)
 
       setToken(token)
 

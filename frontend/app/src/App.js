@@ -7,24 +7,20 @@ import Profile from './pages/Profile/Profile'
 import Settings from './Components/Settings/Settings'
 
 function App() {
-  const [token, setToken] = useState(sessionStorage.token)
+  const [token, setToken] = useState(localStorage.token)
   const navigate = useNavigate()
 
   const logOut = () => {
     setToken('')
-    sessionStorage.removeItem('token')
+    localStorage.removeItem('token')
     navigate('/')
   }
 
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          token ? <Feed logOut={logOut} /> : <Landing setToken={setToken} />
-        }
-      />
+      <Route path="/" element={<Feed logOut={logOut} />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/login" element={<Landing setToken={setToken} />} />
       <Route path="/profile" element={<Profile logOut={logOut} />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/:username" element={<Profile logOut={logOut} />} />

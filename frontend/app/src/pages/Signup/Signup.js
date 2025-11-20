@@ -16,7 +16,6 @@ export default function Signup() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 
   const handleChange = e => {
     const { name, value, files } = e.target
@@ -29,19 +28,11 @@ export default function Signup() {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    if (!checkPassword.test(formData.password)) {
-      alert(
-        'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.'
-      )
-      return
-    }
-
     setSuccess('')
     setError('')
     setLoading(true)
 
     const dataToSend = new FormData()
-    dataToSend.append('name', formData.name)
     dataToSend.append('username', formData.username)
     dataToSend.append('password', formData.password)
     dataToSend.append('email', formData.email)
@@ -78,15 +69,6 @@ export default function Signup() {
           onSubmit={handleSubmit}
           encType="multipart/form-data"
         >
-          <input
-            type="text"
-            placeholder="Nombre completo"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
           <input
             type="text"
             placeholder="Usuario"

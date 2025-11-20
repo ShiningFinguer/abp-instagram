@@ -10,7 +10,7 @@ const ProfileHeaderOwn = ({ posts }) => {
   const [following, setFollowing] = useState(0)
 
   const location = useLocation()
-  const token = sessionStorage.getItem('token')
+  const token = localStorage.getItem('token')
 
   const fetchUserProfile = async () => {
     try {

@@ -9,7 +9,7 @@ const ProfileHeader = ({ user, itsMe }) => {
   const [followers, setFollowers] = useState(0)
   const [following, setFollowing] = useState(0)
   const [showEditForm, setShowEditForm] = useState(false)
-  const token = sessionStorage.token
+  const token = localStorage.token
   const navigate = useNavigate()
 
   // Cargar datos de follow y contadores

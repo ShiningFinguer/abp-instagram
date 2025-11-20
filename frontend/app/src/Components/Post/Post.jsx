@@ -8,16 +8,18 @@ import { simpleTimeAgo } from '../../utils'
 import Like from '../_Posts/Like/Like'
 import { API_URL } from '../../constants'
 import { Trash2 } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Post({ post, onDelete }) {
-  const { description, image, createdAt } = post
+  const { description, image } = post
   const formatedCreatedAt = simpleTimeAgo(post.createdAt)
   const [isOpen, setIsOpen] = useState(false)
   const [isLike, setIsLike] = useState(false)
   const [countLikes, setCountLikes] = useState([])
   const [comments, setComments] = useState([])
-  const token = sessionStorage.getItem('token')
+  const token = localStorage.getItem('token')
   const [showToolTip, setshowToolTip] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function countLikes() {
@@ -76,6 +78,11 @@ export default function Post({ post, onDelete }) {
   const handleCommentSubmit = async e => {
     e.preventDefault()
 
+    if (!token) {
+      alert('Inicia sesión bro!')
+      return navigate('/login')
+    }
+
     const text = e.target.text.value
 
     const res = await fetch(`${API_URL}/api/posts/${post._id}/comments`, {
@@ -97,6 +104,10 @@ export default function Post({ post, onDelete }) {
   }
 
   const handleDeletePost = async () => {
+    if (!token) {
+      return navigate('/login')
+    }
+
     if (!window.confirm('¿Estás seguro de eliminar este post?')) return
 
     const res = await fetch(`${API_URL}/api/post/${post._id}`, {
@@ -120,19 +131,23 @@ export default function Post({ post, onDelete }) {
       {/* Header */}
       <header className="Post-header">
         <div className="Post-header-wrapper">
-          <img
-            className="Post-avatar"
-            src={
-              post?.user?.profilePic
-                ? `${API_URL}/avatars/${post?.user?.profilePic}`
-                : userDefault
-            }
-            alt="avatar"
-          />
+          <Link to={`/${post?.user?.username}`}>
+            <img
+              className="Post-avatar"
+              src={
+                post?.user?.profilePic
+                  ? `${API_URL}/avatars/${post?.user?.profilePic}`
+                  : userDefault
+              }
+              alt="avatar"
+            />
+          </Link>
           <div>
-            <strong className="Post-username">
-              {`@${post?.user?.username || 'username'}`}
-            </strong>
+            <div className="Post-username">
+              <Link to={`/${post?.user?.username}`}>
+                <strong>{`@${post?.user?.username || 'username'}`}</strong>
+              </Link>
+            </div>
 
             <div className="Post-date">{formatedCreatedAt}</div>
           </div>

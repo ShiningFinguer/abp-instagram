@@ -56,7 +56,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${sessionStorage.token}`,
+          Authorization: `Bearer ${localStorage.token}`,
         },
       })
 

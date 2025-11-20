@@ -10,3 +10,7 @@
   height: 32px;
   border-radius: 50%;
 }
+
+.Comment-username a {
+  color: inherit;
+}

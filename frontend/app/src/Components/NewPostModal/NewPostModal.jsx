@@ -28,7 +28,7 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
       const res = await fetch(`${API_URL}/api/users/post`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: formData,
       })

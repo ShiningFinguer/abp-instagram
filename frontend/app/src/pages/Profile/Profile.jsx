@@ -12,7 +12,7 @@ const Profile = ({ logOut }) => {
   const [user, setUser] = useState(null)
   const [posts, setPosts] = useState([])
   const [itsMe, setItsMe] = useState(false)
-  const token = sessionStorage.token
+  const token = localStorage.token
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
   const navigate = useNavigate()
 

@@ -2,26 +2,26 @@ import React, { useState } from 'react'
 import { API_URL } from '../../constants'
 
 export default function Settings() {
-  const [formData, setFormData] = useState({ password: "" });
-  const [message, setMessage] = useState("");
-  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
+  const [formData, setFormData] = useState({ password: '' })
+  const [message, setMessage] = useState('')
+  const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async e => {
+    e.preventDefault()
     if (!checkPassword.test(formData.password)) {
-      alert("La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.");
-      return;
+      alert(
+        'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.'
+      )
+      return
     }
-
 
     try {
       // Obtén el token del almacenamiento (asumiendo que lo guardas al hacer login)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       if (!token) {
         setMessage('No se ha encontrado el token. Inicia sesión primero.')

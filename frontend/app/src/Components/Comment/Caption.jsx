@@ -1,25 +1,33 @@
 import { simpleTimeAgo } from '../../utils'
 import userDefault from '../../Assets/userDefault.png'
 import { API_URL } from '../../constants'
+import { Link } from 'react-router-dom'
+import './Caption.css'
 
 const Caption = ({ avatar, username, description, createdAt }) => {
   const formatedCreatedAt = simpleTimeAgo(createdAt)
 
   return (
     <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-      <img
-        src={avatar ? `${API_URL}/avatars/${avatar}` : userDefault}
-        alt="avatar"
-        style={{
-          width: '32px',
-          height: '32px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-        }}
-      />
+      <Link to={`/${username}`}>
+        <img
+          src={avatar ? `${API_URL}/avatars/${avatar}` : userDefault}
+          alt="avatar"
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            objectFit: 'cover',
+          }}
+        />
+      </Link>
       <div>
         <div>
-          <strong style={{ fontSize: '14px' }}>{username}</strong>
+          <span className="Caption-username">
+            <Link to={`/${username}`}>
+              <strong style={{ fontSize: '14px' }}>{username}</strong>
+            </Link>
+          </span>
           <span style={{ fontSize: '14px', marginLeft: '8px' }}>
             {description}
           </span>

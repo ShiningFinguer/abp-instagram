@@ -9,16 +9,21 @@ const Like = ({ isLike, setIsLike, postId }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${sessionStorage.token}`,
+          Authorization: `Bearer ${localStorage.token}`,
         },
       })
 
-      if (!res.ok) return console.log('Error al hacer like')
+      if (!res.ok) {
+        console.log('Error al hacer like')
+        alert('Inicia sesión bro!')
+        return
+      }
       const data = await res.json()
       console.log(data)
       setIsLike(!isLike)
     } catch (error) {
       console.log(error.message)
+      alert('La has cagado bro!')
     }
   }
 
