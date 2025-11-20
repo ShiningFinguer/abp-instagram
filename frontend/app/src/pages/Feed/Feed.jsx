@@ -11,6 +11,10 @@ const Feed = ({ logOut }) => {
   const [posts, setPosts] = useState([])
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
 
+  const sortedPosts = posts.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  )
+
   useEffect(() => {
     async function getAllPost() {
       const res = await fetch(`${API_URL}/api/post`)
@@ -38,7 +42,7 @@ const Feed = ({ logOut }) => {
   return (
     <>
       <Header setIsOPenNewPostModal={setIsOPenNewPostModal} logOut={logOut} />
-      <Posts posts={posts} onDelete={handleDeletePost} />
+      <Posts posts={sortedPosts} onDelete={handleDeletePost} />
       {isOpenNewPostModal && (
         <NewPostModal
           isOpen={isOpenNewPostModal}
