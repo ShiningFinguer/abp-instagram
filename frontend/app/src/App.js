@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import Signup from './pages/Signup/Signup'
 import Landing from './pages/Landing/Landing'
@@ -6,7 +6,7 @@ import Feed from './pages/Feed/Feed'
 import Profile from './pages/Profile/Profile'
 import Settings from './Components/Settings/Settings'
 
-function App() {
+function App () {
   const [token, setToken] = useState(localStorage.token)
   const navigate = useNavigate()
 
