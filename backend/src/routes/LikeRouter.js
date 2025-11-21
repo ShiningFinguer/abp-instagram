@@ -1,7 +1,6 @@
 import express from 'express'
-import { countLikes, toggleLike } from '../controllers/LikeController.js'
+import { countLikes, toggleLike, isLiked } from '../controllers/LikeController.js'
 import { verifyToken } from '../middlewares/verifyToken.js'
-import { isLiked } from '../controllers/LikeController.js'
 
 export const LikeRouter = express.Router()
 

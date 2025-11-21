@@ -5,9 +5,9 @@ const FollowSchema = new mongoose.Schema({
   following: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
+    required: true
   },
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
 })
 
 export default mongoose.model('Follow', FollowSchema)

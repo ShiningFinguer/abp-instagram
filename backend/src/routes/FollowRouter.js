@@ -1,7 +1,6 @@
 import express from 'express'
 import { verifyToken } from '../middlewares/verifyToken.js'
-import { toggleFollow } from '../controllers/FollowController.js'
-import { isFollowed, getFollowCounts, getFollowersCount, getFollowingCount } from '../controllers/FollowController.js'
+import { toggleFollow, isFollowed, getFollowCounts, getFollowersCount, getFollowingCount } from '../controllers/FollowController.js'
 
 export const FollowRouter = express.Router()
 
