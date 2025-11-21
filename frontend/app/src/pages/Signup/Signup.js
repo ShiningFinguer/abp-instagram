@@ -4,14 +4,14 @@ import './Signup.css'
 import { Alert } from '../../Components/Alert/Alert'
 import { API_URL } from '../../constants'
 
-export default function Signup() {
+export default function Signup () {
   const [formData, setFormData] = useState({
     name: '',
     username: '',
     email: '',
     password: '',
     bio: '',
-    avatar: null,
+    avatar: null
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -21,7 +21,7 @@ export default function Signup() {
     const { name, value, files } = e.target
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: files ? files[0] : value
     })
   }
 
@@ -44,7 +44,7 @@ export default function Signup() {
     try {
       const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
-        body: dataToSend,
+        body: dataToSend
       })
 
       if (!res.ok) {

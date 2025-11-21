@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Alert } from '../../Components/Alert/Alert'
 import { API_URL } from '../../constants'
 
-export default function Landing({ setToken }) {
+export default function Landing ({ setToken }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [username, setUsername] = useState('')
@@ -21,9 +21,9 @@ export default function Landing({ setToken }) {
       const res = await fetch(`${API_URL}/api/users/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password })
       })
 
       if (!res.ok) {
@@ -50,7 +50,7 @@ export default function Landing({ setToken }) {
   return (
     <div className="Landing">
       <main className="Landing-main">
-        <img className="Landing-img" src="/landing.png" />
+        <img className="Landing-img" src="/landing.png" alt='' />
 
         <div style={{ textAlign: 'center' }}>
           <div style={{ marginBottom: '2rem' }}>
