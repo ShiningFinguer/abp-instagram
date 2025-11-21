@@ -5,17 +5,17 @@ const PostSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: {
     type: String,
-    required: true,
+    required: true
   },
   tags: [
     {
-      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    },
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    }
   ],
   hashtags: [String],
   location: String,
   music: String,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
 })
 
 export default mongoose.model('Post', PostSchema)

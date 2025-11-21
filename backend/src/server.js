@@ -1,7 +1,4 @@
 import express from 'express'
-import https from 'https'
-import fs from 'fs'
-import path from 'path'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
@@ -13,16 +10,6 @@ import { CommentRouter } from './routes/CommentRouter.js'
 import { FollowRouter } from './routes/FollowRouter.js'
 
 dotenv.config()
-
-// Cargar certificados
-const __dirname = process.cwd()
-const options = {
-  key: fs.readFileSync(path.join(__dirname, 'tls/server.key')),
-  cert: fs.readFileSync(path.join(__dirname, 'tls/server.crt')),
-  ca: fs.readFileSync(path.join(__dirname, 'tls/ca.crt')), // confianza opcional
-  requestCert: false, // ponlo en true si usas mTLS
-  rejectUnauthorized: false, // solo en desarrollo
-}
 
 const app = express()
 
@@ -55,11 +42,6 @@ app.get('/*splat', async (req, res) => {
 })
 
 const PORT = 3000
-
-// Crear servidor HTTPS
-// https.createServer(options, app).listen(PORT, () => {
-//   console.log('Servidor HTTPS escuchando en https://localhost:3000')
-// })
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`)

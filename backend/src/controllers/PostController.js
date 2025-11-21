@@ -14,7 +14,7 @@ export const postPost = async (req, res) => {
       user: userId,
       description,
       image: filename,
-      tags,
+      tags
     })
     if (!post) return res.status(404).json({ error: 'No hay ningún post' })
     res.status(200).json({ message: 'Post subido', post })
@@ -29,7 +29,7 @@ export const getAllPost = async (req, res) => {
   try {
     const posts = await Post.find().populate('user', {
       username: true,
-      profilePic: true,
+      profilePic: true
     })
     res.json(posts)
   } catch (err) {
@@ -43,7 +43,7 @@ export const getPostsById = async (req, res) => {
     const id = req.user.id
     const post = await Post.find({ user: id }).populate('user', {
       username: true,
-      profilePic: true,
+      profilePic: true
     })
     res.json(post)
   } catch (err) {
@@ -61,7 +61,7 @@ export const getPostsByUsername = async (req, res) => {
 
     const post = await Post.find({ user: user._id }).populate('user', {
       username: true,
-      profilePic: true,
+      profilePic: true
     })
     res.json(post)
   } catch (err) {
@@ -86,7 +86,7 @@ export const deletePost = async (req, res) => {
     const postId = req.params.id // ID del post desde la URL
     const userId = req.user.id // ID del usuario logueado (del token)
 
-    //Buscar el post en la BBDD
+    // Buscar el post en la BBDD
     const post = await Post.findById(postId)
 
     if (!post) {
