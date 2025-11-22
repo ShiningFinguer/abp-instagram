@@ -1,5 +1,8 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import cloudinary from 'cloudinary'
+import fs from 'node:fs/promises'
+
 import User from '../models/User.js'
 import Follow from '../models/Follow.js'
 import Post from '../models/Post.js'
@@ -7,17 +10,27 @@ import Post from '../models/Post.js'
 // Registro
 export const register = async (req, res) => {
   try {
-    const filename = req?.file?.filename
-    console.log(filename)
     const { username, email, password, bio } = req.body
+    const file = req.file
+
+    if (!file) return res.status(400).json({ message: 'Falta la imagen' })
+
+    const result = await cloudinary.v2.uploader.upload(file.path, {
+      folder: 'abp-instagram/avatars'
+    })
+
     const hashed = await bcrypt.hash(password, 10)
+
     const user = await User.create({
       username,
       email,
       password: hashed,
       bio,
-      profilePic: filename,
+      profilePic: result.secure_url
     })
+
+    await fs.unlink(file.path)
+
     res.status(201).json({ message: 'Usuario creado', user })
   } catch (err) {
     res.status(400).json({ error: err.message })
@@ -29,11 +42,9 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body
     const user = await User.findOne({ username })
-    if (!user)
-      return res.status(404).json({ error: 'Usuario o contraseña incorrecta' })
+    if (!user) { return res.status(404).json({ error: 'Usuario o contraseña incorrecta' }) }
     const match = await bcrypt.compare(password, user.password)
-    if (!match)
-      return res.status(400).json({ error: 'Usuario o contraseña incorrecta' })
+    if (!match) { return res.status(400).json({ error: 'Usuario o contraseña incorrecta' }) }
     const token = jwt.sign({ id: user._id }, 'SECRET_KEY', { expiresIn: '1d' })
     res.json({ message: 'Login exitoso', token, user })
   } catch (err) {
@@ -63,7 +74,7 @@ export const getUsersFiltered = async (req, res) => {
     }
 
     const users = await User.find({
-      username: { $regex: name, $options: 'i' }, // insensible a mayúsculas
+      username: { $regex: name, $options: 'i' } // insensible a mayúsculas
     }).limit(50)
 
     if (users.length === 0) {
@@ -93,7 +104,7 @@ export const getUserByToken = async (req, res) => {
       ...user.toObject(),
       posts: postsCount,
       followers: followersCount,
-      following: followingCount,
+      following: followingCount
     })
   } catch (err) {
     res.status(500).json({ error: err.message })
@@ -103,7 +114,7 @@ export const getUserByToken = async (req, res) => {
 // Verificar si quiere ver tu propio perfil
 export const verifyMySelfProfile = async (req, res) => {
   try {
-    const id = user.id
+    const id = req.user._id
     const username = req.params.username
 
     const user = await User.findById(id)
@@ -132,7 +143,7 @@ export const updateUserProfile = async (req, res) => {
   }
 }
 
-//Actualizar contraseña de usuario
+// Actualizar contraseña de usuario
 export const updateUserPassword = async (req, res) => {
   try {
     // 1. Verificamos que venga el header
@@ -148,8 +159,7 @@ export const updateUserPassword = async (req, res) => {
 
     // 4. Encriptamos la nueva contraseña
     const { password } = req.body
-    if (!password)
-      return res.status(400).json({ message: 'Falta la nueva contraseña' })
+    if (!password) { return res.status(400).json({ message: 'Falta la nueva contraseña' }) }
 
     const hashed = await bcrypt.hash(password, 10)
 
@@ -188,16 +198,16 @@ export const getUserByUsername = async (req, res) => {
     const postsCount = await Post.countDocuments({ user: user._id })
     const followersCount = await Follow.countDocuments({ simp: user._id })
     const followingCount = await Follow.countDocuments({
-      following: user._id,
+      following: user._id
     })
     if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
     res.json({
       ...user.toObject(),
       posts: postsCount,
       followers: followersCount,
-      following: followingCount,
+      following: followingCount
     })
   } catch (error) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ error: error.message })
   }
 }

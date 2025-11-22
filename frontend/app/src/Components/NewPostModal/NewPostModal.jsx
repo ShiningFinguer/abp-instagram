@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import './NewPostModal.css'
+import imageCompression from 'browser-image-compression'
 import { API_URL } from '../../constants'
+import './NewPostModal.css'
 
 export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
   const [description, setDescription] = useState('')
@@ -12,6 +13,14 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
   const handleSubmit = async e => {
     e.preventDefault()
 
+    const options = {
+      maxSizeMB: 6, // máximo 6 MB para estar lejos del límite de 10MB
+      maxWidthOrHeight: 1920, // tamaño grande pero razonable (1080–1920)
+      useWebWorker: true,
+      fileType: 'image/jpeg', // evita PNGs gigantes, JPEG es más ligero
+      initialQuality: 0.8 // calidad muy buena
+    }
+
     if (!image) {
       setError('Selecciona una imagen antes de subir.')
       return
@@ -20,17 +29,19 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
     setError('')
     setLoading(true)
 
-    const formData = new FormData()
-    formData.append('description', description)
-    formData.append('image', image)
-
     try {
+      const compressedFile = await imageCompression(image, options)
+
+      const formData = new FormData()
+      formData.append('description', description)
+      formData.append('image', compressedFile)
+
       const res = await fetch(`${API_URL}/api/users/post`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
-        body: formData,
+        body: formData
       })
 
       if (!res.ok) {

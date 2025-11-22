@@ -1,15 +1,17 @@
 import { Router } from 'express'
 import multer from 'multer'
-import { register } from '../controllers/UserController.js'
-import { login } from '../controllers/UserController.js'
-import { deleteUserByID } from '../controllers/UserController.js'
-import { updateUserProfile } from '../controllers/UserController.js'
-import { updateUserPassword } from '../controllers/UserController.js'
-import { getUserByUsername } from '../controllers/UserController.js'
+import {
+  register,
+  login,
+  deleteUserByID,
+  updateUserProfile,
+  updateUserPassword,
+  getUserByUsername,
+  getUserByToken,
+  verifyMySelfProfile,
+  getUsersFiltered
+} from '../controllers/UserController.js'
 import { verifyToken } from '../middlewares/verifyToken.js'
-import { getUserByToken } from '../controllers/UserController.js'
-import { verifyMySelfProfile } from '../controllers/UserController.js'
-import { getUsersFiltered } from '../controllers/UserController.js'
 
 export const postRouter = Router()
 
@@ -17,7 +19,7 @@ const upload = multer({ dest: 'public/avatars/' })
 
 const userRouter = Router()
 
-// Crear usuario
+// Crear usuarios
 userRouter.post('/api/users', upload.single('avatar'), register)
 
 // Login

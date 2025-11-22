@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { API_URL } from '../../constants'
 
-export default function Settings() {
+export default function Settings () {
   const [formData, setFormData] = useState({ password: '' })
   const [message, setMessage] = useState('')
   const checkPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/
@@ -32,9 +32,9 @@ export default function Settings() {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ password: formData.password }),
+        body: JSON.stringify({ password: formData.password })
       })
 
       const data = await res.json()
@@ -63,7 +63,7 @@ export default function Settings() {
           input { width: 100%; margin: 8px 0; padding: 8px; border: 1px solid #ccc; border-radius: 5px; }
           button { background: #007bff; color: white; border: none; padding: 8px 10px; border-radius: 5px; cursor: pointer; margin-right: 10px; }
           button:nth-child(2) { background: #dc3545; }
-        `,
+        `
         }}
       />
       <header>

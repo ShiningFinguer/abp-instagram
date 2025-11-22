@@ -8,18 +8,16 @@ export const toggleFollow = async (req, res) => {
 
     if (!simp) return res.status(401).json({ error: 'Necesita logearse' })
 
-    if (!userToFollow)
-      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+    if (!userToFollow) { return res.status(404).json({ error: 'Falta el usuario a seguir' }) }
 
     const userToFollowDB = await User.findOne({ username: userToFollow })
 
-    if (!userToFollowDB)
-      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+    if (!userToFollowDB) { return res.status(404).json({ error: 'Falta el usuario a seguir' }) }
 
     // Comprobamos si el usuario ya esta siguiendo o no
     const followed = await Follow.findOne({
       simp,
-      following: userToFollowDB._id,
+      following: userToFollowDB._id
     })
 
     if (followed) {
@@ -30,7 +28,7 @@ export const toggleFollow = async (req, res) => {
       // Si no estas siguiendo, empeiza a seguirlo
       const follow = await Follow.create({
         simp,
-        following: userToFollowDB._id,
+        following: userToFollowDB._id
       })
       return res.status(200).json({ message: 'Follow añadido', follow })
     }
@@ -47,18 +45,16 @@ export const isFollowed = async (req, res) => {
 
     if (!simp) return res.status(401).json({ error: 'Necesita logearse' })
 
-    if (!userToFollow)
-      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+    if (!userToFollow) { return res.status(404).json({ error: 'Falta el usuario a seguir' }) }
 
     const userToFollowDB = await User.findOne({ username: userToFollow })
 
-    if (!userToFollowDB)
-      return res.status(404).json({ error: 'Falta el usuario a seguir' })
+    if (!userToFollowDB) { return res.status(404).json({ error: 'Falta el usuario a seguir' }) }
 
     // Comprobamos si el usuario ya esta siguiendo o no
     const followed = await Follow.findOne({
       simp,
-      following: userToFollowDB._id,
+      following: userToFollowDB._id
     })
 
     if (followed) {
@@ -75,8 +71,7 @@ export const getFollowCounts = async (req, res) => {
   try {
     const username = req.params.user
 
-    if (!username)
-      return res.status(400).json({ error: 'Missing user parameter' })
+    if (!username) { return res.status(400).json({ error: 'Missing user parameter' }) }
 
     const user = await User.findOne({ username })
     if (!user) return res.status(404).json({ error: 'User not found' })
@@ -101,8 +96,7 @@ export const getFollowCounts = async (req, res) => {
 export const getFollowersCount = async (req, res) => {
   try {
     const username = req.params.user
-    if (!username)
-      return res.status(400).json({ error: 'Missing user parameter' })
+    if (!username) { return res.status(400).json({ error: 'Missing user parameter' }) }
 
     const user = await User.findOne({ username })
     if (!user) return res.status(404).json({ error: 'User not found' })
@@ -118,8 +112,7 @@ export const getFollowersCount = async (req, res) => {
 export const getFollowingCount = async (req, res) => {
   try {
     const username = req.params.user
-    if (!username)
-      return res.status(400).json({ error: 'Missing user parameter' })
+    if (!username) { return res.status(400).json({ error: 'Missing user parameter' }) }
 
     const user = await User.findOne({ username })
     if (!user) return res.status(404).json({ error: 'User not found' })

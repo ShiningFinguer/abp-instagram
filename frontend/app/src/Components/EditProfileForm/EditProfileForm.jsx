@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import { API_URL } from '../../constants'
 
 export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     profilePic: '',
-    bio: '',
+    bio: ''
   })
 
   const handleChange = e => {
@@ -15,29 +16,30 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    try {
-      const res = await fetch(
-        `${API_URL}/api/users/${userProfile._id}/profile`,
-        {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData),
-        }
-      )
-      const data = await res.json()
 
-      if (res.ok) {
-        alert('Perfil actualizado correctamente')
-        onProfileUpdated(data.userProfile)
-        onClose()
-      } else {
-        alert(data.error || 'Error al actualizar el perfil')
-      }
-    } catch (err) {
-      console.error(err)
-      alert('Error del servidor')
-    }
-    fetchUserProfile()
+    // async function fetchUserProfile () {
+    //   try {
+    //     const res = await fetch(`${API_URL}/api/users/${userProfile._id}/profile`, {
+    //       method: 'PUT',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify(formData)
+    //     })
+    //     const data = await res.json()
+
+    //     if (res.ok) {
+    //       alert('Perfil actualizado correctamente')
+    //       onProfileUpdated(data.userProfile)
+    //       onClose()
+    //     } else {
+    //       alert(data.error || 'Error al actualizar el perfil')
+    //     }
+    //   } catch (err) {
+    //     console.error(err)
+    //     alert('Error del servidor')
+    //   }
+    // }
+
+    // fetchUserProfile()
   }
 
   return (

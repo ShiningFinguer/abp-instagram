@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import './Signup.css'
+import imageCompression from 'browser-image-compression'
+
 import { Alert } from '../../Components/Alert/Alert'
+
 import { API_URL } from '../../constants'
 
-export default function Signup() {
+import './Signup.css'
+
+export default function Signup () {
   const [formData, setFormData] = useState({
     name: '',
     username: '',
     email: '',
     password: '',
     bio: '',
-    avatar: null,
+    avatar: null
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -21,30 +25,37 @@ export default function Signup() {
     const { name, value, files } = e.target
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [name]: files ? files[0] : value
     })
   }
 
   const handleSubmit = async e => {
     e.preventDefault()
 
-    setSuccess('')
-    setError('')
-    setLoading(true)
-
-    const dataToSend = new FormData()
-    dataToSend.append('username', formData.username)
-    dataToSend.append('password', formData.password)
-    dataToSend.append('email', formData.email)
-    dataToSend.append('bio', formData.bio)
-    if (formData.avatar) {
-      dataToSend.append('avatar', formData.avatar)
+    const options = {
+      maxSizeMB: 2, // tamaño máximo final (2 MB es perfecto para avatares)
+      maxWidthOrHeight: 800, // redimensiona (opcional)
+      useWebWorker: true
     }
 
     try {
+      const dataToSend = new FormData()
+      dataToSend.append('username', formData.username)
+      dataToSend.append('password', formData.password)
+      dataToSend.append('email', formData.email)
+      dataToSend.append('bio', formData.bio)
+      if (formData.avatar) {
+        const compressedFile = await imageCompression(formData?.avatar, options)
+        dataToSend.append('avatar', compressedFile)
+      }
+
+      setSuccess('')
+      setError('')
+      setLoading(true)
+
       const res = await fetch(`${API_URL}/api/users`, {
         method: 'POST',
-        body: dataToSend,
+        body: dataToSend
       })
 
       if (!res.ok) {
