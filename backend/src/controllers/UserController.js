@@ -1,5 +1,8 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import cloudinary from 'cloudinary'
+import fs from 'node:fs/promises'
+
 import User from '../models/User.js'
 import Follow from '../models/Follow.js'
 import Post from '../models/Post.js'
@@ -7,17 +10,27 @@ import Post from '../models/Post.js'
 // Registro
 export const register = async (req, res) => {
   try {
-    const filename = req?.file?.filename
-    console.log(filename)
     const { username, email, password, bio } = req.body
+    const file = req.file
+
+    if (!file) return res.status(400).json({ message: 'Falta la imagen' })
+
+    const result = await cloudinary.v2.uploader.upload(file.path, {
+      folder: 'abp-instagram/avatars'
+    })
+
     const hashed = await bcrypt.hash(password, 10)
+
     const user = await User.create({
       username,
       email,
       password: hashed,
       bio,
-      profilePic: filename
+      profilePic: result.secure_url
     })
+
+    await fs.unlink(file.path)
+
     res.status(201).json({ message: 'Usuario creado', user })
   } catch (err) {
     res.status(400).json({ error: err.message })

@@ -10,7 +10,7 @@ import { API_URL } from '../../constants'
 import { Trash2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function Post({ post, onDelete }) {
+export default function Post ({ post, onDelete }) {
   const { description, image } = post
   const formatedCreatedAt = simpleTimeAgo(post.createdAt)
   const [isOpen, setIsOpen] = useState(false)
@@ -22,9 +22,9 @@ export default function Post({ post, onDelete }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    async function countLikes() {
+    async function countLikes () {
       const res = await fetch(`${API_URL}/api/post/` + post._id + '/likes', {
-        method: 'get',
+        method: 'get'
       })
 
       if (!res.ok) {
@@ -43,13 +43,13 @@ export default function Post({ post, onDelete }) {
   }, [isLike])
 
   useEffect(() => {
-    async function Liked() {
+    async function Liked () {
       const res = await fetch(`${API_URL}/api/post/` + post._id + '/isliked', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
 
       if (!res.ok) {
@@ -89,9 +89,9 @@ export default function Post({ post, onDelete }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text })
     })
 
     if (!res.ok) return console.log('No se ha podido crear el comentario')
@@ -113,8 +113,8 @@ export default function Post({ post, onDelete }) {
     const res = await fetch(`${API_URL}/api/post/${post._id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`,
-      },
+        Authorization: `Bearer ${token}`
+      }
     })
 
     if (!res.ok) {
@@ -158,7 +158,7 @@ export default function Post({ post, onDelete }) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            gap: '0.5rem',
+            gap: '0.5rem'
           }}
         >
           {showToolTip && (
@@ -181,7 +181,7 @@ export default function Post({ post, onDelete }) {
         <img
           className="Post-picture"
           onClick={() => setIsOpen(true)}
-          src={`${API_URL}/uploads/` + image}
+          src={image}
           alt="post"
         />
       </div>
