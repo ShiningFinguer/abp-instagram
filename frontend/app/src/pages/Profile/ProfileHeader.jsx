@@ -9,7 +9,7 @@ const ProfileHeader = ({ user, itsMe }) => {
   const [followers, setFollowers] = useState(0)
   const [following, setFollowing] = useState(0)
   const [showEditForm, setShowEditForm] = useState(false)
-  const token = localStorage.token
+  const token = window.localStorage.token
   const navigate = useNavigate()
 
   // Cargar datos de follow y contadores
@@ -90,7 +90,7 @@ const ProfileHeader = ({ user, itsMe }) => {
               ? user.profilePic
               : userDefault
           }
-          alt="Profile"
+          alt='Profile'
           style={{
             width: '150px',
             height: '150px',
@@ -113,12 +113,12 @@ const ProfileHeader = ({ user, itsMe }) => {
         <h2>{user?.username}</h2>
         {itsMe
           ? (
-          <button onClick={() => setShowEditForm(true)}>Editar perfil</button>
+            <button onClick={() => setShowEditForm(true)}>Editar perfil</button>
             )
           : (
-          <button onClick={handleFollowClick}>
-            {isFollowing ? 'Unfollow' : 'Follow'}
-          </button>
+            <button onClick={handleFollowClick}>
+              {isFollowing ? 'Unfollow' : 'Follow'}
+            </button>
             )}
       </div>
 

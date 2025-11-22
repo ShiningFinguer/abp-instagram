@@ -12,18 +12,18 @@ const Caption = ({ avatar, username, description, createdAt }) => {
       <Link to={`/${username}`}>
         <img
           src={avatar ? `${API_URL}/avatars/${avatar}` : userDefault}
-          alt="avatar"
+          alt='avatar'
           style={{
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            objectFit: 'cover',
+            objectFit: 'cover'
           }}
         />
       </Link>
       <div>
         <div>
-          <span className="Caption-username">
+          <span className='Caption-username'>
             <Link to={`/${username}`}>
               <strong style={{ fontSize: '14px' }}>{username}</strong>
             </Link>

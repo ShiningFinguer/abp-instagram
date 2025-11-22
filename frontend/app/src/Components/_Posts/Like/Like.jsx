@@ -9,13 +9,13 @@ const Like = ({ isLike, setIsLike, postId }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.token}`,
-        },
+          Authorization: `Bearer ${window.localStorage.token}`
+        }
       })
 
       if (!res.ok) {
         console.log('Error al hacer like')
-        alert('Inicia sesión bro!')
+        window.alert('Inicia sesión bro!')
         return
       }
       const data = await res.json()
@@ -23,7 +23,7 @@ const Like = ({ isLike, setIsLike, postId }) => {
       setIsLike(!isLike)
     } catch (error) {
       console.log(error.message)
-      alert('La has cagado bro!')
+      window.alert('La has cagado bro!')
     }
   }
 
@@ -32,13 +32,13 @@ const Like = ({ isLike, setIsLike, postId }) => {
       onClick={handleLike}
       style={{
         cursor: 'pointer',
-        transition: 'transform 0.2s',
+        transition: 'transform 0.2s'
       }}
     >
       <img
         src={isLike ? redlikeIcon : whitelikeIcon}
-        className="icon"
-        alt="like"
+        className='icon'
+        alt='like'
       />
     </span>
   )

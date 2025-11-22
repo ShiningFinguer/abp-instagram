@@ -34,7 +34,7 @@ export default function Landing ({ setToken }) {
 
       const { token } = await res.json()
 
-      localStorage.setItem('token', token)
+      window.localStorage.setItem('token', token)
 
       setToken(token)
 
@@ -48,9 +48,9 @@ export default function Landing ({ setToken }) {
   }
 
   return (
-    <div className="Landing">
-      <main className="Landing-main">
-        <img className="Landing-img" src="/landing.png" alt='' />
+    <div className='Landing'>
+      <main className='Landing-main'>
+        <img className='Landing-img' src='/landing.png' alt='' />
 
         <div style={{ textAlign: 'center' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -59,33 +59,33 @@ export default function Landing ({ setToken }) {
 
           <form onSubmit={handleSubmit}>
             <input
-              type="text"
-              placeholder="Usuario o correo"
+              type='text'
+              placeholder='Usuario o correo'
               required
               value={username}
               onChange={e => setUsername(e.target.value)}
             />
 
             <input
-              type="password"
-              placeholder="Contraseña"
+              type='password'
+              placeholder='Contraseña'
               required
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
 
-            <button type="submit">{loading ? 'Cargando..' : 'Entrar'}</button>
+            <button type='submit'>{loading ? 'Cargando..' : 'Entrar'}</button>
 
-            {error && <Alert variant="error">{error}</Alert>}
+            {error && <Alert variant='error'>{error}</Alert>}
           </form>
 
           <p>
-            ¿No tienes una cuenta? <Link to="/signup">Regístrate</Link>
+            ¿No tienes una cuenta? <Link to='/signup'>Regístrate</Link>
           </p>
         </div>
       </main>
 
-      <footer className="Landing-footer">
+      <footer className='Landing-footer'>
         <p>© 2025 Qihao - Adrian - Rhian - Sebastian</p>
       </footer>
     </div>

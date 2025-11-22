@@ -11,12 +11,12 @@ const ProfilePost = ({ post, userProfile }) => {
         onClick={() => setIsOpen(true)}
         style={{
           cursor: 'pointer',
-          aspectRatio: '1/1',
+          aspectRatio: '1/1'
         }}
       >
         <img
           src={`${API_URL}/uploads/` + post.image}
-          alt="post"
+          alt='post'
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
       </div>

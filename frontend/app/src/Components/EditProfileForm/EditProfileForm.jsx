@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { API_URL } from '../../constants'
 
 export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
   const [formData, setFormData] = useState({
@@ -27,15 +26,15 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
     //     const data = await res.json()
 
     //     if (res.ok) {
-    //       alert('Perfil actualizado correctamente')
+    //       window.alert('Perfil actualizado correctamente')
     //       onProfileUpdated(data.userProfile)
     //       onClose()
     //     } else {
-    //       alert(data.error || 'Error al actualizar el perfil')
+    //       window.alert(data.error || 'Error al actualizar el perfil')
     //     }
     //   } catch (err) {
     //     console.error(err)
-    //     alert('Error del servidor')
+    //     window.alert('Error del servidor')
     //   }
     // }
 
@@ -43,14 +42,14 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
   }
 
   return (
-    <div className="modal-backdrop">
-      <div className="modal">
+    <div className='modal-backdrop'>
+      <div className='modal'>
         <h2>Editar perfil</h2>
         <form onSubmit={handleSubmit}>
           <label>Nombre de usuario:</label>
           <input
-            type="text"
-            name="username"
+            type='text'
+            name='username'
             value={formData.username}
             onChange={handleChange}
             required
@@ -58,8 +57,8 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
 
           <label>Email:</label>
           <input
-            type="email"
-            name="email"
+            type='email'
+            name='email'
             value={formData.email}
             onChange={handleChange}
             required
@@ -67,18 +66,18 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
 
           <label>Foto de perfil (URL):</label>
           <input
-            type="text"
-            name="profilePic"
+            type='text'
+            name='profilePic'
             value={formData.profilePic}
             onChange={handleChange}
           />
 
           <label>Biografía:</label>
-          <textarea name="bio" value={formData.bio} onChange={handleChange} />
+          <textarea name='bio' value={formData.bio} onChange={handleChange} />
 
-          <div className="form-buttons">
-            <button type="submit">Guardar cambios</button>
-            <button type="button" onClick={onClose}>
+          <div className='form-buttons'>
+            <button type='submit'>Guardar cambios</button>
+            <button type='button' onClick={onClose}>
               Cancelar
             </button>
           </div>
@@ -115,7 +114,8 @@ export const EditProfileForm = ({ onClose, onProfileUpdated }) => {
           margin-bottom: 10px;
           padding: 8px;
         }
-      `}</style>
+      `}
+      </style>
     </div>
   )
 }

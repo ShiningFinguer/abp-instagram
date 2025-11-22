@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import ProfileHeader from './ProfileHeader'
 import ProfileTabs from './ProfileTabs'
 import ProfilePosts from './ProfilePosts'
@@ -12,7 +12,7 @@ const Profile = ({ logOut }) => {
   const [user, setUser] = useState(null)
   const [posts, setPosts] = useState([])
   const [itsMe, setItsMe] = useState(false)
-  const token = localStorage.token
+  const token = window.localStorage.token
   const [isOpenNewPostModal, setIsOPenNewPostModal] = useState(false)
   const navigate = useNavigate()
 
@@ -22,7 +22,7 @@ const Profile = ({ logOut }) => {
         // Si no hay username, cargamos MI perfil
         if (!username && token) {
           const meRes = await fetch(`${API_URL}/api/users/me`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` }
           })
 
           const me = await meRes.json()
@@ -30,7 +30,7 @@ const Profile = ({ logOut }) => {
           setItsMe(true)
 
           const postsRes = await fetch(`${API_URL}/api/post/me`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` }
           })
           setPosts(await postsRes.json())
           return
@@ -46,7 +46,7 @@ const Profile = ({ logOut }) => {
         // Revisar si soy yo SIN volver a pedir "me"
         if (fetchedUser.username) {
           const meRes = await fetch(`${API_URL}/api/users/me`, {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` }
           })
           const me = await meRes.json()
           setItsMe(me.username === fetchedUser.username)
@@ -54,7 +54,7 @@ const Profile = ({ logOut }) => {
 
         // Posts de ese usuario
         const postsRes = await fetch(`${API_URL}/api/post/${username}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token}` }
         })
         setPosts(await postsRes.json())
       } catch (e) {
@@ -73,18 +73,20 @@ const Profile = ({ logOut }) => {
         style={{
           maxWidth: '720px',
           margin: '0 auto',
-          padding: '0 0.75rem',
+          padding: '0 0.75rem'
         }}
       >
-        {user ? (
-          <>
-            <ProfileHeader itsMe={itsMe} posts={posts} user={user} />
-            <ProfileTabs />
-            <ProfilePosts posts={posts} userProfile={user} />
-          </>
-        ) : (
-          <p>No existe este usuario</p>
-        )}
+        {user
+          ? (
+            <>
+              <ProfileHeader itsMe={itsMe} posts={posts} user={user} />
+              <ProfileTabs />
+              <ProfilePosts posts={posts} userProfile={user} />
+            </>
+            )
+          : (
+            <p>No existe este usuario</p>
+            )}
         {isOpenNewPostModal && (
           <NewPostModal
             isOpen={isOpenNewPostModal}

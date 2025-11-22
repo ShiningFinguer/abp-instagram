@@ -39,7 +39,7 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
       const res = await fetch(`${API_URL}/api/users/post`, {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${window.localStorage.getItem('token')}`
         },
         body: formData
       })
@@ -82,42 +82,42 @@ export const NewPostModal = ({ isOpen, setIsOpen, setPosts }) => {
   if (!isOpen) return null
 
   return (
-    <div className="NewPostModal">
-      <button onClick={() => setIsOpen(false)} className="NewPostModal-close">
+    <div className='NewPostModal'>
+      <button onClick={() => setIsOpen(false)} className='NewPostModal-close'>
         ✕
       </button>
 
-      <div className="NewPostModal-panel">
-        <h3 className="NewPostModal-title">Nuevo Post</h3>
+      <div className='NewPostModal-panel'>
+        <h3 className='NewPostModal-title'>Nuevo Post</h3>
 
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <form onSubmit={handleSubmit} encType='multipart/form-data'>
           <textarea
-            className="NewPostModal-text-area"
+            className='NewPostModal-text-area'
             value={description}
             onChange={e => setDescription(e.target.value)}
-            placeholder="Escribe una descripción..."
+            placeholder='Escribe una descripción...'
             maxLength={200}
             required
-            name="description"
+            name='description'
           />
 
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <input type='file' accept='image/*' onChange={handleFileChange} />
 
           {preview && (
-            <div className="NewPostModal-preview">
+            <div className='NewPostModal-preview'>
               <img
                 style={{ maxWidth: '100%' }}
                 src={preview}
-                alt="Vista previa"
+                alt='Vista previa'
               />
             </div>
           )}
 
-          <button type="submit" disabled={loading}>
+          <button type='submit' disabled={loading}>
             {loading ? 'Subiendo...' : 'Subir post'}
           </button>
 
-          {error && <p className="NewPostModal-error">{error}</p>}
+          {error && <p className='NewPostModal-error'>{error}</p>}
         </form>
       </div>
     </div>

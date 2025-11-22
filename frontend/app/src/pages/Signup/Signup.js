@@ -72,70 +72,70 @@ export default function Signup () {
   }
 
   return (
-    <div className="signup-wrapper">
-      <main className="signup-container">
+    <div className='signup-wrapper'>
+      <main className='signup-container'>
         <h1>Crear cuenta</h1>
         <form
-          className="signup-form"
+          className='signup-form'
           onSubmit={handleSubmit}
-          encType="multipart/form-data"
+          encType='multipart/form-data'
         >
           <input
-            type="text"
-            placeholder="Usuario"
-            name="username"
+            type='text'
+            placeholder='Usuario'
+            name='username'
             value={formData.username}
             onChange={handleChange}
             required
           />
 
           <input
-            type="email"
-            placeholder="Correo electrónico"
-            name="email"
+            type='email'
+            placeholder='Correo electrónico'
+            name='email'
             value={formData.email}
             onChange={handleChange}
             required
           />
 
           <input
-            type="password"
-            placeholder="Contraseña"
-            name="password"
+            type='password'
+            placeholder='Contraseña'
+            name='password'
             value={formData.password}
             onChange={handleChange}
             required
           />
 
           <textarea
-            placeholder="Biografía"
-            name="bio"
+            placeholder='Biografía'
+            name='bio'
             value={formData.bio}
-            onChange={handleChange}
-          ></textarea>
-
-          <input
-            type="file"
-            name="avatar"
-            accept="image/*"
             onChange={handleChange}
           />
 
-          <button type="submit">
+          <input
+            type='file'
+            name='avatar'
+            accept='image/*'
+            onChange={handleChange}
+          />
+
+          <button type='submit'>
             {loading ? 'Registrando...' : 'Registrar'}
           </button>
 
           {error && <Alert>{error}</Alert>}
 
           {success && (
-            <Alert variant="success">
+            <Alert variant='success'>
               {success} <br /> Inicia sesión ⬇️
             </Alert>
           )}
         </form>
 
         <p>
-          ¿Ya tienes cuenta? <Link to="/">Ir a Login</Link>
+          ¿Ya tienes cuenta? <Link to='/'>Ir a Login</Link>
         </p>
       </main>
     </div>

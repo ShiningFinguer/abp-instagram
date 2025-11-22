@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useLoaderData } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { API_URL } from '../../constants'
 
 const ProfileHeaderOwn = ({ posts }) => {
@@ -10,14 +10,14 @@ const ProfileHeaderOwn = ({ posts }) => {
   const [following, setFollowing] = useState(0)
 
   const location = useLocation()
-  const token = localStorage.getItem('token')
+  const token = window.localStorage.getItem('token')
 
   const fetchUserProfile = async () => {
     try {
       const res = await fetch(`${API_URL}/api/users/me`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
+          Authorization: `Bearer ${token}`
+        }
       })
 
       const data = await res.json()
@@ -61,7 +61,7 @@ const ProfileHeaderOwn = ({ posts }) => {
       username: userProfile.username || '',
       email: userProfile.email || '',
       profilePic: userProfile.profilePic || '',
-      bio: userProfile.bio || '',
+      bio: userProfile.bio || ''
     })
 
     const handleChange = e => {
@@ -77,34 +77,34 @@ const ProfileHeaderOwn = ({ posts }) => {
           {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(formData)
           }
         )
         const data = await res.json()
 
         if (res.ok) {
-          alert('Perfil actualizado correctamente')
+          window.alert('Perfil actualizado correctamente')
           onProfileUpdated(data.userProfile)
           onClose()
         } else {
-          alert(data.error || 'Error al actualizar el perfil')
+          window.alert(data.error || 'Error al actualizar el perfil')
         }
       } catch (err) {
         console.error(err)
-        alert('Error del servidor')
+        window.alert('Error del servidor')
       }
       fetchUserProfile()
     }
 
     return (
-      <div className="modal-backdrop">
-        <div className="modal">
+      <div className='modal-backdrop'>
+        <div className='modal'>
           <h2>Editar perfil</h2>
           <form onSubmit={handleSubmit}>
             <label>Nombre de usuario:</label>
             <input
-              type="text"
-              name="username"
+              type='text'
+              name='username'
               value={formData.username}
               onChange={handleChange}
               required
@@ -112,8 +112,8 @@ const ProfileHeaderOwn = ({ posts }) => {
 
             <label>Email:</label>
             <input
-              type="email"
-              name="email"
+              type='email'
+              name='email'
               value={formData.email}
               onChange={handleChange}
               required
@@ -121,18 +121,18 @@ const ProfileHeaderOwn = ({ posts }) => {
 
             <label>Foto de perfil (URL):</label>
             <input
-              type="text"
-              name="profilePic"
+              type='text'
+              name='profilePic'
               value={formData.profilePic}
               onChange={handleChange}
             />
 
             <label>Biografía:</label>
-            <textarea name="bio" value={formData.bio} onChange={handleChange} />
+            <textarea name='bio' value={formData.bio} onChange={handleChange} />
 
-            <div className="form-buttons">
-              <button type="submit">Guardar cambios</button>
-              <button type="button" onClick={onClose}>
+            <div className='form-buttons'>
+              <button type='submit'>Guardar cambios</button>
+              <button type='button' onClick={onClose}>
                 Cancelar
               </button>
             </div>
@@ -170,7 +170,8 @@ const ProfileHeaderOwn = ({ posts }) => {
             margin-bottom: 10px;
             padding: 8px;
           }
-        `}</style>
+        `}
+        </style>
       </div>
     )
   }
@@ -181,14 +182,14 @@ const ProfileHeaderOwn = ({ posts }) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
-        padding: '2rem',
+        padding: '2rem'
       }}
     >
-      {/*Profile Picture */}
+      {/* Profile Picture */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
           src={userProfile?.profilePic}
-          alt="Profile"
+          alt='Profile'
           style={{ width: '150px', height: '150px', borderRadius: '50%' }}
         />
       </div>
@@ -199,7 +200,7 @@ const ProfileHeaderOwn = ({ posts }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '1rem',
+          gap: '1rem'
         }}
       >
         <h2>{userProfile?.username}</h2>

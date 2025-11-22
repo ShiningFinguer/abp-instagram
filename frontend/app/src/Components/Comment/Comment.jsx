@@ -8,14 +8,14 @@ const Comment = ({ avatar, username, text, createdAt }) => {
   const formatedCreatedAt = simpleTimeAgo(createdAt)
 
   return (
-    <li className="Comment">
+    <li className='Comment'>
       <Link to={`/${username}`}>
-        <img className="Comment-avatar" src={avatar || userDefault} />
+        <img className='Comment-avatar' src={avatar || userDefault} />
       </Link>
 
       <div>
         <div>
-          <span className="Comment-username">
+          <span className='Comment-username'>
             <Link to={`/${username}`}>
               <strong style={{ fontSize: '14px' }}>{username}</strong>
             </Link>

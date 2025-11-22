@@ -32,11 +32,11 @@ export const SearchBoard = ({ setUsers }) => {
   }, [query])
 
   return (
-    <form className="searchBoard">
+    <form className='searchBoard'>
       <input
-        type="text"
-        name="query"
-        placeholder="Search User"
+        type='text'
+        name='query'
+        placeholder='Search User'
         onChange={e => setQuery(e.target.value)}
         value={query}
       />

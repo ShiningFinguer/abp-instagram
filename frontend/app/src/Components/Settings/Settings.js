@@ -13,7 +13,7 @@ export default function Settings () {
   const handleSubmit = async e => {
     e.preventDefault()
     if (!checkPassword.test(formData.password)) {
-      alert(
+      window.alert(
         'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula y un número.'
       )
       return
@@ -21,7 +21,7 @@ export default function Settings () {
 
     try {
       // Obtén el token del almacenamiento (asumiendo que lo guardas al hacer login)
-      const token = localStorage.getItem('token')
+      const token = window.localStorage.getItem('token')
 
       if (!token) {
         setMessage('No se ha encontrado el token. Inicia sesión primero.')
@@ -52,7 +52,7 @@ export default function Settings () {
 
   return (
     <>
-      <meta charSet="UTF-8" />
+      <meta charSet='UTF-8' />
       <title>Ajustes - MiRed</title>
       <style
         dangerouslySetInnerHTML={{
@@ -72,19 +72,19 @@ export default function Settings () {
       <main>
         <h2>Ajustes de cuenta</h2>
         <form onSubmit={handleSubmit}>
-          <label htmlFor="password">Cambiar contraseña</label>
+          <label htmlFor='password'>Cambiar contraseña</label>
           <input
-            type="password"
-            name="password"
-            placeholder="Nueva contraseña"
+            type='password'
+            name='password'
+            placeholder='Nueva contraseña'
             value={formData.password}
             onChange={handleChange}
             required
           />
-          <button type="submit">Guardar cambios</button>
+          <button type='submit'>Guardar cambios</button>
           <button
-            type="button"
-            onClick={() => alert('Cerrar sesión aún no implementado')}
+            type='button'
+            onClick={() => window.alert('Cerrar sesión aún no implementado')}
           >
             Cerrar sesión
           </button>

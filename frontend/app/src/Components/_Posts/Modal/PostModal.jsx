@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Comment from '../../Comment/Comment'
 import Caption from '../../Comment/Caption'
 import Like from '../Like/Like'
 
@@ -30,9 +29,9 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
   }, [])
 
   useEffect(() => {
-    async function countLikes() {
+    async function countLikes () {
       const res = await fetch(`${API_URL}/api/post/` + post._id + '/likes', {
-        method: 'get',
+        method: 'get'
       })
 
       if (!res.ok) {
@@ -51,13 +50,13 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
   }, [isLike])
 
   useEffect(() => {
-    async function Liked() {
+    async function Liked () {
       const res = await fetch(`${API_URL}/api/post/` + post._id + '/isliked', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.token}`,
-        },
+          Authorization: `Bearer ${window.localStorage.token}`
+        }
       })
 
       if (!res.ok) {
@@ -78,7 +77,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
         id: comments?.length + 1,
         username: userProfile?.username,
         text: commentText,
-        createdAt: 'Just now',
+        createdAt: 'Just now'
       }
       setComments([...comments, newComment])
       setCommentText('')
@@ -89,30 +88,30 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
   return (
     <>
       {isOpen && (
-        <div className="PostModal" onClick={onClose}>
-          <div className="PostModal-panel" onClick={e => e.stopPropagation()}>
+        <div className='PostModal' onClick={onClose}>
+          <div className='PostModal-panel' onClick={e => e.stopPropagation()}>
             <img
-              className="PostModal-img"
+              className='PostModal-img'
               src={`${API_URL}/uploads/` + post?.image}
-              alt="post"
+              alt='post'
             />
 
-            <div className="PostModal-body">
-              <div className="PostModal-header">
+            <div className='PostModal-body'>
+              <div className='PostModal-header'>
                 <img
                   src={post?.user?.avatar || 'https://i.pravatar.cc/300'}
-                  alt="avatar"
+                  alt='avatar'
                   style={{
                     width: '40px',
                     height: '40px',
                     borderRadius: '50%',
-                    objectFit: 'cover',
+                    objectFit: 'cover'
                   }}
                 />
                 <strong>{userProfile?.username}</strong>
               </div>
 
-              <div className="PostModal-comments">
+              <div className='PostModal-comments'>
                 {post?.description && (
                   <Caption
                     avatar={post?.user?.avatar}
@@ -125,13 +124,13 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                 {comments && <Comments comments={comments} />}
               </div>
 
-              <div className="PostModal-footer">
+              <div className='PostModal-footer'>
                 <div
                   style={{
                     display: 'flex',
                     gap: '15px',
                     fontSize: '24px',
-                    marginBottom: '10px',
+                    marginBottom: '10px'
                   }}
                 >
                   <Like
@@ -146,7 +145,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                     }}
                     style={{ cursor: 'pointer' }}
                   >
-                    <img src={commentIcon} className="icon" />
+                    <img src={commentIcon} className='icon' />
                   </span>
                 </div>
                 <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
@@ -156,7 +155,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                   style={{
                     fontSize: '12px',
                     color: '#8e8e8e',
-                    marginBottom: '10px',
+                    marginBottom: '10px'
                   }}
                 >
                   {formattedCreatedAt}
@@ -168,12 +167,12 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                       display: 'flex',
                       gap: '10px',
                       alignItems: 'center',
-                      marginTop: '10px',
+                      marginTop: '10px'
                     }}
                   >
                     <input
-                      type="textArea"
-                      placeholder="Add a comment..."
+                      type='textArea'
+                      placeholder='Add a comment...'
                       value={commentText}
                       onChange={e => setCommentText(e.target.value)}
                       onKeyPress={e => {
@@ -188,7 +187,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                         borderRadius: '4px',
                         outline: 'none',
                         height: '100px',
-                        fontSize: '14px',
+                        fontSize: '14px'
                       }}
                     />
                     <button
@@ -203,7 +202,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                         borderRadius: '4px',
                         cursor: commentText.trim() ? 'pointer' : 'not-allowed',
                         fontWeight: 'bold',
-                        fontSize: '12px',
+                        fontSize: '12px'
                       }}
                       disabled={!commentText.trim()}
                     >

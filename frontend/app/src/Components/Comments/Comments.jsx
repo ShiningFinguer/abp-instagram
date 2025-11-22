@@ -1,9 +1,9 @@
 import Comment from '../Comment/Comment'
 import './Comments.css'
 
-export default function Comments({ comments }) {
+export default function Comments ({ comments }) {
   return (
-    <ul className="Comments">
+    <ul className='Comments'>
       {comments?.map(({ _id, text, userId: { username }, createdAt }) => (
         <Comment
           key={_id}

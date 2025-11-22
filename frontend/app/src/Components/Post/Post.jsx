@@ -13,11 +13,11 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function Post ({ post, onDelete }) {
   const { description, image } = post
   const formatedCreatedAt = simpleTimeAgo(post.createdAt)
-  const [isOpen, setIsOpen] = useState(false)
+  const [, setIsOpen] = useState(false)
   const [isLike, setIsLike] = useState(false)
   const [countLikes, setCountLikes] = useState([])
   const [comments, setComments] = useState([])
-  const token = localStorage.getItem('token')
+  const token = window.localStorage.getItem('token')
   const [showToolTip, setshowToolTip] = useState(false)
   const navigate = useNavigate()
 
@@ -79,7 +79,7 @@ export default function Post ({ post, onDelete }) {
     e.preventDefault()
 
     if (!token) {
-      alert('Inicia sesión bro!')
+      window.alert('Inicia sesión bro!')
       return navigate('/login')
     }
 
@@ -118,7 +118,7 @@ export default function Post ({ post, onDelete }) {
     })
 
     if (!res.ok) {
-      alert('No tienes permisos para eliminar este post')
+      window.alert('No tienes permisos para eliminar este post')
       return
     }
 
@@ -127,29 +127,29 @@ export default function Post ({ post, onDelete }) {
   }
 
   return (
-    <article className="Post">
+    <article className='Post'>
       {/* Header */}
-      <header className="Post-header">
-        <div className="Post-header-wrapper">
+      <header className='Post-header'>
+        <div className='Post-header-wrapper'>
           <Link to={`/${post?.user?.username}`}>
             <img
-              className="Post-avatar"
+              className='Post-avatar'
               src={
                 post?.user?.profilePic
                   ? `${API_URL}/avatars/${post?.user?.profilePic}`
                   : userDefault
               }
-              alt="avatar"
+              alt='avatar'
             />
           </Link>
           <div>
-            <div className="Post-username">
+            <div className='Post-username'>
               <Link to={`/${post?.user?.username}`}>
                 <strong>{`@${post?.user?.username || 'username'}`}</strong>
               </Link>
             </div>
 
-            <div className="Post-date">{formatedCreatedAt}</div>
+            <div className='Post-date'>{formatedCreatedAt}</div>
           </div>
         </div>
 
@@ -163,7 +163,7 @@ export default function Post ({ post, onDelete }) {
         >
           {showToolTip && (
             <div style={{ cursor: 'pointer' }} onClick={handleDeletePost}>
-              <Trash2 color="#f83e3e" />
+              <Trash2 color='#f83e3e' />
             </div>
           )}
 
@@ -177,23 +177,23 @@ export default function Post ({ post, onDelete }) {
       </header>
 
       {/* Body */}
-      <div className="Post-body">
+      <div className='Post-body'>
         <img
-          className="Post-picture"
+          className='Post-picture'
           onClick={() => setIsOpen(true)}
           src={image}
-          alt="post"
+          alt='post'
         />
       </div>
 
       {/* Footer */}
-      <footer className="Post-footer">
-        <div className="Post-footer-row-1">
+      <footer className='Post-footer'>
+        <div className='Post-footer-row-1'>
           <Like isLike={isLike} setIsLike={setIsLike} postId={post._id} />
-          <img src={SendIcon} className="icon" />
+          <img src={SendIcon} className='icon' />
         </div>
 
-        <div className="Post-footer-row-2"> {countLikes.likes} Me gusta</div>
+        <div className='Post-footer-row-2'> {countLikes.likes} Me gusta</div>
 
         <Caption
           avatar={post?.user?.profilePic}
@@ -205,7 +205,7 @@ export default function Post ({ post, onDelete }) {
         <Comments comments={comments} />
 
         <form onSubmit={handleCommentSubmit}>
-          <input type="text" name="text" placeholder="Comentario..." />
+          <input type='text' name='text' placeholder='Comentario...' />
         </form>
       </footer>
     </article>
