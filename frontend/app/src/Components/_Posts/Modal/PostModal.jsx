@@ -26,7 +26,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
       })
       .then(setComments)
       .catch(e => console.log(e.message))
-  }, [])
+  }, [post._id])
 
   useEffect(() => {
     async function countLikes () {
@@ -47,7 +47,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
-  }, [isLike])
+  }, [isLike, post._id])
 
   useEffect(() => {
     async function Liked () {
@@ -69,7 +69,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
       setIsLike(liked.liked)
     }
     Liked()
-  }, [])
+  }, [post._id])
 
   const handleAddComment = () => {
     if (commentText.trim()) {
@@ -145,7 +145,7 @@ const PostModal = ({ isOpen, post, onClose, userProfile }) => {
                     }}
                     style={{ cursor: 'pointer' }}
                   >
-                    <img src={commentIcon} className='icon' />
+                    <img src={commentIcon} className='icon' alt='' />
                   </span>
                 </div>
                 <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>

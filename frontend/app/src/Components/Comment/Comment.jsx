@@ -1,4 +1,3 @@
-import React from 'react'
 import userDefault from '../../Assets/userDefault.png'
 import './Comment.css'
 import { simpleTimeAgo } from '../../utils'
@@ -10,7 +9,7 @@ const Comment = ({ avatar, username, text, createdAt }) => {
   return (
     <li className='Comment'>
       <Link to={`/${username}`}>
-        <img className='Comment-avatar' src={avatar || userDefault} />
+        <img className='Comment-avatar' src={avatar || userDefault} alt='' />
       </Link>
 
       <div>

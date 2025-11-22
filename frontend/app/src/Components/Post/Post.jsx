@@ -40,7 +40,7 @@ export default function Post ({ post, onDelete }) {
     countLikes()
       .then(() => console.log('bien'))
       .catch(e => console.log(e.message))
-  }, [isLike])
+  }, [isLike, post._id])
 
   useEffect(() => {
     async function Liked () {
@@ -62,7 +62,7 @@ export default function Post ({ post, onDelete }) {
       setIsLike(liked.liked)
     }
     Liked()
-  }, [])
+  }, [post._id, token])
 
   useEffect(() => {
     fetch(`${API_URL}/api/posts/${post._id}/comments`)
@@ -73,7 +73,7 @@ export default function Post ({ post, onDelete }) {
       })
       .then(setComments)
       .catch(e => console.log(e.message))
-  }, [])
+  }, [post._id])
 
   const handleCommentSubmit = async e => {
     e.preventDefault()
@@ -190,7 +190,7 @@ export default function Post ({ post, onDelete }) {
       <footer className='Post-footer'>
         <div className='Post-footer-row-1'>
           <Like isLike={isLike} setIsLike={setIsLike} postId={post._id} />
-          <img src={SendIcon} className='icon' />
+          <img src={SendIcon} className='icon' alt='' />
         </div>
 
         <div className='Post-footer-row-2'> {countLikes.likes} Me gusta</div>

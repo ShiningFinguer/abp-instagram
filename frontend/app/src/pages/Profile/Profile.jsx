@@ -64,7 +64,7 @@ const Profile = ({ logOut }) => {
     }
 
     fetchData()
-  }, [username])
+  }, [navigate, token, username])
 
   return (
     <>

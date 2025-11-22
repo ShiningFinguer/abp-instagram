@@ -29,7 +29,7 @@ export const SearchBoard = ({ setUsers }) => {
     }
 
     fetchData()
-  }, [query])
+  }, [query, setUsers])
 
   return (
     <form className='searchBoard'>
