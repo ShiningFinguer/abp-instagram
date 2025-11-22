@@ -22,7 +22,7 @@ const ProfileHeader = ({ user, itsMe }) => {
         const followRes = await fetch(
           `${API_URL}/api/users/${user.username}/follow`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}` }
           }
         )
         const { followed } = await followRes.json()
@@ -31,7 +31,7 @@ const ProfileHeader = ({ user, itsMe }) => {
         // Contadores
         const [followersRes, followingRes] = await Promise.all([
           fetch(`${API_URL}/api/users/${user.username}/followers/count`),
-          fetch(`${API_URL}/api/users/${user.username}/following/count`),
+          fetch(`${API_URL}/api/users/${user.username}/following/count`)
         ])
         const followersData = await followersRes.json()
         const followingData = await followingRes.json()
@@ -55,7 +55,7 @@ const ProfileHeader = ({ user, itsMe }) => {
     try {
       const res = await fetch(`${API_URL}/api/users/${user.username}/follow`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       })
 
       if (!res.ok) {
@@ -79,15 +79,15 @@ const ProfileHeader = ({ user, itsMe }) => {
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
-        padding: '2rem',
+        padding: '2rem'
       }}
     >
       {/* Profile Picture */}
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img
           src={
-            user?.profilePic
-              ? `${API_URL}/avatars/${user.profilePic}`
+            user.profilePic
+              ? user.profilePic
               : userDefault
           }
           alt="Profile"
@@ -96,7 +96,7 @@ const ProfileHeader = ({ user, itsMe }) => {
             height: '150px',
             borderRadius: '50%',
             objectFit: 'cover',
-            objectPosition: 'center',
+            objectPosition: 'center'
           }}
         />
       </div>
@@ -107,17 +107,19 @@ const ProfileHeader = ({ user, itsMe }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '1rem',
+          gap: '1rem'
         }}
       >
         <h2>{user?.username}</h2>
-        {itsMe ? (
+        {itsMe
+          ? (
           <button onClick={() => setShowEditForm(true)}>Editar perfil</button>
-        ) : (
+            )
+          : (
           <button onClick={handleFollowClick}>
             {isFollowing ? 'Unfollow' : 'Follow'}
           </button>
-        )}
+            )}
       </div>
 
       {/* Bio */}

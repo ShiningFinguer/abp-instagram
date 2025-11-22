@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import cloudinary from 'cloudinary'
 
 import userRouter from './routes/UserRouter.js'
 import { postRouter } from './routes/PostRouter.js'
@@ -10,6 +11,12 @@ import { CommentRouter } from './routes/CommentRouter.js'
 import { FollowRouter } from './routes/FollowRouter.js'
 
 dotenv.config()
+
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
+})
 
 const app = express()
 
