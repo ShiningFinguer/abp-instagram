@@ -135,8 +135,8 @@ export default function Post ({ post, onDelete }) {
             <img
               className='Post-avatar'
               src={
-                post?.user?.profilePic
-                  ? `${API_URL}/avatars/${post?.user?.profilePic}`
+                post.user.profilePic
+                  ? post.user.profilePic
                   : userDefault
               }
               alt='avatar'
