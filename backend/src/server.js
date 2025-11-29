@@ -4,11 +4,11 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import cloudinary from 'cloudinary'
 
-import userRouter from './routes/UserRouter.js'
-import { postRouter } from './routes/PostRouter.js'
-import { LikeRouter } from './routes/LikeRouter.js'
-import { CommentRouter } from './routes/CommentRouter.js'
-import { FollowRouter } from './routes/FollowRouter.js'
+import { usersRouter } from './routes/users.js'
+import { postsRouter } from './routes/posts.js'
+import { likesRouter } from './routes/likes.js'
+import { commentsRouter } from './routes/comments.js'
+import { followsRouter } from './routes/follows.js'
 
 dotenv.config()
 
@@ -34,11 +34,11 @@ mongoose
 app.use(express.static('public'))
 app.use(express.json())
 app.use(cors())
-app.use(userRouter)
-app.use(postRouter)
-app.use(LikeRouter)
-app.use(CommentRouter)
-app.use(FollowRouter)
+app.use(usersRouter)
+app.use(postsRouter)
+app.use(likesRouter)
+app.use(commentsRouter)
+app.use(followsRouter)
 
 app.get('/', (req, res) => {
   res.send('Api funcionando correctamente')
