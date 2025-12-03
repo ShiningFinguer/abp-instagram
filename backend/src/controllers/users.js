@@ -11,13 +11,15 @@ import Post from '../models/Post.js'
 export const register = async (req, res) => {
   try {
     const { username, email, password, bio } = req.body
-    const file = req.file
+    const file = req?.file
 
-    if (!file) return res.status(400).json({ message: 'Falta la imagen' })
+    let result = null
 
-    const result = await cloudinary.v2.uploader.upload(file.path, {
-      folder: 'abp-instagram/avatars'
-    })
+    if (file) {
+      result = await cloudinary.v2.uploader.upload(file?.path, {
+        folder: 'abp-instagram/avatars'
+      })
+    }
 
     const hashed = await bcrypt.hash(password, 10)
 
@@ -26,10 +28,12 @@ export const register = async (req, res) => {
       email,
       password: hashed,
       bio,
-      profilePic: result.secure_url
+      profilePic: result?.secure_url ?? ''
     })
 
-    await fs.unlink(file.path)
+    if (file) {
+      await fs.unlink(file?.path)
+    }
 
     res.status(201).json({ message: 'Usuario creado', user })
   } catch (err) {

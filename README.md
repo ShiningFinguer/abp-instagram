@@ -221,3 +221,7 @@ docker compose up -d
 - [ ] Subir videos
 - [ ] Música por publicación
 - [ ] Etiquetar personas
+
+## To-do
+
+- [] Fix: subir avatar en registro
