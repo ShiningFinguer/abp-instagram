@@ -1,0 +1,217 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import cloudinary from 'cloudinary'
+import fs from 'node:fs/promises'
+
+import User from '../models/User.js'
+import Follow from '../models/Follow.js'
+import Post from '../models/Post.js'
+
+// Registro
+export const register = async (req, res) => {
+  try {
+    const { username, email, password, bio } = req.body
+    const file = req?.file
+
+    let result = null
+
+    if (file) {
+      result = await cloudinary.v2.uploader.upload(file?.path, {
+        folder: 'abp-instagram/avatars'
+      })
+    }
+
+    const hashed = await bcrypt.hash(password, 10)
+
+    const user = await User.create({
+      username,
+      email,
+      password: hashed,
+      bio,
+      profilePic: result?.secure_url ?? ''
+    })
+
+    if (file) {
+      await fs.unlink(file?.path)
+    }
+
+    res.status(201).json({ message: 'Usuario creado', user })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+}
+
+// Login
+export const login = async (req, res) => {
+  try {
+    const { username, password } = req.body
+    const user = await User.findOne({ username })
+    if (!user) { return res.status(404).json({ error: 'Usuario o contraseña incorrecta' }) }
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) { return res.status(400).json({ error: 'Usuario o contraseña incorrecta' }) }
+    const token = jwt.sign({ id: user._id }, 'SECRET_KEY', { expiresIn: '1d' })
+    res.json({ message: 'Login exitoso', token, user })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Obtener todos los usuarios
+export const getUsers = async (req, res) => {
+  try {
+    const user = await User.find()
+    res.json(user)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Buscar usuario
+export const getUsersFiltered = async (req, res) => {
+  try {
+    const name = req.params.name || ''
+
+    if (!name.trim()) {
+      return res
+        .status(400)
+        .json({ error: 'Debes proporcionar un nombre para buscar' })
+    }
+
+    const users = await User.find({
+      username: { $regex: name, $options: 'i' } // insensible a mayúsculas
+    }).limit(50)
+
+    if (users.length === 0) {
+      return res.status(404).json({ error: 'No se encontraron usuarios' })
+    }
+
+    res.json(users)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Obtener un usuario por ID
+export const getUserByToken = async (req, res) => {
+  try {
+    const id = req.user.id
+
+    const user = await User.findById(id)
+
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+
+    const postsCount = await Post.countDocuments({ user: user._id })
+    const followersCount = await Follow.countDocuments({ simp: user._id })
+    const followingCount = await Follow.countDocuments({ following: user._id })
+
+    res.json({
+      ...user.toObject(),
+      posts: postsCount,
+      followers: followersCount,
+      following: followingCount
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Verificar si quiere ver tu propio perfil
+export const verifyMySelfProfile = async (req, res) => {
+  try {
+    const id = req.user._id
+    const username = req.params.username
+
+    const user = await User.findById(id)
+    const userCheck = await User.findOne(username)
+    if (user?._id.toString() === userCheck?._id.toString()) {
+      res.json({ verify: true })
+    } else {
+      res.json({ verify: false })
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Actualizar perfil de usuario
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { username, email, profilePic, bio } = req.body
+    const user = await User.updateOne(
+      { _id: req.params.id },
+      { username, email, profilePic, bio }
+    )
+    res.status(201).json({ message: 'Usuario actualizada', user })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+}
+
+// Actualizar contraseña de usuario
+export const updateUserPassword = async (req, res) => {
+  try {
+    // 1. Verificamos que venga el header
+    const authHeader = req.headers.authorization
+    if (!authHeader) return res.status(401).json({ message: 'Token ausente' })
+
+    // 2. Extraemos el token del tipo "Bearer <token>"
+    const [, token] = authHeader.split(' ')
+    if (!token) return res.status(401).json({ message: 'Token inválido' })
+
+    // 3. Verificamos el token y extraemos el id
+    const { id } = jwt.verify(token, 'SECRET_KEY') // ⚠️ mejor usar process.env.JWT_SECRET
+
+    // 4. Encriptamos la nueva contraseña
+    const { password } = req.body
+    if (!password) { return res.status(400).json({ message: 'Falta la nueva contraseña' }) }
+
+    const hashed = await bcrypt.hash(password, 10)
+
+    // 5. Actualizamos la contraseña del usuario autenticado
+    const user = await User.findByIdAndUpdate(
+      id,
+      { password: hashed },
+      { new: true }
+    )
+
+    if (!user) return res.status(404).json({ message: 'Usuario no encontrado' })
+
+    // 6. Enviamos respuesta
+    res.status(200).json({ message: 'Contraseña actualizada correctamente' })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
+}
+
+// Eliminar un usuario por ID
+export const deleteUserByID = async (req, res) => {
+  try {
+    const user = await User.deleteOne({ _id: req.params.id })
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+    res.status(200).json({ message: 'Usuario eliminado' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
+
+// Obtener usuario por username
+export const getUserByUsername = async (req, res) => {
+  try {
+    const { username } = req.params
+    const user = await User.findOne({ username })
+    const postsCount = await Post.countDocuments({ user: user._id })
+    const followersCount = await Follow.countDocuments({ simp: user._id })
+    const followingCount = await Follow.countDocuments({
+      following: user._id
+    })
+    if (!user) return res.status(404).json({ error: 'Usuario no encontrado' })
+    res.json({
+      ...user.toObject(),
+      posts: postsCount,
+      followers: followersCount,
+      following: followingCount
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}

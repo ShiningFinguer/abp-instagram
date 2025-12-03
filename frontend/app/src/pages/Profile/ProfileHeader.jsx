@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { API_URL } from '../../constants'
-import { EditProfileForm } from '../../Components/EditProfileForm/EditProfileForm'
-import userDefault from '../../Assets/userDefault.png'
+import { API_URL } from 'constants.js'
+import { EditProfileForm } from 'components/EditProfileForm'
+import userDefault from 'assets/userDefault.png'
 import { useNavigate } from 'react-router-dom'
 
 const ProfileHeader = ({ user, itsMe }) => {

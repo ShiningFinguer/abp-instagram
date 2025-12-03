@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import PostModal from '../../Components/_Posts/Modal/PostModal'
-import { API_URL } from '../../constants'
+import PostModal from 'components/_Posts/Modal/PostModal'
+import { API_URL } from 'constants.js'
 
 const ProfilePost = ({ post, userProfile }) => {
   const [isOpen, setIsOpen] = useState(false)

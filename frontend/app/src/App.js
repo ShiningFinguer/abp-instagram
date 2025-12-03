@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import Signup from './pages/Signup/Signup'
-import Landing from './pages/Landing/Landing'
-import Feed from './pages/Feed/Feed'
-import Profile from './pages/Profile/Profile'
-import Settings from './Components/Settings/Settings'
+import Signup from './pages/Signup'
+import Landing from './pages/Landing'
+import Feed from './pages/Feed'
+import Profile from './pages/Profile'
+import Settings from './components/Settings'
 
 function App () {
   const [, setToken] = useState(window.localStorage.token)

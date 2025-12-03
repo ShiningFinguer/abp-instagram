@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { API_URL } from '../../constants'
+import { API_URL } from 'constants.js'
 
 const ProfileHeaderOwn = ({ posts }) => {
   const [userProfile, setUserProfile] = useState([])
