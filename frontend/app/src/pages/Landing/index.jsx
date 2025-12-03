@@ -3,7 +3,7 @@ import './Landing.css'
 import Logo from 'components/Logo'
 import { Link, useNavigate } from 'react-router-dom'
 import { Alert } from 'components/Alert'
-import { API_URL } from 'constants.js'
+import loginUser from 'services/loginUser'
 
 export default function Landing ({ setToken }) {
   const [loading, setLoading] = useState(false)
@@ -18,21 +18,7 @@ export default function Landing ({ setToken }) {
     setError('')
     setLoading(true)
     try {
-      const res = await fetch(`${API_URL}/api/users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      })
-
-      if (!res.ok) {
-        setError('Usuario o contraseñas incorrectos')
-
-        return
-      }
-
-      const { token } = await res.json()
+      const { token } = await loginUser({ username, password })
 
       window.localStorage.setItem('token', token)
 
@@ -40,6 +26,7 @@ export default function Landing ({ setToken }) {
 
       navigate('/')
     } catch (error) {
+      console.log(error.message)
       setError(error.message)
       setLoading(false)
     } finally {
