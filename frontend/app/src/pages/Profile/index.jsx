@@ -6,6 +6,9 @@ import ProfilePosts from './ProfilePosts'
 import Header from 'components/Header'
 import { NewPostModal } from 'components/NewPostModal'
 import { API_URL } from 'constants.js'
+import getUserByToken from 'services/getUserByToken'
+import getPostsByToken from 'services/getPostsByToken'
+import getUserByUsername from 'services/getUserByUsername'
 
 const Profile = ({ logOut }) => {
   const { username } = useParams()
@@ -21,38 +24,25 @@ const Profile = ({ logOut }) => {
       try {
         // Si no hay username, cargamos MI perfil
         if (!username && token) {
-          const meRes = await fetch(`${API_URL}/api/users/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-
-          const me = await meRes.json()
-          setUser(me)
+          const user = await getUserByToken({ token })
+          setUser(user)
           setItsMe(true)
 
-          const postsRes = await fetch(`${API_URL}/api/post/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-          setPosts(await postsRes.json())
+          const posts = await getPostsByToken({ token })
+          setPosts(posts)
           return
         }
 
         // Si hay username, cargamos el perfil de ese user
-        const userRes = await fetch(`${API_URL}/api/users/${username}`)
-        if (!userRes.ok) return navigate('/')
-
-        const fetchedUser = await userRes.json()
-        setUser(fetchedUser)
+        const user = await getUserByUsername({ username })
+        setUser(user)
 
         // Revisar si soy yo SIN volver a pedir "me"
-        if (fetchedUser.username) {
-          const meRes = await fetch(`${API_URL}/api/users/me`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-          const me = await meRes.json()
-          setItsMe(me.username === fetchedUser.username)
+        if (user.username) {
+          const me = await getUserByToken({ token })
+          setItsMe(me.username === user.username)
         }
 
-        // Posts de ese usuario
         const postsRes = await fetch(`${API_URL}/api/post/${username}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
